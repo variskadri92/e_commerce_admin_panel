@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import '../../../utils/constants/enums.dart';
 import '../../../utils/constants/sizes.dart';
 import '../shimmers/shimmer.dart';
@@ -37,7 +39,10 @@ class TCircularImage extends StatelessWidget {
       height: height,
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
-        color: backgroundColor ?? (Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white),
+        color: backgroundColor ??
+            (Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white),
         borderRadius: BorderRadius.circular(width >= height ? width : height),
       ),
       child: _buildImageWidget(),
@@ -60,6 +65,9 @@ class TCircularImage extends StatelessWidget {
       case ImageType.asset:
         imageWidget = _buildAssetImage();
         break;
+      case ImageType.lottie:
+        imageWidget = _buildLottieImage();
+        break;
     }
 
     // Apply ClipRRect directly to the image widget
@@ -78,7 +86,8 @@ class TCircularImage extends StatelessWidget {
         color: overlayColor,
         imageUrl: image!,
         errorWidget: (context, url, error) => const Icon(Icons.error),
-        progressIndicatorBuilder: (context, url, downloadProgress) => const TShimmerEffect(width: 55, height: 55),
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            const TShimmerEffect(width: 55, height: 55),
       );
     } else {
       // Return an empty container if no image is provided
@@ -90,7 +99,8 @@ class TCircularImage extends StatelessWidget {
   Widget _buildMemoryImage() {
     if (memoryImage != null) {
       // Display image from memory using Image widget
-      return Image(fit: fit, image: MemoryImage(memoryImage!), color: overlayColor);
+      return Image(
+          fit: fit, image: MemoryImage(memoryImage!), color: overlayColor);
     } else {
       // Return an empty container if no image is provided
       return Container();
@@ -113,6 +123,16 @@ class TCircularImage extends StatelessWidget {
     if (image != null) {
       // Display image from assets using Image widget
       return Image(fit: fit, image: AssetImage(image!), color: overlayColor);
+    } else {
+      // Return an empty container if no image is provided
+      return Container();
+    }
+  }
+  // Function to build the lottie image widget
+  Widget _buildLottieImage() {
+    if (image != null) {
+      // Display image from assets using Image widget
+      return Lottie.asset(image!,fit: fit);
     } else {
       // Return an empty container if no image is provided
       return Container();

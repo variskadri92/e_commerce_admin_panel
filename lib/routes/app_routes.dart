@@ -11,6 +11,11 @@ class AppRoutes {
       page: () => const ResponsiveDesignScreen(),
       transition: Transition.fadeIn,
       //middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.secondScreen,
+      page: () => const Desktop(),
+      transition: Transition.fadeIn,
+      //middlewares: [RoutesMiddleware()],
     ),
 
 
