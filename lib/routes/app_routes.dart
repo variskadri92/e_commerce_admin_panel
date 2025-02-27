@@ -1,0 +1,18 @@
+import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
+import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
+
+import '../app.dart';
+
+class AppRoutes {
+  static final List<GetPage> pages = [
+    GetPage(
+      name: Routes.firstScreen,
+      page: () => const ResponsiveDesignScreen(),
+      transition: Transition.fadeIn,
+      //middlewares: [RoutesMiddleware()],
+    ),
+
+
+  ];
+}
