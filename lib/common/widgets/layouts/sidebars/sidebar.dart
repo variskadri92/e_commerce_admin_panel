@@ -35,9 +35,9 @@ class Sidebar extends StatelessWidget {
                   children: [
                     Text('Menu',style: Theme.of(context).textTheme.labelMedium!.apply(color: Colors.grey),),
                     //menu items
-                    MenuItems(route: Routes.firstScreen, itemName: 'DashBoard', icon: Iconsax.status,),
-                    MenuItems(route: Routes.secondScreen, itemName: 'Media', icon: Iconsax.status,),
-                    MenuItems(route: Routes.responsiveDesignScreen, itemName: 'Product', icon: Iconsax.status,),
+                    MenuItems(route: Routes.login, itemName: 'DashBoard', icon: Iconsax.status,),
+                    //MenuItems(route: Routes.secondScreen, itemName: 'Media', icon: Iconsax.status,),
+                    //MenuItems(route: Routes.responsiveDesignScreen, itemName: 'Product', icon: Iconsax.status,),
                   ],
                 ),
               )

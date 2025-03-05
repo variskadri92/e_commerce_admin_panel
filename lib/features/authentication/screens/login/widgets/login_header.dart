@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -16,11 +17,7 @@ class LoginHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image(
-            image: AssetImage(TImages.darkAppLogo),
-            width: 100,
-            height: 100,
-          ),
+          Lottie.asset(TImages.darkAppLogo,height: 100,width: 100,),
           SizedBox(
             height: TSizes.spaceBtwSections,
           ),
