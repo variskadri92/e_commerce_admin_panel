@@ -6,11 +6,10 @@ class RoutesMiddleware  extends GetMiddleware{
 
   @override
   RouteSettings? redirect(String? route) {
-    return null;
 
-    // print('==========================');
-    // final isAuthenticated = true;
-    // return isAuthenticated ? null : const RouteSettings(name: Routes.firstScreen);
+    print('==========================');
+    final isAuthenticated = false;
+    return isAuthenticated ? null : const RouteSettings(name: Routes.login);
 
   }
 }

@@ -25,7 +25,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       getPages: AppRoutes.pages,
-      initialRoute: Routes.firstScreen,
+      initialRoute: Routes.login,
       unknownRoute: GetPage(name: '/page-not-found', page: ()=>Scaffold(body: Center(child: Text('Page Not Found'),),)),
     );
   }
