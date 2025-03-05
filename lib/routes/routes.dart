@@ -1,5 +1,7 @@
 class Routes{
-  static const firstScreen = '/';
-  static const secondScreen = '/second-screen';
-  static const secondScreenWithUID = '/second-screen/:userId';
+  static const login = '/login';
+  static const forgetPassword = '/forget-password';
+  static const resetPassword = '/reset-password';
+
+  static List sidebarMenuItems =[];
 }
