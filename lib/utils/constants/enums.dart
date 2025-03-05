@@ -14,7 +14,7 @@ enum ProductVisibility { published, hidden }
 
 enum TextSizes { small, medium, large }
 
-enum ImageType { asset, network, memory, file }
+enum ImageType { asset, network, memory, file, lottie }
 
 enum MediaCategory { folders, banners, brands, categories, products, users }
 

@@ -9,6 +9,11 @@ class AppRoutes {
       page: () => const LoginScreen(),
       transition: Transition.fadeIn,
       //middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.secondScreen,
+      page: () => const Desktop(),
+      transition: Transition.fadeIn,
+      //middlewares: [RoutesMiddleware()],
     ),
 
 

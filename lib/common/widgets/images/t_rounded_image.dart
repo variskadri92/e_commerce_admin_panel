@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../../../utils/constants/enums.dart';
 import '../../../utils/constants/sizes.dart';
 import '../shimmers/shimmer.dart';
@@ -46,7 +47,10 @@ class TRoundedImage extends StatelessWidget {
       height: height,
       margin: margin != null ? EdgeInsets.all(margin!) : null,
       padding: EdgeInsets.all(padding),
-      decoration: BoxDecoration(border: border, color: backgroundColor, borderRadius: BorderRadius.circular(borderRadius)),
+      decoration: BoxDecoration(
+          border: border,
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(borderRadius)),
       child: _buildImageWidget(),
     );
   }
@@ -67,11 +71,16 @@ class TRoundedImage extends StatelessWidget {
       case ImageType.asset:
         imageWidget = _buildAssetImage();
         break;
+      case ImageType.lottie:
+        imageWidget = _buildLottieImage();
+        break;
     }
 
     // Apply ClipRRect directly to the image widget
     return ClipRRect(
-      borderRadius: applyImageRadius ? BorderRadius.circular(borderRadius) : BorderRadius.zero,
+      borderRadius: applyImageRadius
+          ? BorderRadius.circular(borderRadius)
+          : BorderRadius.zero,
       child: imageWidget,
     );
   }
@@ -85,7 +94,8 @@ class TRoundedImage extends StatelessWidget {
         color: overlayColor,
         imageUrl: image!,
         errorWidget: (context, url, error) => const Icon(Icons.error),
-        progressIndicatorBuilder: (context, url, downloadProgress) => TShimmerEffect(width: width, height: height),
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            TShimmerEffect(width: width, height: height),
       );
     } else {
       // Return an empty container if no image is provided
@@ -97,7 +107,8 @@ class TRoundedImage extends StatelessWidget {
   Widget _buildMemoryImage() {
     if (memoryImage != null) {
       // Display image from memory using Image widget
-      return Image(fit: fit, image: MemoryImage(memoryImage!), color: overlayColor);
+      return Image(
+          fit: fit, image: MemoryImage(memoryImage!), color: overlayColor);
     } else {
       // Return an empty container if no image is provided
       return Container();
@@ -120,6 +131,17 @@ class TRoundedImage extends StatelessWidget {
     if (image != null) {
       // Display image from assets using Image widget
       return Image(fit: fit, image: AssetImage(image!), color: overlayColor);
+    } else {
+      // Return an empty container if no image is provided
+      return Container();
+    }
+  }
+
+  // Function to build the lottie image widget
+  Widget _buildLottieImage() {
+    if (image != null) {
+      // Display image from assets using Image widget
+      return Lottie.asset(image!, fit: fit);
     } else {
       // Return an empty container if no image is provided
       return Container();
