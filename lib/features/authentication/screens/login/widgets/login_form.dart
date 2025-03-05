@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../../../routes/routes.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 
@@ -35,7 +37,7 @@ class LoginForm extends StatelessWidget {
                 prefixIcon: Icon(Iconsax.password_check),
                 labelText: TTexts.password,
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: (){},
                   icon: Icon(Iconsax.eye_slash),
                 ),
               ),
@@ -62,7 +64,7 @@ class LoginForm extends StatelessWidget {
                 ),
 
                 ///Forget Password
-                TextButton(onPressed: (){} , child: Text(TTexts.forgetPassword)),
+                TextButton(onPressed: ()=>Get.toNamed(Routes.forgetPassword) , child: Text(TTexts.forgetPassword)),
 
               ],
             ),
