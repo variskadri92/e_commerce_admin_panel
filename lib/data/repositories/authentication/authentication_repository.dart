@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
+import '../../../routes/routes.dart';
+import '../../../utils/exceptions/firebase_auth_exceptions.dart';
+import '../../../utils/exceptions/firebase_exceptions.dart';
+import '../../../utils/exceptions/format_exceptions.dart';
+import '../../../utils/exceptions/platform_exceptions.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -17,15 +22,78 @@ class AuthenticationRepository extends GetxController {
     _auth.setPersistence(Persistence.LOCAL);
   }
 
+  void screenRedirect()async{
+    final user = _auth.currentUser;
+    if(user != null){
+      Get.offAllNamed(Routes.dashboard);
+    }else{
+      Get.offAllNamed(Routes.login);
+    }
+  }
+
 
 
   ///Login
+  Future<UserCredential> loginWithEmailAndPassword(String email, String password)async{
+    try{
+      return await _auth.signInWithEmailAndPassword(email: email ,password: password);
+    }on FirebaseAuthException catch(e){
+      throw TFirebaseAuthException(e.code).message;
+    }on FirebaseException catch(e){
+      throw TFirebaseException(e.code).message;
+    }on FormatException catch(_){
+      throw const TFormatException();
+    }on PlatformException catch(e) {
+      throw TPlatformException(e.code).message;
+    }
+    catch(e){
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
-  ///Register
+
+///Register
+  Future<UserCredential> registerWithEmailAndPassword(String email, String password)async{
+    try{
+      return await _auth.createUserWithEmailAndPassword(email: email ,password: password);
+    }on FirebaseAuthException catch(e){
+      throw TFirebaseAuthException(e.code).message;
+    }on FirebaseException catch(e){
+      throw TFirebaseException(e.code).message;
+    }on FormatException catch(_){
+      throw const TFormatException();
+    }on PlatformException catch(e) {
+      throw TPlatformException(e.code).message;
+    }
+    catch(e){
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
   ///Register user by admin
   ///email verification
   ///forgot password
   ///re auth user
   ///logout user
-  ///delete user
+
+  Future<void> logout()async{
+    try{
+      await _auth.signOut();
+      Get.offAllNamed(Routes.login);
+    }on FirebaseAuthException catch(e){
+      throw TFirebaseAuthException(e.code).message;
+    }on FirebaseException catch(e){
+      throw TFirebaseException(e.code).message;
+    }on FormatException catch(_){
+      throw const TFormatException();
+    }on PlatformException catch(e) {
+      throw TPlatformException(e.code).message;
+    }
+    catch(e){
+      throw 'Something went wrong. Please try again';
+    }
+
+  }
+
+///delete user
 }
