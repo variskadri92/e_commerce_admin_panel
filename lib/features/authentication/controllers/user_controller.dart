@@ -14,12 +14,23 @@ class UserController extends GetxController{
 
   final userRepository = Get.put(UserRepository());
 
+
+  @override
+  void onInit() {
+    fetchUserDetails();
+    super.onInit();
+  }
+
   ///Fetch user details from repository
   Future<UserModel> fetchUserDetails()async{
     try{
+      loading.value = true;
       final user = await userRepository.fetchAdminDetails();
+      this.user.value = user;
+      loading.value = false;
       return user;
     }catch(e){
+      loading.value = false;
       TLoaders.errorSnackBar(title: 'Something went wrong.', message: e.toString());
       return UserModel.empty();
     }

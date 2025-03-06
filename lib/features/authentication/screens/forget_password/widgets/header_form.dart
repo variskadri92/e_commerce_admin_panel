@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../routes/routes.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
+import '../../../controllers/forget_password_controller.dart';
 
 class HeaderAndForm extends StatelessWidget {
   const HeaderAndForm({
@@ -13,6 +14,7 @@ class HeaderAndForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ForgetPasswordController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,7 +40,9 @@ class HeaderAndForm extends StatelessWidget {
 
         ///Form
         Form(
+          key: controller.key,
           child: TextFormField(
+            controller: controller.email,
             decoration: InputDecoration(
               labelText: TTexts.email,
               prefixIcon: Icon(Iconsax.direct_right),
@@ -51,7 +55,7 @@ class HeaderAndForm extends StatelessWidget {
         ///Submit Button
         SizedBox(
           width: double.infinity,
-          child: ElevatedButton(onPressed: ()=> Get.toNamed(Routes.resetPassword,parameters: {'email': 'test@gmail.com'}), child: Text(TTexts.submit)),
+          child: ElevatedButton(onPressed: ()=> controller.sendPasswordResetEmail(), child: Text(TTexts.submit)),
         ),
         SizedBox(
           height: TSizes.spaceBtwSections * 2,

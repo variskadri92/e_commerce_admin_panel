@@ -6,6 +6,7 @@ import '../../../../../routes/routes.dart';
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
+import '../../../controllers/forget_password_controller.dart';
 
 class ResetPasswordWidget extends StatelessWidget {
   const ResetPasswordWidget({
@@ -15,6 +16,7 @@ class ResetPasswordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final email = Get.parameters['email'] ?? '';
+    final controller = ForgetPasswordController.instance;
 
     return Column(
       children: [
@@ -75,11 +77,8 @@ class ResetPasswordWidget extends StatelessWidget {
         SizedBox(
           height: TSizes.spaceBtwItems,
         ),
-        SizedBox(
-          width: double.infinity,
-          child:
-              ElevatedButton(onPressed: () {}, child: Text(TTexts.resendEmail)),
-        ),
+        Obx(()=> SizedBox(width: double.infinity,child: TextButton(onPressed: ()=> controller.isResendButtonOn.value ? controller.resendPasswordResetEmail() : null, child:controller.isResendButtonOn.value? Text('Resend Email') : Text('Wait for ${controller.countdown.value} s')),))
+
       ],
     );
   }

@@ -4,7 +4,7 @@ import 'package:yt_ecommerce_admin_panel/common/widgets/layouts/headers/header.d
 import 'package:yt_ecommerce_admin_panel/common/widgets/layouts/sidebars/sidebar.dart';
 
 class DesktopLayout extends StatelessWidget {
-   DesktopLayout({super.key, this.body});
+   const DesktopLayout({super.key, this.body});
 
   final Widget? body;
 

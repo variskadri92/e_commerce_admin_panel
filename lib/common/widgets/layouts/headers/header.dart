@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart%20%20';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/shimmers/shimmer.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
+import '../../../../features/authentication/controllers/user_controller.dart';
+
 class Header extends StatelessWidget implements PreferredSizeWidget {
-   const Header({super.key, this.scaffoldKey});
-   ///Scaffold key to access  its state
+  const Header({super.key, this.scaffoldKey});
+
+  ///Scaffold key to access  its state
 
   final GlobalKey<ScaffoldState>? scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
+    final controller = UserController.instance;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -21,10 +27,11 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       ),
       padding: EdgeInsets.symmetric(horizontal: TSizes.md, vertical: TSizes.sm),
       child: AppBar(
-
         //Mobile menu
         leading: !TDeviceUtils.isDesktopScreen(context)
-            ? IconButton(onPressed: () => scaffoldKey?.currentState?.openDrawer(), icon: Icon(Iconsax.menu))
+            ? IconButton(
+                onPressed: () => scaffoldKey?.currentState?.openDrawer(),
+                icon: Icon(Iconsax.menu))
             : null,
         title: TDeviceUtils.isDesktopScreen(context)
             ? SizedBox(
@@ -52,23 +59,43 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TRoundedImage(
-                height: 40,
-                width: 40,
-                padding: 2,
-                imageType: ImageType.asset,
-                image: TImages.user,
+              Obx(
+                () => TRoundedImage(
+                  height: 40,
+                  width: 40,
+                  padding: 2,
+                  imageType: controller.user.value.profilePicture.isNotEmpty
+                      ? ImageType.network
+                      : ImageType.asset,
+                  image: controller.user.value.profilePicture.isNotEmpty
+                      ? controller.user.value.profilePicture
+                      : TImages.user,
+                ),
               ),
-              SizedBox(width: TSizes.sm,),
+              SizedBox(
+                width: TSizes.sm,
+              ),
               //NAme and email
-              if(TDeviceUtils.isDesktopScreen(context))
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Yash',style: Theme.of(context).textTheme.titleLarge,),
-                    Text('yashgotrijiya@gmail.com',style: Theme.of(context).textTheme.titleLarge,),
-                  ],
+              if (!TDeviceUtils.isMobileScreen(context))
+                Obx(
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      controller.loading.value
+                          ? TShimmerEffect(width: 50, height: 13)
+                          : Text(
+                              controller.user.value.fullName,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                      controller.loading.value
+                          ? TShimmerEffect(width: 50, height: 13)
+                          : Text(
+                              controller.user.value.email,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                    ],
+                  ),
                 ),
             ],
           )
