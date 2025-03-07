@@ -22,12 +22,12 @@ class DashboardDesktop extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //Heading
+              ///Heading
               Text('Dashboard',
                   style: Theme.of(context).textTheme.headlineLarge),
               SizedBox(height: TSizes.spaceBtwSections),
 
-              //Cards
+              ///Cards
               Row(
                 children: [
                   Expanded(child: DashboardCard(title: 'Sales total',subtitle: '\$120,000',stats: 25,)),
@@ -39,6 +39,33 @@ class DashboardDesktop extends StatelessWidget {
                   Expanded(child: DashboardCard(title: 'Visitors',subtitle: '23,456',stats: 25,)),
                 ],
               ),
+
+              SizedBox(height: TSizes.spaceBtwSections,),
+
+              ///Graphs
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        ///Bar Graph
+                        TRoundedContainer(),
+                        SizedBox(height: TSizes.spaceBtwSections,),
+
+                        ///Orders
+                        TRoundedContainer(),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(width: TSizes.spaceBtwSections,),
+
+
+                  ///Pie Chart
+                  Expanded(child: TRoundedContainer())
+                ],
+              )
             ],
           ),
         ),
