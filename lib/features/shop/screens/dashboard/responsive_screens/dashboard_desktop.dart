@@ -1,12 +1,13 @@
-import 'package:data_table_2/data_table_2.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart%20%20';
-import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/texts/section_heading.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
+import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
+import 'package:yt_ecommerce_admin_panel/utils/helpers/helper_functions.dart';
 
+import '../../../controllers/dashboard_controller.dart';
 import '../widgets/dashboard_card.dart';
 
 class DashboardDesktop extends StatelessWidget {
@@ -30,17 +31,45 @@ class DashboardDesktop extends StatelessWidget {
               ///Cards
               Row(
                 children: [
-                  Expanded(child: DashboardCard(title: 'Sales total',subtitle: '\$120,000',stats: 25,)),
-                  SizedBox(width: TSizes.spaceBtwItems,),
-                  Expanded(child: DashboardCard(title: 'Average Order Value',subtitle: '\$120',stats: 15,)),
-                  SizedBox(width: TSizes.spaceBtwItems,),
-                  Expanded(child: DashboardCard(title: 'Total Orders',subtitle: '26',stats: 44,)),
-                  SizedBox(width: TSizes.spaceBtwItems,),
-                  Expanded(child: DashboardCard(title: 'Visitors',subtitle: '23,456',stats: 25,)),
+                  Expanded(
+                      child: DashboardCard(
+                    title: 'Sales total',
+                    subtitle: '\$120,000',
+                    stats: 25,
+                  )),
+                  SizedBox(
+                    width: TSizes.spaceBtwItems,
+                  ),
+                  Expanded(
+                      child: DashboardCard(
+                    title: 'Average Order Value',
+                    subtitle: '\$120',
+                    stats: 15,
+                  )),
+                  SizedBox(
+                    width: TSizes.spaceBtwItems,
+                  ),
+                  Expanded(
+                      child: DashboardCard(
+                    title: 'Total Orders',
+                    subtitle: '26',
+                    stats: 44,
+                  )),
+                  SizedBox(
+                    width: TSizes.spaceBtwItems,
+                  ),
+                  Expanded(
+                      child: DashboardCard(
+                    title: 'Visitors',
+                    subtitle: '23,456',
+                    stats: 25,
+                  )),
                 ],
               ),
 
-              SizedBox(height: TSizes.spaceBtwSections,),
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
 
               ///Graphs
               Row(
@@ -50,8 +79,68 @@ class DashboardDesktop extends StatelessWidget {
                     child: Column(
                       children: [
                         ///Bar Graph
-                        TRoundedContainer(),
-                        SizedBox(height: TSizes.spaceBtwSections,),
+                        TRoundedContainer(
+                          child: Column(
+                            children: [
+                              Text(
+                                'Weekly Sales',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              SizedBox(
+                                height: TSizes.spaceBtwItems,
+                              ),
+
+                              //Graph
+                              SizedBox(
+                                height: 400,
+                                child: BarChart(BarChartData(
+                                    titlesData: buildFlTitlesData(),
+                                    borderData: FlBorderData(
+                                        show: true,
+                                        border: Border(
+                                            top: BorderSide.none,
+                                            right: BorderSide.none)),
+                                    gridData: FlGridData(
+                                      show: true,
+                                      drawVerticalLine: false,
+                                      drawHorizontalLine: true,
+                                      horizontalInterval: 200,
+                                    ),
+                                    barGroups: controller.weeklySales
+                                        .asMap()
+                                        .entries
+                                        .map((entry) => BarChartGroupData(
+                                                x: entry.key,
+                                                barRods: [
+                                                  BarChartRodData(
+                                                    width: 30,
+                                                    color: TColors.primary,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            TSizes.sm),
+                                                    toY: entry.value,
+                                                  )
+                                                ]))
+                                        .toList(),
+                                    groupsSpace: TSizes.spaceBtwItems,
+                                    barTouchData: BarTouchData(
+                                        touchTooltipData: BarTouchTooltipData(
+                                            getTooltipColor: (_) =>
+                                                TColors.secondary),
+                                        touchCallback:
+                                            TDeviceUtils.isDesktopScreen(
+                                                    context)
+                                                ? (barTouchEvent,
+                                                    barTouchResponse) {}
+                                                : null))),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwSections,
+                        ),
 
                         ///Orders
                         TRoundedContainer(),
@@ -59,8 +148,9 @@ class DashboardDesktop extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(width: TSizes.spaceBtwSections,),
-
+                  SizedBox(
+                    width: TSizes.spaceBtwSections,
+                  ),
 
                   ///Pie Chart
                   Expanded(child: TRoundedContainer())
@@ -72,107 +162,70 @@ class DashboardDesktop extends StatelessWidget {
       ),
     );
   }
-}
 
+  FlTitlesData buildFlTitlesData() {
+    return FlTitlesData(
+      show: true,
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, meta) {
+              //Map index to the desired day of week
+              final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-class MyData extends DataTableSource {
-  final controller = Get.put(DashboardController());
+              //Calculate the index and ensure it wraps around for the correct day
+              final index = value.toInt() % days.length;
 
-  @override
-  DataRow? getRow(int index) {
-    final data = controller.filteredDataList[index];
-    return DataRow2(
-        onTap: () {},
-        selected: controller.selectedRows[index],
-        onSelectChanged: (value) =>
-            controller.selectedRows[index] = value ?? false,
-        cells: [
-          DataCell(Text(data['Column1'] ?? '')),
-          DataCell(Text(data['Column2'] ?? '')),
-          DataCell(Text(data['Column3'] ?? '')),
-          DataCell(Text(data['Column4'] ?? '')),
-        ]);
-  }
+              //Get the day corresponding to the calculated index
+              final day = days[index];
 
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  // TODO: implement rowCount
-  int get rowCount => controller.filteredDataList.length;
-
-  @override
-  // TODO: implement selectedRowCount
-  int get selectedRowCount => 0;
-}
-
-class DashboardController extends GetxController {
-  var filteredDataList = <Map<String, String>>[].obs;
-  var dataList = <Map<String, String>>[].obs;
-  RxList<bool> selectedRows = <bool>[].obs; // Track selected rows
-  RxInt sortColumnIndex = 1.obs; // Track sorted column index
-  RxBool sortAscending = true.obs; // Track sort order
-  final searchTextController = TextEditingController();
-
-  @override
-  void onInit() {
-    super.onInit();
-    getData();
-  }
-
-  void sortById(int sortColumnIndex, bool ascending) {
-    sortAscending.value = ascending;
-    filteredDataList.sort((a, b) {
-      // if (ascending) {
-      //   return filteredDataList[0]['Column1']
-      //       .toString()
-      //       .toLowerCase()
-      //       .compareTo(filteredDataList[0]['Column1'].toString().toLowerCase());
-      // } else {
-      //   return filteredDataList[0]['Column1']
-      //       .toString()
-      //       .toLowerCase()
-      //       .compareTo(filteredDataList[0]['Column1'].toString().toLowerCase());
-      // }
-
-      if (ascending) {
-        return a['Column1']!
-            .toLowerCase()
-            .compareTo(b['Column1']!.toLowerCase());
-      } else {
-        return b['Column1']!
-            .toLowerCase()
-            .compareTo(a['Column1']!.toLowerCase());
-      }
-    });
-    this.sortColumnIndex.value = sortColumnIndex;
-  }
-
-  void searchQuery(String query) {
-    filteredDataList.assignAll(dataList
-        .where((item) => item['Column1']!.contains(query.toLowerCase())));
-  }
-
-  void getData() {
-    selectedRows.assignAll(
-        List.generate(36, (index) => false)); // Initialize selectedRows
-
-    dataList.addAll(List.generate(
-        36,
-        (index) => {
-              'Column1': 'Row ${index + 1}-1',
-              'Column2': 'Row ${index + 1}-2',
-              'Column3': 'Row ${index + 1}-3',
-              'Column4': 'Row ${index + 1}-4',
-            }));
-
-    filteredDataList.addAll(List.generate(
-        36,
-        (index) => {
-              'Column1': 'Row ${index + 1}-1',
-              'Column2': 'Row ${index + 1}-2',
-              'Column3': 'Row ${index + 1}-3',
-              'Column4': 'Row ${index + 1}-4',
-            }));
+              return SideTitleWidget(
+                meta: meta,
+                space: 0,
+                child: Text(day),
+              ); //axisSide bottom depreciated
+            }),
+      ),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          interval: 200,
+          reservedSize: 50,
+        ),
+      ),
+      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    );
   }
 }
+
+// class MyData extends DataTableSource {
+//   final controller = Get.put(DashboardController());
+//
+//   @override
+//   DataRow? getRow(int index) {
+//     final data = controller.filteredDataList[index];
+//     return DataRow2(
+//         onTap: () {},
+//         selected: controller.selectedRows[index],
+//         onSelectChanged: (value) =>
+//             controller.selectedRows[index] = value ?? false,
+//         cells: [
+//           DataCell(Text(data['Column1'] ?? '')),
+//           DataCell(Text(data['Column2'] ?? '')),
+//           DataCell(Text(data['Column3'] ?? '')),
+//           DataCell(Text(data['Column4'] ?? '')),
+//         ]);
+//   }
+//
+//   @override
+//   bool get isRowCountApproximate => false;
+//
+//   @override
+//   // TODO: implement rowCount
+//   int get rowCount => controller.filteredDataList.length;
+//
+//   @override
+//   // TODO: implement selectedRowCount
+//   int get selectedRowCount => 0;
+// }
