@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/order_status_graph.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import '../widgets/dashboard_card.dart';
@@ -66,6 +67,7 @@ class DashboardDesktop extends StatelessWidget {
 
               ///Graphs
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 2,
@@ -88,7 +90,7 @@ class DashboardDesktop extends StatelessWidget {
                   ),
 
                   ///Pie Chart
-                  Expanded(child: TRoundedContainer())
+                  Expanded(child: OrderStatusPieChart())
                 ],
               )
             ],

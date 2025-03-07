@@ -28,7 +28,7 @@ class WeeklySalesGraph extends StatelessWidget {
 
           //Graph
           SizedBox(
-            height: 400,
+            height: 415,
             child: BarChart(BarChartData(
                 titlesData: buildFlTitlesData(),
                 borderData: FlBorderData(
