@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../widgets/dashboard_card.dart';
+import '../widgets/order_status_graph.dart';
+import '../widgets/weekly_sales.dart';
 
 class DashboardTablet extends StatelessWidget {
   const DashboardTablet({super.key});
@@ -37,6 +40,24 @@ class DashboardTablet extends StatelessWidget {
                   Expanded(child: DashboardCard(title: 'Visitors',subtitle: '23,456',stats: 25,)),
                 ],
               ),
+
+              SizedBox(height: TSizes.spaceBtwSections,),
+
+              ///Bar Graph
+              WeeklySalesGraph(),
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+
+              ///Orders
+              TRoundedContainer(),
+
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+
+              ///Pie Chart
+              OrderStatusPieChart(),
             ],
           ),
         ),
