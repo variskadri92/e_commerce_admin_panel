@@ -57,6 +57,7 @@ class OrderStatusPieChart extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: DataTable(
+              columnSpacing: 10,
                 columns: [
                   DataColumn(label: Text('Status')),
                   DataColumn(label: Text('Orders')),
@@ -67,7 +68,9 @@ class OrderStatusPieChart extends StatelessWidget {
                   final int count = entry.value;
                   final totalAmount = controller.totalAmounts[status] ?? 0.0;
 
-                  return DataRow(cells: [
+                  return DataRow(
+
+                      cells: [
                     DataCell(
                       Row(
                         children: [
