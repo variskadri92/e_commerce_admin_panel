@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
+import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
@@ -27,6 +28,12 @@ class AppRoutes {
     ),GetPage(
       name: Routes.dashboard,
       page: () => const DashboardScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+    GetPage(
+      name: Routes.media,
+      page: () => const MediaScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),

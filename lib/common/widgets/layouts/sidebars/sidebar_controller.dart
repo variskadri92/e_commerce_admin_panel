@@ -4,7 +4,7 @@ import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
 class SidebarController extends GetxController{
   static SidebarController get instance => Get.find();
-  final activeItem = Routes.login.obs;
+  final activeItem = Routes.dashboard.obs;
   final hoverItem = ''.obs;
 
 

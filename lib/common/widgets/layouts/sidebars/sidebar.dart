@@ -33,10 +33,10 @@ class Sidebar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Menu',style: Theme.of(context).textTheme.labelMedium!.apply(color: Colors.grey),),
+                    Text('Menu',style: Theme.of(context).textTheme.bodySmall!.apply(color: Colors.grey,letterSpacingDelta: 1.2),),
                     //menu items
-                    MenuItems(route: Routes.login, itemName: 'DashBoard', icon: Iconsax.status,),
-                    //MenuItems(route: Routes.secondScreen, itemName: 'Media', icon: Iconsax.status,),
+                    MenuItems(route: Routes.dashboard, itemName: 'DashBoard', icon: Iconsax.status,),
+                    MenuItems(route: Routes.media, itemName: 'Media', icon: Iconsax.image,),
                     //MenuItems(route: Routes.responsiveDesignScreen, itemName: 'Product', icon: Iconsax.status,),
                   ],
                 ),
