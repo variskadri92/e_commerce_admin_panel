@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
+import '../../../controllers/media_controller.dart';
 import '../widgets/media_content.dart';
 import '../widgets/media_uploader.dart';
 
@@ -12,6 +14,7 @@ class MediaDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(MediaController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -33,7 +36,7 @@ class MediaDesktop extends StatelessWidget {
                   SizedBox(
                     width: TSizes.buttonWidth * 1.5,
                       child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: ()=> controller.showImagesUploaderSection.value = !controller.showImagesUploaderSection.value,
                           icon: Icon(Iconsax.cloud_add),
                           label: Text('Upload Images')))
                 ],
