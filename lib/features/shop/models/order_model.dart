@@ -1,30 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 
+import '../../../utils/helpers/helper_functions.dart';
+
 class OrderModel {
-  final String? id;
+  final String id;
+  final String userId;
   final OrderStatus status;
   final double totalAmount;
   final DateTime orderDate;
   final DateTime? deliveryDate;
+  final String paymentMethod;
 
   OrderModel({
-    this.id,
+    required this.id,
+    this.userId = '',
     required this.status,
     required this.totalAmount,
     required this.orderDate,
+    this.paymentMethod = 'googlePay',
     this.deliveryDate,
   });
 
-  static OrderModel empty() => OrderModel(status: OrderStatus.pending,totalAmount: 0.0, orderDate: DateTime.now());
+  String get formattedOrderDate => THelperFunctions.getFormattedDate(orderDate);
+
+  String get formattedDeliveryDate => deliveryDate != null
+      ? THelperFunctions.getFormattedDate(deliveryDate!)
+      : '';
+
+  String get orderStatusText => status == OrderStatus.delivered
+      ? 'Delivered'
+      : status == OrderStatus.shipped
+          ? 'Shipment on the way'
+          : 'Processing';
+
+  static OrderModel empty() => OrderModel(
+      status: OrderStatus.pending,
+      totalAmount: 0.0,
+      orderDate: DateTime.now(),
+      id: '');
 
   ///Convert model to JSon structure for storing data in Firebase
   Map<String, dynamic> toJson() {
     return {
-      'Status': status.name.toString(),
-      'TotalAmount': totalAmount,
-      'OrderDate': orderDate,
-      'DeliveryDate': deliveryDate,
+      'id' : id,
+      'userId': userId,
+      'status': status.toString(),
+      'totalAmount': totalAmount,
+      'orderDate': orderDate,
+      'deliveryDate': deliveryDate,
     };
   }
 
@@ -34,9 +58,10 @@ class OrderModel {
     if (document.data() != null) {
       final data = document.data()!;
       return OrderModel(
-        id: document.id, status: OrderStatus.pending, totalAmount: 0.0, orderDate: DateTime.now(),
-
-
+        id: document.id,
+        status: OrderStatus.pending,
+        totalAmount: 0.0,
+        orderDate: DateTime.now(),
       );
     } else {
       return OrderModel.empty();

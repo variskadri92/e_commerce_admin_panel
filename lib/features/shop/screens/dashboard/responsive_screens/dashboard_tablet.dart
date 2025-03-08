@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/sizes.dart';
+import '../table/dashboard_order_table.dart';
 import '../widgets/dashboard_card.dart';
 import '../widgets/order_status_graph.dart';
 import '../widgets/weekly_sales.dart';
@@ -50,7 +51,16 @@ class DashboardTablet extends StatelessWidget {
               ),
 
               ///Orders
-              TRoundedContainer(),
+              TRoundedContainer(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Recent Orders', style: Theme.of(context).textTheme.headlineSmall,),
+                    SizedBox(height: TSizes.spaceBtwSections,),
+                    DashboardOrderTable(),
+                  ],
+                ),
+              ),
 
               SizedBox(
                 height: TSizes.spaceBtwSections,

@@ -3,6 +3,7 @@ import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_conta
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/order_status_graph.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
+import '../table/dashboard_order_table.dart';
 import '../widgets/dashboard_card.dart';
 
 class DashboardDesktop extends StatelessWidget {
@@ -80,7 +81,16 @@ class DashboardDesktop extends StatelessWidget {
                         ),
 
                         ///Orders
-                        TRoundedContainer(),
+                        TRoundedContainer(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Recent Orders', style: Theme.of(context).textTheme.headlineSmall,),
+                              SizedBox(height: TSizes.spaceBtwSections,),
+                              DashboardOrderTable(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
