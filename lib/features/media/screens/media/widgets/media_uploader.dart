@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart%20%20';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/widgets/media_folder_dropdown.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
@@ -78,6 +79,7 @@ class MediaUploader extends StatelessWidget {
         ///Locally Selected Images
         TRoundedContainer(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,12 +119,74 @@ class MediaUploader extends StatelessWidget {
                               child: ElevatedButton(
                                   onPressed: () {}, child: Text('Upload')))
                     ],
-                  )
+                  ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+              Wrap(
+                alignment: WrapAlignment.start,
+                spacing: TSizes.spaceBtwItems / 2,
+                runSpacing: TSizes.spaceBtwItems / 2,
+                children: [
+                  TRoundedImage(
+                    height: 90,
+                    width: 90,
+                    padding: TSizes.sm,
+                    //imageType: ImageType.memory,
+                    //memoryImage: element.localImageToDisplay,
+                    imageType: ImageType.asset,
+                    image: TImages.lightAppLogo,
+                    backgroundColor: TColors.black,
+                  ),
+                  TRoundedImage(
+                    height: 90,
+                    width: 90,
+                    padding: TSizes.sm,
+                    //imageType: ImageType.memory,
+                    //memoryImage: element.localImageToDisplay,
+                    imageType: ImageType.asset,
+                    image: TImages.lightAppLogo,
+                    backgroundColor: TColors.black,
+                  ),
+                  TRoundedImage(
+                    height: 90,
+                    width: 90,
+                    padding: TSizes.sm,
+                    //imageType: ImageType.memory,
+                    //memoryImage: element.localImageToDisplay,
+                    imageType: ImageType.asset,
+                    image: TImages.lightAppLogo,
+                    backgroundColor: TColors.black,
+                  ),
+                  TRoundedImage(
+                    height: 90,
+                    width: 90,
+                    padding: TSizes.sm,
+                    //imageType: ImageType.memory,
+                    //memoryImage: element.localImageToDisplay,
+                    imageType: ImageType.asset,
+                    image: TImages.lightAppLogo,
+                    backgroundColor: TColors.black,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+              TDeviceUtils.isMobileScreen(context)
+                  ? SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          onPressed: () {}, child: Text('Upload')))
+                  : SizedBox.shrink(),
             ],
           ),
-        )
+        ),
+        SizedBox(
+          height: TSizes.spaceBtwSections,
+        ),
       ],
     );
   }
