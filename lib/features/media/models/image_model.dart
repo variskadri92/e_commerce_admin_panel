@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/utils/formatters/formatter.dart';
 
@@ -19,7 +20,7 @@ class ImageModel {
   final String? contentType;
 
   //Not Mapped
-  final File? file;
+  final DropzoneFileInterface? file;
   RxBool isSelected = false.obs;
   final Uint8List? localImageToDisplay;
 

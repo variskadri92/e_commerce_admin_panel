@@ -64,6 +64,11 @@ class MediaUploader extends StatelessWidget {
                                     file: file,
                                     localImageToDisplay:
                                         Uint8List.fromList(bytes));
+                                controller.selectedImagesToUpload.add(image);
+                              }else if(file is String){
+                                print('Dropped file: $file');
+                              }else{
+                                print('Zone unknown file: ${file.runtimeType}');
                               }
                             },
                           ),
