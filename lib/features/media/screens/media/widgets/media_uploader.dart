@@ -65,9 +65,9 @@ class MediaUploader extends StatelessWidget {
                                     localImageToDisplay:
                                         Uint8List.fromList(bytes));
                                 controller.selectedImagesToUpload.add(image);
-                              }else if(file is String){
+                              } else if (file is String) {
                                 print('Dropped file: $file');
-                              }else{
+                              } else {
                                 print('Zone unknown file: ${file.runtimeType}');
                               }
                             },
@@ -88,7 +88,8 @@ class MediaUploader extends StatelessWidget {
                                 height: TSizes.spaceBtwItems,
                               ),
                               OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      controller.selectLocalImages(),
                                   child: Text('Select Images'))
                             ],
                           )
@@ -103,116 +104,88 @@ class MediaUploader extends StatelessWidget {
                 ),
 
                 ///Locally Selected Images
-                TRoundedContainer(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ///Folders Dropdown
-                          Row(
-                            children: [
-                              //Folders Dropdown
-                              Text(
-                                'Select Folder',
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              ),
-                              SizedBox(
-                                width: TSizes.spaceBtwItems,
-                              ),
-                              MediaFolderDropdown(
-                                onChanged: (MediaCategory? newValue) {
-                                  if (newValue != null) {
-                                    controller.selectedPath.value = newValue;
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                if (controller.selectedImagesToUpload.isNotEmpty)
+                  TRoundedContainer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ///Folders Dropdown
+                            Row(
+                              children: [
+                                //Folders Dropdown
+                                Text(
+                                  'Select Folder',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                SizedBox(
+                                  width: TSizes.spaceBtwItems,
+                                ),
+                                MediaFolderDropdown(
+                                  onChanged: (MediaCategory? newValue) {
+                                    if (newValue != null) {
+                                      controller.selectedPath.value = newValue;
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
 
-                          ///Upload & Remove button
-                          Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {}, child: Text('Remove All')),
-                              SizedBox(
-                                width: TSizes.spaceBtwItems,
-                              ),
-                              TDeviceUtils.isMobileScreen(context)
-                                  ? SizedBox.shrink()
-                                  : SizedBox(
-                                      width: TSizes.buttonWidth,
-                                      child: ElevatedButton(
-                                          onPressed: () {},
-                                          child: Text('Upload')))
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: TSizes.spaceBtwSections,
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.start,
-                        spacing: TSizes.spaceBtwItems / 2,
-                        runSpacing: TSizes.spaceBtwItems / 2,
-                        children: [
-                          TRoundedImage(
-                            height: 90,
-                            width: 90,
-                            padding: TSizes.sm,
-                            //imageType: ImageType.memory,
-                            //memoryImage: element.localImageToDisplay,
-                            imageType: ImageType.asset,
-                            image: TImages.lightAppLogo,
-                            backgroundColor: TColors.black,
-                          ),
-                          TRoundedImage(
-                            height: 90,
-                            width: 90,
-                            padding: TSizes.sm,
-                            //imageType: ImageType.memory,
-                            //memoryImage: element.localImageToDisplay,
-                            imageType: ImageType.asset,
-                            image: TImages.lightAppLogo,
-                            backgroundColor: TColors.black,
-                          ),
-                          TRoundedImage(
-                            height: 90,
-                            width: 90,
-                            padding: TSizes.sm,
-                            //imageType: ImageType.memory,
-                            //memoryImage: element.localImageToDisplay,
-                            imageType: ImageType.asset,
-                            image: TImages.lightAppLogo,
-                            backgroundColor: TColors.black,
-                          ),
-                          TRoundedImage(
-                            height: 90,
-                            width: 90,
-                            padding: TSizes.sm,
-                            //imageType: ImageType.memory,
-                            //memoryImage: element.localImageToDisplay,
-                            imageType: ImageType.asset,
-                            image: TImages.lightAppLogo,
-                            backgroundColor: TColors.black,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: TSizes.spaceBtwSections,
-                      ),
-                      TDeviceUtils.isMobileScreen(context)
-                          ? SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                  onPressed: () {}, child: Text('Upload')))
-                          : SizedBox.shrink(),
-                    ],
+                            ///Upload & Remove button
+                            Row(
+                              children: [
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text('Remove All')),
+                                SizedBox(
+                                  width: TSizes.spaceBtwItems,
+                                ),
+                                TDeviceUtils.isMobileScreen(context)
+                                    ? SizedBox.shrink()
+                                    : SizedBox(
+                                        width: TSizes.buttonWidth,
+                                        child: ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text('Upload')))
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwSections,
+                        ),
+                        Wrap(
+                          alignment: WrapAlignment.start,
+                          spacing: TSizes.spaceBtwItems / 2,
+                          runSpacing: TSizes.spaceBtwItems / 2,
+                          children: controller.selectedImagesToUpload
+                              .where(
+                                  (image) => image.localImageToDisplay != null)
+                              .map((element) => TRoundedImage(
+                                    height: 90,
+                                    width: 90,
+                                    padding: TSizes.sm,
+                                    imageType: ImageType.memory,
+                                    memoryImage: element.localImageToDisplay,
+                                    backgroundColor: TColors.primaryBackground,
+                                  ))
+                              .toList(),
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwSections,
+                        ),
+                        TDeviceUtils.isMobileScreen(context)
+                            ? SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                    onPressed: () {}, child: Text('Upload')))
+                            : SizedBox.shrink(),
+                      ],
+                    ),
                   ),
-                ),
                 SizedBox(
                   height: TSizes.spaceBtwSections,
                 ),
