@@ -134,6 +134,7 @@ class MediaUploader extends StatelessWidget {
                               ],
                             ),
 
+                            
                             ///Upload & Remove button
                             Row(
                               children: [
@@ -169,7 +170,7 @@ class MediaUploader extends StatelessWidget {
                                     width: 90,
                                     padding: TSizes.sm,
                                     imageType: ImageType.memory,
-                                    memoryImage: element.localImageToDisplay,
+                                    memoryImage: element.localImag eToDisplay,
                                     backgroundColor: TColors.primaryBackground,
                                   ))
                               .toList(),
