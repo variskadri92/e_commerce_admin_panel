@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart%20%20';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/controllers/media_controller.dart';
+import 'package:yt_ecommerce_admin_panel/features/media/models/image_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/widgets/media_folder_dropdown.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
@@ -10,6 +13,7 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MediaUploader extends StatelessWidget {
   const MediaUploader({super.key});
@@ -44,10 +48,23 @@ class MediaUploader extends StatelessWidget {
                             onLeave: () => print('Leaving'),
                             onCreated: (ctrl) =>
                                 controller.dropzoneController = ctrl,
-                            onDrop: (file) => print('Dropped file: $file'),
                             onDropInvalid: (ev) => print('Invalid file: $ev'),
-                            onDropMultiple: (ev) async {
+                            onDropFiles: (ev) async {
                               print('Dropped multiple files : $ev');
+                            },
+                            onDropFile: (file) async {
+                              if (file is html.File) {
+                                final bytes = await controller
+                                    .dropzoneController
+                                    .getFileData(file);
+                                final image = ImageModel(
+                                    url: '',
+                                    folder: '',
+                                    filename: file.name,
+                                    file: file,
+                                    localImageToDisplay:
+                                        Uint8List.fromList(bytes));
+                              }
                             },
                           ),
                           Column(
