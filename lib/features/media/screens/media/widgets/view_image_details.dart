@@ -4,6 +4,7 @@ import 'package:get/get.dart%20%20';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
+import 'package:yt_ecommerce_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
@@ -118,7 +119,7 @@ class ViewImagePopup extends StatelessWidget {
                   SizedBox(
                     width: 300,
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: ()=> MediaController.instance.removeCloudImageConfirmation(image),
                         child: Text(
                           'Delete Image',
                           style: TextStyle(color: Colors.red),
