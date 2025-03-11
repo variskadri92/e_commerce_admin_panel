@@ -53,23 +53,20 @@ class MediaUploader extends StatelessWidget {
                               print('Dropped multiple files : $ev');
                             },
                             onDropFile: (file) async {
-                              if (file is html.File) {
-                                final bytes = await controller
-                                    .dropzoneController
-                                    .getFileData(file);
-                                final image = ImageModel(
-                                    url: '',
-                                    folder: '',
-                                    filename: file.name,
-                                    file: file,
-                                    localImageToDisplay:
-                                        Uint8List.fromList(bytes));
-                                controller.selectedImagesToUpload.add(image);
-                              } else if (file is String) {
-                                print('Dropped file: $file');
-                              } else {
-                                print('Zone unknown file: ${file.runtimeType}');
-                              }
+                              final bytes = await controller
+                                  .dropzoneController
+                                  .getFileData(file);
+                              final mimeType = await controller.dropzoneController.getFileMIME(file);
+                              final filename = await controller.dropzoneController.getFilename(file);
+                              print(bytes);
+                              final image = ImageModel(
+                                  url: '',
+                                  folder: '',
+                                  filename: filename,
+                                  contentType: mimeType,
+                                  localImageToDisplay:
+                                  Uint8List.fromList(bytes));
+                              controller.selectedImagesToUpload.add(image);
                             },
                           ),
                           Column(
@@ -139,7 +136,7 @@ class MediaUploader extends StatelessWidget {
                             Row(
                               children: [
                                 TextButton(
-                                    onPressed: () {},
+                                    onPressed: ()=> controller.selectedImagesToUpload.clear(),
                                     child: Text('Remove All')),
                                 SizedBox(
                                   width: TSizes.spaceBtwItems,
@@ -170,7 +167,7 @@ class MediaUploader extends StatelessWidget {
                                     width: 90,
                                     padding: TSizes.sm,
                                     imageType: ImageType.memory,
-                                    memoryImage: element.localImag eToDisplay,
+                                    memoryImage: element.localImageToDisplay,
                                     backgroundColor: TColors.primaryBackground,
                                   ))
                               .toList(),

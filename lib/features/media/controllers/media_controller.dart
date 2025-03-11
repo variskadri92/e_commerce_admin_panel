@@ -17,22 +17,29 @@ class MediaController extends GetxController {
   final RxList<ImageModel> selectedImagesToUpload = <ImageModel>[].obs;
 
   Future<void> selectLocalImages()async{
+    print('Enter');
    final files =  await dropzoneController.pickFiles(multiple: true,mime: ['image/jpeg','image/png']);
+   print('Files selected ${files.length}' );
 
    if(files.isNotEmpty){
+     print('Files selected ${files.length}' );
      for(var file in files){
-       if (file is html.File) {
-         final bytes = await dropzoneController
-             .getFileData(file);
-         final image = ImageModel(
-             url: '',
-             folder: '',
-             filename: file.name,
-             file: file,
-             localImageToDisplay:
-             Uint8List.fromList(bytes));
-         selectedImagesToUpload.add(image);
-       }
+       print('Files selected ${files.length}' );
+
+       final bytes = await dropzoneController
+           .getFileData(file);
+
+       // Extract file metadata
+       final filename = await dropzoneController.getFilename(file);
+       final mimeType = await dropzoneController.getFileMIME(file);
+       final image = ImageModel(
+           url: '',
+           folder: '',
+           filename: filename,
+           contentType: mimeType,
+           localImageToDisplay:
+           Uint8List.fromList(bytes));
+       selectedImagesToUpload.add(image);
      }
    }
   }
