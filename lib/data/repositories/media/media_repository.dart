@@ -90,4 +90,29 @@ class MediaRepository extends GetxController {
       throw e.toString();
     }
   }
+
+  ///Fetch more images from Firestore based on media category and load count
+  Future<List<ImageModel>> loadMoreImagesFromDatabase(
+      MediaCategory mediaCategory,
+      int loadCount,
+      DateTime lastFetchedDate) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection("Images")
+          .where("mediaCategory", isEqualTo: mediaCategory.name.toString())
+          .orderBy("createdAt", descending: true)
+          .startAfter([lastFetchedDate])
+          .limit(loadCount)
+          .get();
+      return querySnapshot.docs.map((e) => ImageModel.fromSnapshot(e)).toList();
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } on SocketException catch (e) {
+      throw e.message;
+    } on PlatformException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 }

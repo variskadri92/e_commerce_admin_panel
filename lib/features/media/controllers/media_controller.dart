@@ -17,6 +17,11 @@ import 'package:yt_ecommerce_admin_panel/utils/popups/loaders.dart';
 class MediaController extends GetxController {
   static MediaController get instance => Get.find();
 
+  final RxBool loading = false.obs;
+
+  final int initialLoadCount = 20;
+  final int loadMoreCount = 25;
+
   late DropzoneViewController dropzoneController;
   final RxBool showImagesUploaderSection = false.obs;
   final Rx<MediaCategory> selectedPath = MediaCategory.folders.obs;
@@ -31,6 +36,77 @@ class MediaController extends GetxController {
   final RxList<ImageModel> allUserImages = <ImageModel>[].obs;
 
   final MediaRepository mediaRepository = MediaRepository();
+
+  //Get Images
+  void getMediaImages() async {
+    try {
+      loading.value = true;
+      RxList<ImageModel> targetList = <ImageModel>[].obs;
+
+      if (selectedPath.value == MediaCategory.banners &&
+          allBannerImages.isNotEmpty) {
+        targetList = allBannerImages;
+      } else if (selectedPath.value == MediaCategory.brands &&
+          allBrandImages.isNotEmpty) {
+        targetList = allBrandImages;
+      } else if (selectedPath.value == MediaCategory.categories &&
+          allCategoryImages.isNotEmpty) {
+        targetList = allCategoryImages;
+      } else if (selectedPath.value == MediaCategory.products &&
+          allProductImages.isNotEmpty) {
+        targetList = allProductImages;
+      } else if (selectedPath.value == MediaCategory.users &&
+          allUserImages.isNotEmpty) {
+        targetList = allUserImages;
+      }
+
+      final images = await mediaRepository.fetchImagesFromDatabase(
+          selectedPath.value, initialLoadCount);
+      targetList.assignAll(images);
+
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(
+          title: 'Unable to fetch images', message: e.toString());
+    }
+  }
+
+  void loadMoreMediaImages() async {
+    try {
+      loading.value = true;
+      RxList<ImageModel> targetList = <ImageModel>[].obs;
+
+      if (selectedPath.value == MediaCategory.banners &&
+          allBannerImages.isNotEmpty) {
+        targetList = allBannerImages;
+      } else if (selectedPath.value == MediaCategory.brands &&
+          allBrandImages.isNotEmpty) {
+        targetList = allBrandImages;
+      } else if (selectedPath.value == MediaCategory.categories &&
+          allCategoryImages.isNotEmpty) {
+        targetList = allCategoryImages;
+      } else if (selectedPath.value == MediaCategory.products &&
+          allProductImages.isNotEmpty) {
+        targetList = allProductImages;
+      } else if (selectedPath.value == MediaCategory.users &&
+          allUserImages.isNotEmpty) {
+        targetList = allUserImages;
+      }
+
+      final images = await mediaRepository.loadMoreImagesFromDatabase(
+          selectedPath.value,
+          initialLoadCount,
+          targetList.last.createdAt ?? DateTime.now());
+      targetList.addAll(images);
+
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(
+          title: 'Unable to fetch images', message: e.toString());
+    }
+  }
 
   Future<void> selectLocalImages() async {
     print('Enter');
