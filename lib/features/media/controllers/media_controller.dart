@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart%20%20';
@@ -153,21 +154,89 @@ class MediaController extends GetxController {
     );
   }
 
+  // Future<void> uploadImages() async {
+  //   try {
+  //     //Remove confirmation box
+  //     Get.back();
+  //
+  //     //Loader
+  //     uploadImagesLoader();
+  //
+  //     //Get the selected category
+  //     MediaCategory selectedCategory = selectedPath.value;
+  //
+  //     //Get the list of update
+  //     RxList<ImageModel> targetList;
+  //
+  //     // Check the selected category and update the corresponding list
+  //     switch (selectedCategory) {
+  //       case MediaCategory.banners:
+  //         targetList = allBannerImages;
+  //         break;
+  //       case MediaCategory.brands:
+  //         targetList = allBrandImages;
+  //         break;
+  //       case MediaCategory.categories:
+  //         targetList = allCategoryImages;
+  //         break;
+  //       case MediaCategory.products:
+  //         targetList = allProductImages;
+  //         break;
+  //       case MediaCategory.users:
+  //         targetList = allUserImages;
+  //         break;
+  //       default:
+  //         return;
+  //     }
+  //
+  //     // Upload and add images to the target list
+  //     // Using a reverse loop to avoid 'Concurrent modification during iteration' error
+  //     for (int i = selectedImagesToUpload.length - 1; i >= 0; i--) {
+  //       var selectedImage = selectedImagesToUpload[i];
+  //       // Upload Image to the Storage
+  //       final ImageModel uploadedImage =
+  //           await mediaRepository.uploadImageFileInStorage(
+  //         fileData: selectedImage.localImageToDisplay!,
+  //         mimeType: selectedImage.contentType!,
+  //         path: getSelectedPath(),
+  //         imageName: selectedImage.filename,
+  //       );
+  //
+  //       // Upload Image to the Firestore
+  //       uploadedImage.mediaCategory = selectedCategory.name;
+  //       final id =
+  //           await mediaRepository.uploadImageFileInDatabase(uploadedImage);
+  //       uploadedImage.id = id;
+  //       selectedImagesToUpload.removeAt(i);
+  //       targetList.add(uploadedImage);
+  //     }
+  //     // Stop Loader after successful upload
+  //     TFullScreenLoader.stopLoading();
+  //   } catch (e) {
+  //     TFullScreenLoader.stopLoading();
+  //
+  //     TLoaders.warningSnackBar(
+  //         title: 'Error uploading images', message: e.toString());
+  //   }
+  // }
+
   Future<void> uploadImages() async {
     try {
-      //Remove confirmation box
+      // Close confirmation dialog
       Get.back();
 
-      //Loader
+      // Show loader
       uploadImagesLoader();
 
-      //Get the selected category
+      // Get the selected category
       MediaCategory selectedCategory = selectedPath.value;
+      if (selectedCategory == MediaCategory.folders) {
+        TLoaders.warningSnackBar(title: 'Select Folder', message: 'Please select a folder');
+        return;
+      }
 
-      //Get the list of update
+      // Get corresponding image list
       RxList<ImageModel> targetList;
-
-      // Check the selected category and update the corresponding list
       switch (selectedCategory) {
         case MediaCategory.banners:
           targetList = allBannerImages;
@@ -188,34 +257,45 @@ class MediaController extends GetxController {
           return;
       }
 
-      // Upload and add images to the target list
-      // Using a reverse loop to avoid 'Concurrent modification during iteration' error
-      for (int i = selectedImagesToUpload.length - 1; i >= 0; i--) {
-        var selectedImage = selectedImagesToUpload[i];
-        // Upload Image to the Storage
-        final ImageModel uploadedImage =
-            await mediaRepository.uploadImageFileInStorage(
+      // Firebase storage path
+      String path = getSelectedPath();
+
+      // Upload all images **in parallel**
+      List<Future<ImageModel>> uploadTasks = selectedImagesToUpload.map((selectedImage) async {
+        return await mediaRepository.uploadImageFileInStorage(
           fileData: selectedImage.localImageToDisplay!,
           mimeType: selectedImage.contentType!,
-          path: getSelectedPath(),
+          path: path,
           imageName: selectedImage.filename,
         );
+      }).toList();
 
-        // Upload Image to the Firestore
-        uploadedImage.mediaCategory = selectedCategory.name;
-        final id =
-            await mediaRepository.uploadImageFileInDatabase(uploadedImage);
-        uploadedImage.id = id;
-        selectedImagesToUpload.removeAt(i);
-        targetList.add(uploadedImage);
+      // Wait for all uploads to complete
+      List<ImageModel> uploadedImages = await Future.wait(uploadTasks);
+
+      // Add media category to each uploaded image
+      for (var img in uploadedImages) {
+        img.mediaCategory = selectedCategory.name;
       }
-      // Stop Loader after successful upload
+
+      // **Batch write to Firestore**
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      for (var uploadedImage in uploadedImages) {
+        DocumentReference docRef = FirebaseFirestore.instance.collection("Images").doc();
+        batch.set(docRef, uploadedImage.toJson());
+      }
+      await batch.commit();
+
+      // Update UI list
+      targetList.addAll(uploadedImages);
+      selectedImagesToUpload.clear();
+
+      // Stop loader
       TFullScreenLoader.stopLoading();
+      TLoaders.successSnackBar(title: 'Upload Complete', message: 'All images uploaded successfully!');
     } catch (e) {
       TFullScreenLoader.stopLoading();
-
-      TLoaders.warningSnackBar(
-          title: 'Error uploading images', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Error Uploading', message: e.toString());
     }
   }
 

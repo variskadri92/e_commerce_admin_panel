@@ -179,7 +179,7 @@ class MediaUploader extends StatelessWidget {
                             ? SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
-                                    onPressed: () {}, child: Text('Upload')))
+                                    onPressed: () =>controller.uploadImageConfirmation(), child: Text('Upload')))
                             : SizedBox.shrink(),
                       ],
                     ),
