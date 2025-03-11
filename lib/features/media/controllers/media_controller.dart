@@ -44,23 +44,23 @@ class MediaController extends GetxController {
       RxList<ImageModel> targetList = <ImageModel>[].obs;
 
       if (selectedPath.value == MediaCategory.banners &&
-          allBannerImages.isNotEmpty) {
+          allBannerImages.isEmpty) {
         targetList = allBannerImages;
       } else if (selectedPath.value == MediaCategory.brands &&
-          allBrandImages.isNotEmpty) {
+          allBrandImages.isEmpty) {
         targetList = allBrandImages;
       } else if (selectedPath.value == MediaCategory.categories &&
-          allCategoryImages.isNotEmpty) {
+          allCategoryImages.isEmpty) {
         targetList = allCategoryImages;
       } else if (selectedPath.value == MediaCategory.products &&
-          allProductImages.isNotEmpty) {
+          allProductImages.isEmpty) {
         targetList = allProductImages;
       } else if (selectedPath.value == MediaCategory.users &&
-          allUserImages.isNotEmpty) {
+          allUserImages.isEmpty) {
         targetList = allUserImages;
       }
 
-      final images = await mediaRepository.fetchImagesFromDatabase(
+      final images = await mediaRepository. fetchImagesFromDatabase(
           selectedPath.value, initialLoadCount);
       targetList.assignAll(images);
 
