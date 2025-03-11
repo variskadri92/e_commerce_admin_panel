@@ -146,7 +146,7 @@ class MediaUploader extends StatelessWidget {
                                     : SizedBox(
                                         width: TSizes.buttonWidth,
                                         child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: ()=> controller.uploadImageConfirmation(),
                                             child: Text('Upload')))
                               ],
                             ),
