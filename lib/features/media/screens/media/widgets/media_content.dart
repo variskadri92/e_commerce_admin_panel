@@ -5,6 +5,7 @@ import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_conta
 import 'package:yt_ecommerce_admin_panel/common/widgets/loaders/animation_loader.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/models/image_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/media/screens/media/widgets/view_image_details.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
 import '../../../../../common/widgets/images/t_rounded_image.dart';
@@ -72,7 +73,9 @@ class MediaContent extends StatelessWidget {
                   children: images
                       .map(
                         (image) => GestureDetector(
-                          onTap: () {},
+                          onTap: () => Get.dialog(ViewImagePopup(
+                            image: image,
+                          )),
                           child: SizedBox(
                             height: 180,
                             width: 140,
@@ -108,7 +111,7 @@ class MediaContent extends StatelessWidget {
                         SizedBox(
                           width: TSizes.buttonWidth,
                           child: ElevatedButton.icon(
-                            onPressed: ()=> controller.loadMoreMediaImages(),
+                            onPressed: () => controller.loadMoreMediaImages(),
                             label: Text('Load More'),
                             icon: Icon(Iconsax.arrow_down),
                           ),
