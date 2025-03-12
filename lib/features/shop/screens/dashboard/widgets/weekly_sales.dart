@@ -6,7 +6,7 @@ import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/device/device_utility.dart';
-import '../../../controllers/dashboard_controller.dart';
+import '../../../controllers/dashboard/dashboard_controller.dart';
 
 class WeeklySalesGraph extends StatelessWidget {
   const WeeklySalesGraph({super.key});

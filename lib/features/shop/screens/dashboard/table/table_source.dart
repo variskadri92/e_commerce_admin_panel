@@ -6,7 +6,7 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/helpers/helper_functions.dart';
 
-import '../../../controllers/dashboard_controller.dart';
+import '../../../controllers/dashboard/dashboard_controller.dart';
 
 class OrderRows extends DataTableSource {
   @override

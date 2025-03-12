@@ -6,7 +6,7 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../../../utils/constants/enums.dart';
-import '../../../controllers/dashboard_controller.dart';
+import '../../../controllers/dashboard/dashboard_controller.dart';
 
 class OrderStatusPieChart extends StatelessWidget {
   const OrderStatusPieChart({super.key});

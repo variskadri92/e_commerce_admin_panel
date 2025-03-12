@@ -7,6 +7,8 @@ import 'package:get/get.dart%20%20';
 import 'package:yt_ecommerce_admin_panel/common/widgets/loaders/circular_loader.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/media/media_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/models/image_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/media/screens/media/widgets/media_content.dart';
+import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
@@ -14,6 +16,8 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/text_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/dialogs.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/loaders.dart';
+
+import '../screens/media/widgets/media_uploader.dart';
 
 ///Controller to manage Media Operations
 class MediaController extends GetxController {
@@ -231,7 +235,8 @@ class MediaController extends GetxController {
       // Get the selected category
       MediaCategory selectedCategory = selectedPath.value;
       if (selectedCategory == MediaCategory.folders) {
-        TLoaders.warningSnackBar(title: 'Select Folder', message: 'Please select a folder');
+        TLoaders.warningSnackBar(
+            title: 'Select Folder', message: 'Please select a folder');
         return;
       }
 
@@ -261,7 +266,8 @@ class MediaController extends GetxController {
       String path = getSelectedPath();
 
       // Upload all images **in parallel**
-      List<Future<ImageModel>> uploadTasks = selectedImagesToUpload.map((selectedImage) async {
+      List<Future<ImageModel>> uploadTasks =
+          selectedImagesToUpload.map((selectedImage) async {
         return await mediaRepository.uploadImageFileInStorage(
           fileData: selectedImage.localImageToDisplay!,
           mimeType: selectedImage.contentType!,
@@ -281,7 +287,8 @@ class MediaController extends GetxController {
       // **Batch write to Firestore**
       WriteBatch batch = FirebaseFirestore.instance.batch();
       for (var uploadedImage in uploadedImages) {
-        DocumentReference docRef = FirebaseFirestore.instance.collection("Images").doc();
+        DocumentReference docRef =
+            FirebaseFirestore.instance.collection("Images").doc();
         batch.set(docRef, uploadedImage.toJson());
       }
       await batch.commit();
@@ -292,7 +299,9 @@ class MediaController extends GetxController {
 
       // Stop loader
       TFullScreenLoader.stopLoading();
-      TLoaders.successSnackBar(title: 'Upload Complete', message: 'All images uploaded successfully!');
+      TLoaders.successSnackBar(
+          title: 'Upload Complete',
+          message: 'All images uploaded successfully!');
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Error Uploading', message: e.toString());
@@ -356,7 +365,7 @@ class MediaController extends GetxController {
     );
   }
 
-  void removeCloudImage(ImageModel image) async{
+  void removeCloudImage(ImageModel image) async {
     try {
       Get.back();
       //Show Loader
@@ -411,5 +420,37 @@ class MediaController extends GetxController {
       TLoaders.errorSnackBar(
           title: 'Unable to delete image', message: e.toString());
     }
+  }
+
+  ///Images Selection Bottom Sheet
+  Future<List<ImageModel>?> selectImagesFromMedia(
+      {List<String>? selectedUrls,
+      bool allowSelection = true,
+      bool multipleSelection = false}) async {
+    showImagesUploaderSection.value = true;
+
+    List<ImageModel>? selectedImages = await Get.bottomSheet<List<ImageModel>>(
+      isScrollControlled: true,
+      backgroundColor: TColors.primaryBackground,
+      FractionallySizedBox(
+        heightFactor: 1,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              children: [
+                MediaUploader(),
+                MediaContent(
+                  allowSelection: allowSelection,
+                  allowMultipleSelection: multipleSelection,
+                  alreadySelectedUrls: selectedUrls ?? [],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    return selectedImages;
   }
 }
