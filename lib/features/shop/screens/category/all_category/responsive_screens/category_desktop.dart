@@ -3,6 +3,7 @@ import 'package:get/get.dart%20%20';
 import 'package:yt_ecommerce_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/data_table/table_header.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/table/data_table.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
@@ -29,6 +30,7 @@ class CategoryDesktop extends StatelessWidget {
                   TableHeader(buttonText: 'Create New Category',onPressed: ()=> Get.toNamed(Routes.createCategories),),
 
                   //Table
+                  CategoryDataTable(),
                 ],
               ),
             ),

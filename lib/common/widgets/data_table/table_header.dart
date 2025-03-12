@@ -26,7 +26,7 @@ class TableHeader extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                    onPressed: () => onPressed,
+                    onPressed: onPressed,
                     child: Text(buttonText)),
               ),
             ],
