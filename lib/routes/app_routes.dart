@@ -37,5 +37,23 @@ class AppRoutes {
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
+
+    //Categories
+    GetPage(
+      name: Routes.categories,
+      page: () => const MediaScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.media,
+      page: () => const MediaScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.media,
+      page: () => const MediaScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
   ];
 }

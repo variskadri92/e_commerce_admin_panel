@@ -37,7 +37,7 @@ class Sidebar extends StatelessWidget {
                     //menu items
                     MenuItems(route: Routes.dashboard, itemName: 'DashBoard', icon: Iconsax.status,),
                     MenuItems(route: Routes.media, itemName: 'Media', icon: Iconsax.image,),
-                    //MenuItems(route: Routes.responsiveDesignScreen, itemName: 'Product', icon: Iconsax.status,),
+                    MenuItems(route: Routes.categories, itemName: 'Categories', icon: Iconsax.category_2,),
                   ],
                 ),
               )
