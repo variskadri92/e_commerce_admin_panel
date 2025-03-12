@@ -58,5 +58,24 @@ class AppRoutes {
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
+
+
+    //Brands
+    GetPage(
+      name: Routes.brands,
+      page: () => const EditCategoryScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.createBrands,
+      page: () => const EditCategoryScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.editBrands,
+      page: () => const EditCategoryScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
   ];
 }

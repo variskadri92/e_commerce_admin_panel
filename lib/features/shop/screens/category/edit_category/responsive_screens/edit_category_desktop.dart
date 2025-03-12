@@ -13,18 +13,20 @@ class EditCategoryDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(padding: EdgeInsets.all(TSizes.defaultSpace),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //Breadcrumbs
-          BreadcrumbWithHeading(returnToPreviousScreen: true,heading: 'Update Categories', breadcrumbItems: [Routes.categories,'Update Categories']),
-          const SizedBox(height: TSizes.spaceBtwSections,),
-
-          //Form
-          EditCategoryForm(category: category),
-        ]
-      ),),
+      body: SingleChildScrollView(
+        child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Breadcrumbs
+            BreadcrumbWithHeading(returnToPreviousScreen: true,heading: 'Update Categories', breadcrumbItems: [Routes.categories,'Update Categories']),
+            const SizedBox(height: TSizes.spaceBtwSections,),
+        
+            //Form
+            EditCategoryForm(category: category),
+          ]
+        ),),
+      ),
     );
   }
 }

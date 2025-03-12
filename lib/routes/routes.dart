@@ -8,10 +8,15 @@ class Routes {
   static const categories = '/categories';
   static const createCategories = '/createCategories';
   static const editCategories = '/editCategories';
+  
+  static const brands = '/brands';
+  static const createBrands = '/createBrands';
+  static const editBrands = '/editBrands';
 
   static List sideBarMenuItems = [
     dashboard,
     media,
     categories,
+    brands,
   ];
 }
