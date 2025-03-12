@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/widgets/create_category_form.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -19,6 +20,7 @@ class CreateCategoryDesktop extends StatelessWidget {
                 const SizedBox(height: TSizes.spaceBtwSections,),
 
                 //Form
+                CreateCategoryForm(),
 
 
               ],
