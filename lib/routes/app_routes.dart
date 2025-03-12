@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/all_brands/brands.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/categories.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/create_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
@@ -63,7 +64,7 @@ class AppRoutes {
     //Brands
     GetPage(
       name: Routes.brands,
-      page: () => const EditCategoryScreen(),
+      page: () => const BrandsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),GetPage(
