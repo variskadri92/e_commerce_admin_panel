@@ -6,10 +6,14 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../table/data_table.dart';
+import '../../../../models/brand_model.dart';
+import '../widgets/edit_brand_form.dart';
 
-class BrandsMobile extends StatelessWidget {
-  const BrandsMobile({super.key});
+class EditBrandsTablet extends StatelessWidget {
+  const EditBrandsTablet({super.key, required this.brand});
+
+  final BrandModel brand;
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +24,13 @@ class BrandsMobile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Breadcrumbs
-              BreadcrumbWithHeading(heading: 'Brands', breadcrumbItems: ['Brands']),
+              BreadcrumbWithHeading(returnToPreviousScreen: true,heading: 'Update Brands', breadcrumbItems: [Routes.brands,'Update Brands']),
               const SizedBox(height: TSizes.spaceBtwSections,),
 
-              //Table Body
-              TRoundedContainer(
-                child: Column(
-                  children: [
-                    TableHeader(buttonText: 'Create New Brand',onPressed: ()=> Get.toNamed(Routes.createBrands),),
-                    SizedBox(height: TSizes.spaceBtwItems,),
-
-                    BrandDataTable(),
+              //Form
+              EditBrandForm(),
 
 
-                  ],
-                ),
-              )
             ],
           ),),
       ),

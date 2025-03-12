@@ -9,6 +9,6 @@ class BrandsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SiteLayout(desktop: const BrandsDesktop(),);
+    return SiteLayout(desktop: const BrandsDesktop(),tablet: const BrandsTablet(),mobile: const BrandsMobile());
   }
 }
