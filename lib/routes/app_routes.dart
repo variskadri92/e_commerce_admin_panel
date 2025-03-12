@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/categories.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/create_category.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
@@ -41,17 +44,17 @@ class AppRoutes {
     //Categories
     GetPage(
       name: Routes.categories,
-      page: () => const MediaScreen(),
+      page: () => const CategoriesScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),GetPage(
-      name: Routes.media,
-      page: () => const MediaScreen(),
+      name: Routes.createCategories,
+      page: () => const CreateCategoryScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),GetPage(
-      name: Routes.media,
-      page: () => const MediaScreen(),
+      name: Routes.editCategories,
+      page: () => const EditCategoryScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
