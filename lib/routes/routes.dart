@@ -30,5 +30,6 @@ class Routes {
     categories,
     brands,
     banners,
+    products,
   ];
 }

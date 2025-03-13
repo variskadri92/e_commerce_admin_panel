@@ -12,6 +12,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_cate
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/create_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/all_products/products.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/login/login.dart';
@@ -97,6 +98,25 @@ class AppRoutes {
       middlewares: [RoutesMiddleware()],
     ),GetPage(
       name: Routes.editBanners,
+      page: () => const EditBannersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+
+    //Products
+    GetPage(
+      name: Routes.products,
+      page: () => const ProductsScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.createProducts,
+      page: () => const CreateBannersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.editProducts,
       page: () => const EditBannersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
