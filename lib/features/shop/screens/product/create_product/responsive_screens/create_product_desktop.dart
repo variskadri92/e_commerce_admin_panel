@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/product_type_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/stock_pricing_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/thumbnail_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/title_description.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/variations_widget.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
@@ -70,7 +72,7 @@ class CreateProductDesktop extends StatelessWidget {
                           SizedBox(height: TSizes.spaceBtwSections,),
 
                           //Variations
-                          PV(),
+                          ProductVariations(),
                         ],
                       )),
                   SizedBox(width: TSizes.defaultSpace,),
@@ -79,7 +81,7 @@ class CreateProductDesktop extends StatelessWidget {
                   Expanded(child: Column(
                     children: [
                       //Product Thumbnail
-                      PTI(),
+                      ProductThumbnailImage(),
                       SizedBox(height: TSizes.spaceBtwSections,),
 
                       //Product Images
