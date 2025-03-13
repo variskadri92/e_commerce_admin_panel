@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/product_type_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/stock_pricing_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/title_description.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';
+import '../widgets/attributes_widget.dart';
 
 class CreateProductDesktop extends StatelessWidget {
   const CreateProductDesktop({super.key});
@@ -37,7 +41,7 @@ class CreateProductDesktop extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Basic info
-                          PTAD(),
+                          ProductTitleAndDescription(),
                           SizedBox(height: TSizes.spaceBtwSections,),
 
                           //Stock and Pricing
@@ -50,11 +54,15 @@ class CreateProductDesktop extends StatelessWidget {
                                 SizedBox(height: TSizes.spaceBtwItems,),
 
                                 //Product Type
-                                PTW(),
+                                ProductTypeWidget(),
                                 SizedBox(height: TSizes.spaceBtwInputFields,),
 
                                 //Stock
-                                PSAP(),
+                                ProductStockAndPricing(),
+                                SizedBox(height: TSizes.spaceBtwSections,),
+
+                                //Attributes
+                                ProductAttributes(),
                                 SizedBox(height: TSizes.spaceBtwSections,),
                               ]
                             ),
