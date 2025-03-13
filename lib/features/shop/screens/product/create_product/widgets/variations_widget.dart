@@ -55,9 +55,9 @@ class ProductVariations extends StatelessWidget {
 
   Widget _buildNoVariationsMessage() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TRoundedImage(
               width: 200,

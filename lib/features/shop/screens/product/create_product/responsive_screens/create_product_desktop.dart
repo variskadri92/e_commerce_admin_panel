@@ -9,12 +9,14 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_pr
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/thumbnail_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/title_description.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/variations_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/visibility_widget.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';
 import '../widgets/attributes_widget.dart';
+import '../widgets/bottom_navigation_widget.dart';
 
 class CreateProductDesktop extends StatelessWidget {
   const CreateProductDesktop({super.key});
@@ -22,7 +24,7 @@ class CreateProductDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //bottomNavigationBar: ,
+      bottomNavigationBar: ProductBottomNavigationWidget(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(TSizes.defaultSpace),
@@ -146,7 +148,7 @@ class CreateProductDesktop extends StatelessWidget {
                       ),
 
                       //Product Visibility
-                      PVW(),
+                      ProductVisibilityWidget(),
                       SizedBox(
                         height: TSizes.spaceBtwSections,
                       ),

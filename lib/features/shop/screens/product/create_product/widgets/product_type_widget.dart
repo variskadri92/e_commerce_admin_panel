@@ -27,7 +27,7 @@ class ProductTypeWidget extends StatelessWidget {
 
         //Radio Button for variable product type
         RadioMenuButton(
-          value: ProductType.single,
+          value: ProductType.variable,
           groupValue: ProductType.single,
           onChanged: (value) {},
           child: Text('Variable'),
