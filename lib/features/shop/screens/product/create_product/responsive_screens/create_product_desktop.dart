@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/additional_images.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/product_type_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/stock_pricing_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/thumbnail_widget.dart';
@@ -44,72 +46,108 @@ class CreateProductDesktop extends StatelessWidget {
                         children: [
                           //Basic info
                           ProductTitleAndDescription(),
-                          SizedBox(height: TSizes.spaceBtwSections,),
+                          SizedBox(
+                            height: TSizes.spaceBtwSections,
+                          ),
 
                           //Stock and Pricing
                           TRoundedContainer(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //Heading
-                                Text('Stock & Pricing',style: Theme.of(context).textTheme.headlineSmall,),
-                                SizedBox(height: TSizes.spaceBtwItems,),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //Heading
+                                  Text(
+                                    'Stock & Pricing',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
+                                  SizedBox(
+                                    height: TSizes.spaceBtwItems,
+                                  ),
 
-                                //Product Type
-                                ProductTypeWidget(),
-                                SizedBox(height: TSizes.spaceBtwInputFields,),
+                                  //Product Type
+                                  ProductTypeWidget(),
+                                  SizedBox(
+                                    height: TSizes.spaceBtwInputFields,
+                                  ),
 
-                                //Stock
-                                ProductStockAndPricing(),
-                                SizedBox(height: TSizes.spaceBtwSections,),
+                                  //Stock
+                                  ProductStockAndPricing(),
+                                  SizedBox(
+                                    height: TSizes.spaceBtwSections,
+                                  ),
 
-                                //Attributes
-                                ProductAttributes(),
-                                SizedBox(height: TSizes.spaceBtwSections,),
-                              ]
-                            ),
+                                  //Attributes
+                                  ProductAttributes(),
+                                  SizedBox(
+                                    height: TSizes.spaceBtwSections,
+                                  ),
+                                ]),
                           ),
-                          SizedBox(height: TSizes.spaceBtwSections,),
+                          SizedBox(
+                            height: TSizes.spaceBtwSections,
+                          ),
 
                           //Variations
                           ProductVariations(),
                         ],
                       )),
-                  SizedBox(width: TSizes.defaultSpace,),
+                  SizedBox(
+                    width: TSizes.defaultSpace,
+                  ),
 
                   //Side
-                  Expanded(child: Column(
+                  Expanded(
+                      child: Column(
                     children: [
                       //Product Thumbnail
                       ProductThumbnailImage(),
-                      SizedBox(height: TSizes.spaceBtwSections,),
+                      SizedBox(
+                        height: TSizes.spaceBtwSections,
+                      ),
 
                       //Product Images
                       TRoundedContainer(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('All Product Images',style: Theme.of(context).textTheme.headlineSmall,),
-                            SizedBox(height: TSizes.spaceBtwItems,),
-                            PAI(
-
+                            Text(
+                              'All Product Images',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            SizedBox(
+                              height: TSizes.spaceBtwItems,
+                            ),
+                            ProductAdditionalImages(
+                              additionalProductImagesURLs: RxList.empty(),
+                              onTapToAddImages: () {},
+                              onTapToRemoveImages: (index) {},
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: TSizes.spaceBtwSections,),
+                      SizedBox(
+                        height: TSizes.spaceBtwSections,
+                      ),
 
                       //Product Brand
                       PB(),
-                      SizedBox(height: TSizes.spaceBtwSections,),
+                      SizedBox(
+                        height: TSizes.spaceBtwSections,
+                      ),
 
                       //Product Categories
                       PC(),
-                      SizedBox(height: TSizes.spaceBtwSections,),
+                      SizedBox(
+                        height: TSizes.spaceBtwSections,
+                      ),
 
                       //Product Visibility
                       PVW(),
-                      SizedBox(height: TSizes.spaceBtwSections,),
+                      SizedBox(
+                        height: TSizes.spaceBtwSections,
+                      ),
                     ],
                   )),
                 ],
