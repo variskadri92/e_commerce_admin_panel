@@ -14,6 +14,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_cat
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/all_products/products.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/create_product.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/edit_product.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/login/login.dart';
@@ -118,7 +119,7 @@ class AppRoutes {
       middlewares: [RoutesMiddleware()],
     ),GetPage(
       name: Routes.editProducts,
-      page: () => const EditBannersScreen(),
+      page: () => const EditProductScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
