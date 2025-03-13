@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/table/data_table.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/table/category_data_table.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';

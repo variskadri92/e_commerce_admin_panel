@@ -13,10 +13,22 @@ class Routes {
   static const createBrands = '/createBrands';
   static const editBrands = '/editBrands';
 
+
+  static const banners = '/banners';
+  static const createBanners = '/createBanners';
+  static const editBanners = '/editBanners';
+
+
+
+  static const products = '/products';
+  static const createProducts = '/createProducts';
+  static const editProducts = '/editProducts';
+
   static List sideBarMenuItems = [
     dashboard,
     media,
     categories,
     brands,
+    banners,
   ];
 }

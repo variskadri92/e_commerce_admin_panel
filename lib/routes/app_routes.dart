@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/all_banners/banners.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/create_banner/create_banners.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/edit_banner/edit_banners.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/all_brands/brands.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/create_brand/create_brands.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/edit_brand/edit_brands.dart';
@@ -77,6 +80,24 @@ class AppRoutes {
     ),GetPage(
       name: Routes.editBrands,
       page: () => const EditBrandsScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+    //Banners
+    GetPage(
+      name: Routes.banners,
+      page: () => const BannersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.createBanners,
+      page: () => const CreateBannersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),GetPage(
+      name: Routes.editBanners,
+      page: () => const EditBannersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
