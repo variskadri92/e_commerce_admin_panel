@@ -1,27 +1,25 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/models/order_model.dart';
-import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
-import 'package:yt_ecommerce_admin_panel/utils/helpers/helper_functions.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/icons/table_action_icon_buttons.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 
+import '../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../routes/routes.dart';
+import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../utils/helpers/helper_functions.dart';
+import '../../../../models/order_model.dart';
 
-class CustomerOrdersRows extends DataTableSource {
+class OrderRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
-    final order = OrderModel(
-        id: 'id',
-        status: OrderStatus.shipped,
-        totalAmount: 239.56,
-        orderDate: DateTime.now(), items: []);
-    const totalAmount = '3443.34';
+    final order = DashboardController.orders[index];
     return DataRow2(
       selected: false,
-      onTap: () => Get.toNamed(Routes.customerDetail, arguments: order),
+      onTap: () => Get.toNamed(Routes.orderDetail, arguments: order),
+      onSelectChanged: (value) {},
       cells: [
         DataCell(Text(
           order.id,
@@ -32,7 +30,7 @@ class CustomerOrdersRows extends DataTableSource {
         )),
         DataCell(Text(order.formattedOrderDate)),
         DataCell(
-          Text('${5} Items'),
+          Text('${order.items.length} Items'),
         ),
         DataCell(
           TRoundedContainer(
@@ -46,7 +44,14 @@ class CustomerOrdersRows extends DataTableSource {
                     color: THelperFunctions.getOrderStatusColor(order.status))),
           ),
         ),
-        DataCell(Text('\$$totalAmount')),
+        DataCell(Text('\$${order.totalAmount}')),
+        DataCell(TTableActionButtons(
+          view: true,
+          edit: false,
+          onViewPressed: () =>
+              Get.toNamed(Routes.orderDetail, arguments: order),
+          onDeletePressed: () {},
+        ))
       ],
     );
   }
@@ -55,7 +60,7 @@ class CustomerOrdersRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => 5;
+  int get rowCount => DashboardController.orders.length;
 
   @override
   int get selectedRowCount => 0;

@@ -11,6 +11,7 @@ class OrderModel {
   final DateTime orderDate;
   final DateTime? deliveryDate;
   final String paymentMethod;
+  final List<String> items;
 
   OrderModel({
     required this.id,
@@ -20,6 +21,7 @@ class OrderModel {
     required this.orderDate,
     this.paymentMethod = 'googlePay',
     this.deliveryDate,
+    required this.items,
   });
 
   String get formattedOrderDate => THelperFunctions.getFormattedDate(orderDate);
@@ -38,7 +40,7 @@ class OrderModel {
       status: OrderStatus.pending,
       totalAmount: 0.0,
       orderDate: DateTime.now(),
-      id: '');
+      id: '', items: []);
 
   ///Convert model to JSon structure for storing data in Firebase
   Map<String, dynamic> toJson() {
@@ -61,7 +63,7 @@ class OrderModel {
         id: document.id,
         status: OrderStatus.pending,
         totalAmount: 0.0,
-        orderDate: DateTime.now(),
+        orderDate: DateTime.now(), items: [],
       );
     } else {
       return OrderModel.empty();
