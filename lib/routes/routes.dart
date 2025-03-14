@@ -25,6 +25,7 @@ class Routes {
   static const editProducts = '/editProducts';
 
   static const customers = '/customers';
+  static const customerDetail = '/customerDetail';
 
   static List sideBarMenuItems = [
     dashboard,

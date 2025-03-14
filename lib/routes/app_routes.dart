@@ -11,6 +11,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/edit_brand
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/categories.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/create_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/customer/customer_detail/customer_detail.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/all_products/products.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/create_product.dart';
@@ -129,6 +130,13 @@ class AppRoutes {
   GetPage(
       name: Routes.customers,
       page: () => const CustomersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+    GetPage(
+      name: Routes.customerDetail,
+      page: () => const CustomerDetailScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
