@@ -44,10 +44,10 @@ class OrderTransaction extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Payment by ${order.paymentMethod.capitalize}',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
+                          // Text(
+                          //   'Payment by ${order.paymentMethod.capitalize}',
+                          //   style: Theme.of(context).textTheme.titleLarge,
+                          // ),
                           Text(
                             'Payment by ${order.paymentMethod.capitalize} fee \$25',
                             style: Theme.of(context).textTheme.titleLarge,

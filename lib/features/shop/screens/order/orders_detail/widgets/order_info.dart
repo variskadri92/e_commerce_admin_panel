@@ -63,29 +63,32 @@ class OrderInfo extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: TSizes.sm, vertical: 0),
                       backgroundColor: THelperFunctions.getOrderStatusColor(
-                              OrderStatus.pending)
+                              order.status)
                           .withOpacity(0.1),
-                      child: DropdownButton<OrderStatus>(
-                        padding: EdgeInsets.symmetric(vertical: 0),
-                        value: OrderStatus.pending,
-                        onChanged: (OrderStatus? newValue) {},
-                        items: OrderStatus.values.map((OrderStatus status) {
-                          return DropdownMenuItem<OrderStatus>(
-                            value: order.status,
-                            child: Text(
-                              status.name.capitalize.toString(),
-                              style: TextStyle(
-                                color: THelperFunctions.getOrderStatusColor(
-                                    order.status),
+                      child: FittedBox(
+                        child: DropdownButton<OrderStatus>(
+                          padding: EdgeInsets.symmetric(vertical: 0),
+                          value: order.status,
+                          onChanged: (OrderStatus? newValue) {},
+                          items: OrderStatus.values.map((OrderStatus status) {
+                            return DropdownMenuItem<OrderStatus>(
+                              value: status,
+                              child: Text(
+                                status.name.capitalize.toString(),
+                                style: TextStyle(
+                                  color: THelperFunctions.getOrderStatusColor(
+                                      order.status),
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+              SizedBox(width: TSizes.spaceBtwItems,),
 
               Expanded(
                 child: Column(
