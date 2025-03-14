@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
+import 'package:yt_ecommerce_admin_panel/features/personalization/screens/profile/profile.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/all_banners/banners.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/create_banner/create_banners.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/edit_banner/edit_banners.dart';
@@ -154,6 +155,21 @@ class AppRoutes {
 
     GetPage(
       name: Routes.orderDetail,
+      page: () => const OrderDetailScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+    //Profile
+    GetPage(
+      name: Routes.profile,
+      page: () => const ProfileScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+    //Setting
+    GetPage(
+      name: Routes.settings,
       page: () => const OrderDetailScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],

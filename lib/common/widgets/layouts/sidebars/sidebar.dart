@@ -44,7 +44,7 @@ class Sidebar extends StatelessWidget {
                     MenuItems(route: Routes.customers, itemName: 'Customers', icon: Iconsax.profile_2user,),
                     MenuItems(route: Routes.orders, itemName: 'Orders', icon: Iconsax.box,),
 
-                    Text('Menu',style: Theme.of(context).textTheme.bodySmall!.apply(color: Colors.grey,letterSpacingDelta: 1.2),),
+                    Text('OTHER',style: Theme.of(context).textTheme.bodySmall!.apply(color: Colors.grey,letterSpacingDelta: 1.2),),
                     MenuItems(route: Routes.profile, itemName: 'Profile', icon: Iconsax.user,),
                     MenuItems(route: Routes.orders, itemName: 'Settings', icon: Iconsax.settings,),
 
