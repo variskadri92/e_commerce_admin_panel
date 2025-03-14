@@ -4,7 +4,10 @@ import 'package:yt_ecommerce_admin_panel/features/shop/models/order_model.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../widgets/order_customer.dart';
 import '../widgets/order_info.dart';
+import '../widgets/order_items.dart';
+import '../widgets/order_transaction.dart';
 
 class OrderDetailDesktop extends StatelessWidget {
   const OrderDetailDesktop({super.key, required this.order});
