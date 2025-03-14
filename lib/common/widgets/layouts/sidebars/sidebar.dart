@@ -46,7 +46,7 @@ class Sidebar extends StatelessWidget {
 
                     Text('OTHER',style: Theme.of(context).textTheme.bodySmall!.apply(color: Colors.grey,letterSpacingDelta: 1.2),),
                     MenuItems(route: Routes.profile, itemName: 'Profile', icon: Iconsax.user,),
-                    MenuItems(route: Routes.orders, itemName: 'Settings', icon: Iconsax.settings,),
+                    MenuItems(route: Routes.settings, itemName: 'Settings', icon: Iconsax.settings,),
 
                     MenuItems(route: 'logout', itemName: 'Logout', icon: Iconsax.logout,),
                   ],
