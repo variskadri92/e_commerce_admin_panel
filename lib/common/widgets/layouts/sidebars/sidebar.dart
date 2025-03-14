@@ -40,9 +40,14 @@ class Sidebar extends StatelessWidget {
                     MenuItems(route: Routes.categories, itemName: 'Categories', icon: Iconsax.category_2,),
                     MenuItems(route: Routes.brands, itemName: 'Brands', icon: Iconsax.dcube,),
                     MenuItems(route: Routes.banners, itemName: 'Banners', icon: Iconsax.picture_frame,),
-                    MenuItems(route: Routes.products, itemName: 'Products', icon: Iconsax.unlimited,),
-                    MenuItems(route: Routes.customers, itemName: 'Customers', icon: Iconsax.user1,),
+                    MenuItems(route: Routes.products, itemName: 'Products', icon: Iconsax.shop,),
+                    MenuItems(route: Routes.customers, itemName: 'Customers', icon: Iconsax.profile_2user,),
                     MenuItems(route: Routes.orders, itemName: 'Orders', icon: Iconsax.box,),
+
+                    Text('Menu',style: Theme.of(context).textTheme.bodySmall!.apply(color: Colors.grey,letterSpacingDelta: 1.2),),
+                    MenuItems(route: Routes.profile, itemName: 'Profile', icon: Iconsax.user,),
+                    MenuItems(route: Routes.orders, itemName: 'Settings', icon: Iconsax.settings,),
+
                     MenuItems(route: 'logout', itemName: 'Logout', icon: Iconsax.logout,),
                   ],
                 ),
