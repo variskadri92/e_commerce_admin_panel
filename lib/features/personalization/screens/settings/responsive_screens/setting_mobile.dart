@@ -25,19 +25,13 @@ class SettingMobile extends StatelessWidget {
                 ),
 
                 //Body
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Profile Image and Meta
-                    Expanded(child: SettingsImageAndMeta()),
-                    SizedBox(
-                      width: TSizes.spaceBtwSections,
-                    ),
+                SettingsImageAndMeta(),
+                SizedBox(
+                  height: TSizes.spaceBtwSections,
+                ),
 
-                    //Form
-                    Expanded(flex: 2, child: SettingsForm()),
-                  ],
-                )
+                //Form
+                SettingsForm()
               ],
             ),
           ),

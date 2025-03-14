@@ -27,7 +27,7 @@ class SettingTablet extends StatelessWidget {
                 //Body
                 SettingsImageAndMeta(),
                 SizedBox(
-                  width: TSizes.spaceBtwSections,
+                  height: TSizes.spaceBtwSections,
                 ),
 
                 //Form

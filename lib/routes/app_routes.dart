@@ -3,6 +3,7 @@ import 'package:yt_ecommerce_admin_panel/features/authentication/screens/forget_
 import 'package:yt_ecommerce_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/screens/media/media.dart';
 import 'package:yt_ecommerce_admin_panel/features/personalization/screens/profile/profile.dart';
+import 'package:yt_ecommerce_admin_panel/features/personalization/screens/settings/settings.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/all_banners/banners.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/create_banner/create_banners.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/edit_banner/edit_banners.dart';
@@ -170,7 +171,7 @@ class AppRoutes {
     //Setting
     GetPage(
       name: Routes.settings,
-      page: () => const OrderDetailScreen(),
+      page: () => const SettingsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
