@@ -24,6 +24,8 @@ class Routes {
   static const createProducts = '/createProducts';
   static const editProducts = '/editProducts';
 
+  static const customers = '/customers';
+
   static List sideBarMenuItems = [
     dashboard,
     media,
@@ -31,5 +33,6 @@ class Routes {
     brands,
     banners,
     products,
+    customers,
   ];
 }

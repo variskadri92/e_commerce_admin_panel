@@ -41,6 +41,7 @@ class Sidebar extends StatelessWidget {
                     MenuItems(route: Routes.brands, itemName: 'Brands', icon: Iconsax.dcube,),
                     MenuItems(route: Routes.banners, itemName: 'Banners', icon: Iconsax.picture_frame,),
                     MenuItems(route: Routes.products, itemName: 'Products', icon: Iconsax.unlimited,),
+                    MenuItems(route: Routes.customers, itemName: 'Customers', icon: Iconsax.user1,),
                     MenuItems(route: 'logout', itemName: 'Logout', icon: Iconsax.logout,),
                   ],
                 ),

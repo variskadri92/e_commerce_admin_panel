@@ -18,6 +18,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_prod
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/login/login.dart';
+import '../features/shop/screens/customer/all_customer/customers.dart';
 
 class AppRoutes {
   static final List<GetPage> pages = [
@@ -120,6 +121,14 @@ class AppRoutes {
     ),GetPage(
       name: Routes.editProducts,
       page: () => const EditProductScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+  //Customer
+  GetPage(
+      name: Routes.customers,
+      page: () => const CustomersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
