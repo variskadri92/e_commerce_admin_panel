@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/customer/customer_detail/table/customer_order_data_table.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
@@ -43,7 +44,7 @@ class CustomerOrders extends StatelessWidget {
           ),
 
           SizedBox(height: TSizes.spaceBtwSections,),
-          CustomerOrderTable(),
+          CustomerOrderDataTable(),
         ],
       ),
     );
