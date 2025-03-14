@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/models/cart_item_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/order/orders_detail/widgets/order_items.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 
 import '../../../utils/helpers/helper_functions.dart';
@@ -11,7 +13,9 @@ class OrderModel {
   final DateTime orderDate;
   final DateTime? deliveryDate;
   final String paymentMethod;
-  final List<String> items;
+  final List<CartItemModel> items;
+  final String? image;
+  final double? price;
 
   OrderModel({
     required this.id,
@@ -22,6 +26,10 @@ class OrderModel {
     this.paymentMethod = 'googlePay',
     this.deliveryDate,
     required this.items,
+    this.price,
+    this.image,
+
+
   });
 
   String get formattedOrderDate => THelperFunctions.getFormattedDate(orderDate);
