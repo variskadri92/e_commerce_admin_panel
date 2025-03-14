@@ -6,8 +6,8 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
-class ImageAndMeta extends StatelessWidget {
-  const ImageAndMeta({super.key});
+class ProfileImageAndMeta extends StatelessWidget {
+  const ProfileImageAndMeta({super.key});
 
   @override
   Widget build(BuildContext context) {

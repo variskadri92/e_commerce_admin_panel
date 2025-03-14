@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../utils/constants/sizes.dart';
-import '../widgets/image_and_meta.dart';
+import '../widgets/profile_image_and_meta.dart';
 import '../widgets/profile_form.dart';
 
 class ProfileDesktop extends StatelessWidget {
@@ -29,7 +29,7 @@ class ProfileDesktop extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Profile Image and Meta
-                Expanded(child: ImageAndMeta()),
+                Expanded(child: ProfileImageAndMeta()),
                 SizedBox(
                   width: TSizes.spaceBtwSections,
                 ),

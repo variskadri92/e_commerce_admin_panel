@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../utils/constants/sizes.dart';
-import '../widgets/image_and_meta.dart';
+import '../widgets/profile_image_and_meta.dart';
 import '../widgets/profile_form.dart';
 
 class ProfileTablet extends StatelessWidget {
@@ -25,7 +25,7 @@ class ProfileTablet extends StatelessWidget {
                 ),
 
                 //Body
-                ImageAndMeta(),
+                ProfileImageAndMeta(),
                 SizedBox(
                   height: TSizes.spaceBtwSections,
                 ),
