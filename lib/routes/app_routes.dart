@@ -13,6 +13,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_c
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/customer/customer_detail/customer_detail.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/order/all_orders/orders.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/all_products/products.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/create_product.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/edit_product.dart';
@@ -20,6 +21,7 @@ import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/login/login.dart';
 import '../features/shop/screens/customer/all_customer/customers.dart';
+import '../features/shop/screens/order/orders_detail/order_detail.dart';
 
 class AppRoutes {
   static final List<GetPage> pages = [
@@ -137,6 +139,22 @@ class AppRoutes {
     GetPage(
       name: Routes.customerDetail,
       page: () => const CustomerDetailScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+
+    //Customer
+  GetPage(
+      name: Routes.orders,
+      page: () => const OrdersScreen(),
+      transition: Transition.fadeIn,
+      middlewares: [RoutesMiddleware()],
+    ),
+
+    GetPage(
+      name: Routes.orderDetail,
+      page: () => const OrderDetailScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
