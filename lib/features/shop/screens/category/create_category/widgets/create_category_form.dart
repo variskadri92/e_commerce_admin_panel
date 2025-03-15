@@ -11,6 +11,7 @@ import 'package:yt_ecommerce_admin_panel/utils/validators/validation.dart';
 
 import '../../../../controllers/category/category_controller.dart';
 import '../../../../controllers/category/create_category_controller.dart';
+import '../../../../models/category_model.dart';
 
 class CreateCategoryForm extends StatelessWidget {
   const CreateCategoryForm({super.key});
@@ -56,24 +57,39 @@ class CreateCategoryForm extends StatelessWidget {
 
               //Category Dropdown
               Obx(
-                () => categoryController.isLoading.value
+                    () => categoryController.isLoading.value
                     ? TShimmerEffect(width: double.infinity, height: 55)
-                    : DropdownButtonFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Parent Category',
-                          labelText: 'Parent Category',
-                          prefixIcon: Icon(Iconsax.bezier),
+                    : DropdownButtonFormField<CategoryModel?>(
+                  decoration: InputDecoration(
+                    hintText: 'Parent Category',
+                    labelText: 'Parent Category',
+                    prefixIcon: Icon(Iconsax.bezier),
+                  ),
+                  value: createController.selectedParent.value.id.isNotEmpty
+                      ? createController.selectedParent.value
+                      : null, // Allow null value
+                  items: [
+                    // Add a null option for "No Parent Category"
+                    DropdownMenuItem<CategoryModel?>(
+                      value: null,
+                      child: Text('No Parent Category'),
+                    ),
+                    // Add other categories
+                    ...categoryController.allItems.map(
+                          (item) => DropdownMenuItem<CategoryModel?>(
+                        value: item,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [Text(item.name)],
                         ),
-                        items: categoryController.allItems
-                            .map((item) => DropdownMenuItem(
-                                value: item,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [Text(item.name)],
-                                )))
-                            .toList(),
-                        onChanged: (newValue) =>
-                            createController.selectedParent.value = newValue!),
+                      ),
+                    ),
+                  ],
+                  onChanged: (newValue) {
+                    // Handle null value
+                    createController.selectedParent.value = newValue ?? CategoryModel.empty();
+                  },
+                ),
               ),
               SizedBox(
                 height: TSizes.spaceBtwInputFields * 2,
