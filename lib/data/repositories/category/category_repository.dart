@@ -41,4 +41,20 @@ class CategoryRepository extends GetxController {
       throw 'Failed to delete categories';
     }
   }
+
+  ///Create a category in the database
+  Future<String> createCategory(CategoryModel newCategory) async {
+    try {
+      final data = await _db.collection('Categories').add(newCategory.toJson());
+      return data.id;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    }on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    }on FormatException catch (e) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Failed to delete categories';
+    }
+  }
 }
