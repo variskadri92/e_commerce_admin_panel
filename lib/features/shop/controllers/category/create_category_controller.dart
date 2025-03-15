@@ -22,7 +22,24 @@ class CreateCategoryController extends GetxController {
 
   ///Init Data
   ///Method to reset fields
+  void resetFields() {
+    name.clear();
+    imageURL.value = '';
+    loading(false);
+    isFeatured(false);
+    selectedParent(CategoryModel.empty());
+  }
   ///Pick Thumbnail Image from Media
+  void pickImage() async {
+    final controller = Get.put(MediaController());
+    List<ImageModel>? selectedImages = await controller.selectImagesFromMedia();
+
+    //Handle the selected images
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      ImageModel selectedImage = selectedImages.first;
+      imageURL.value = selectedImage.url;
+    }
+  }
   ///Register new category
   Future<void> createCategory() async {
     try {
@@ -42,7 +59,7 @@ class CreateCategoryController extends GetxController {
         return;
       }
 
-      //Map Date
+      //Map Data
       final newCategory = CategoryModel(
         id: '',
         name: name.text.trim(),
@@ -72,22 +89,7 @@ class CreateCategoryController extends GetxController {
     }
   }
 
-  void pickImage() async {
-    final controller = Get.put(MediaController());
-    List<ImageModel>? selectedImages = await controller.selectImagesFromMedia();
 
-    //Handle the selected images
-    if (selectedImages != null && selectedImages.isNotEmpty) {
-      ImageModel selectedImage = selectedImages.first;
-      imageURL.value = selectedImage.url;
-    }
-  }
 
-  void resetFields() {
-    name.clear();
-    imageURL.value = '';
-    loading(false);
-    isFeatured(false);
-    selectedParent(CategoryModel.empty());
-  }
+
 }

@@ -144,4 +144,15 @@ class CategoryController extends GetxController {
     filteredItems.refresh();
   }
 
+  void updateItemFromLists(CategoryModel updatedCategory) {
+    final itemIndex = allItems.indexWhere((i)=> i == updatedCategory);
+    final filteredItemIndex = filteredItems.indexWhere((i)=> i == updatedCategory);
+
+    if(itemIndex != -1) allItems[itemIndex] = updatedCategory;
+    if(filteredItemIndex != -1) filteredItems[filteredItemIndex] = updatedCategory;
+
+    filteredItems.refresh();
+
+  }
+
 }

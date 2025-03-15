@@ -16,11 +16,12 @@ class CategoryRepository extends GetxController {
   Future<List<CategoryModel>> getAllCategories() async {
     try {
       final snapshot = await _db.collection('Categories').get();
-      final result = snapshot.docs.map((doc)=> CategoryModel.fromSnapshot(doc)).toList();
+      final result =
+          snapshot.docs.map((doc) => CategoryModel.fromSnapshot(doc)).toList();
       return result;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    }on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Failed to fetch categories';
@@ -33,9 +34,9 @@ class CategoryRepository extends GetxController {
       await _db.collection('Categories').doc(categoryId).delete();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    }on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
-    }on FormatException catch (e) {
+    } on FormatException catch (e) {
       throw TFormatException();
     } catch (e) {
       throw 'Failed to delete categories';
@@ -49,9 +50,27 @@ class CategoryRepository extends GetxController {
       return data.id;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    }on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
-    }on FormatException catch (e) {
+    } on FormatException catch (e) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Failed to delete categories';
+    }
+  }
+
+  ///Update a category in the database
+  Future<void> updateCategory(CategoryModel updatedCategory) async {
+    try {
+      await _db
+          .collection('Categories')
+          .doc(updatedCategory.id)
+          .update(updatedCategory.toJson());
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } on FormatException catch (e) {
       throw TFormatException();
     } catch (e) {
       throw 'Failed to delete categories';
