@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/category_model.dart';
 import 'package:yt_ecommerce_admin_panel/utils/exceptions/firebase_exceptions.dart';
+import 'package:yt_ecommerce_admin_panel/utils/exceptions/format_exceptions.dart';
 import 'package:yt_ecommerce_admin_panel/utils/exceptions/platform_exceptions.dart';
 
 class CategoryRepository extends GetxController {
@@ -23,6 +24,21 @@ class CategoryRepository extends GetxController {
       throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Failed to fetch categories';
+    }
+  }
+
+  ///Delete a category from the database
+  Future<void> deleteCategories(String categoryId) async {
+    try {
+      await _db.collection('Categories').doc(categoryId).delete();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    }on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    }on FormatException catch (e) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Failed to delete categories';
     }
   }
 }

@@ -55,7 +55,7 @@ class CategoryRows extends DataTableSource {
       DataCell(
         TTableActionButtons(
           onEditPressed: ()=> Get.toNamed(Routes.editCategories,arguments: category),
-          onDeletePressed: (){},
+          onDeletePressed: ()=> controller.confirmAndDeleteItem(category),
         )
       ),
     ]);
