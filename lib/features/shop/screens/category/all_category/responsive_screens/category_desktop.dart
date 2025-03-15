@@ -38,6 +38,9 @@ class CategoryDesktop extends StatelessWidget {
                   TableHeader(
                     buttonText: 'Create New Category',
                     onPressed: () => Get.toNamed(Routes.createCategories),
+                    searchController: controller.searchTextController,
+                    searchOnChanged: (query)=> controller.searchQuery(query),
+
                   ),
 
                   //Table
