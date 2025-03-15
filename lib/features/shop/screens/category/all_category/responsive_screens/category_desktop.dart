@@ -42,7 +42,7 @@ class CategoryDesktop extends StatelessWidget {
 
                   //Table
                   Obx(() {
-                    if(controller.isLoading.value) return TLoaderAnimation();
+                    if (controller.isLoading.value) return TLoaderAnimation();
                     return CategoryDataTable();
                   }),
                 ],
