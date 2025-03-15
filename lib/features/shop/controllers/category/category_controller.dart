@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/category_model.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/loaders.dart';
@@ -12,6 +11,7 @@ class CategoryController extends GetxController {
   RxBool isLoading = true.obs;
   RxList<CategoryModel> allItems = <CategoryModel>[].obs;
   RxList<CategoryModel> filteredItems = <CategoryModel>[].obs;
+  RxList<bool> selectedRows = <bool>[].obs;
 
   //Sorting
   RxInt sortColumnIndex = 1.obs;
@@ -36,6 +36,7 @@ class CategoryController extends GetxController {
 
         allItems.assignAll(fetchedItems);
         filteredItems.assignAll(allItems);
+        selectedRows.assignAll(List.generate(allItems.length, (_)=> false));
 
         isLoading.value = false;
       }

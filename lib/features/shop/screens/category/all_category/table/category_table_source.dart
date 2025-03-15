@@ -17,7 +17,10 @@ class CategoryRows extends DataTableSource {
   DataRow? getRow(int index) {
     final category = controller.filteredItems[index];
     final parentCategory = controller.allItems.firstWhereOrNull((item)=> item.id == category.parentId);
-    return DataRow2(cells: [
+    return DataRow2(
+        selected: controller.selectedRows[index],
+        onSelectChanged: (value)=>controller.selectedRows[index] = value ?? false,
+        cells: [
       DataCell(
         Row(
           children: [

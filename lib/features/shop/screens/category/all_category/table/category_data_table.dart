@@ -13,7 +13,8 @@ class CategoryDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CategoryController());
     return Obx(() {
-      Text(controller.filteredItems.length.toString());
+      Text(controller.filteredItems.length.toString()); // Redraw th design when the filtered items changes
+      Text(controller.selectedRows.length.toString()); // Redraw the design when the selected rows changes
 
       return TPaginatedDataTable(
         sortAscending: controller.sortAscending.value,
