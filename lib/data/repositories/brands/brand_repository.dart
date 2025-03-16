@@ -5,6 +5,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/models/brand_category_mod
 import 'package:yt_ecommerce_admin_panel/features/shop/models/brand_model.dart';
 
 import '../../../utils/exceptions/firebase_exceptions.dart';
+import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
 
 class BrandRepository extends GetxController{
@@ -24,7 +25,7 @@ class BrandRepository extends GetxController{
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      throw 'Failed to fetch brands';
+      throw 'Something went wrong. Please try again later.';
     }
   }
 
@@ -41,7 +42,41 @@ class BrandRepository extends GetxController{
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      throw 'Failed to fetch brands';
+      throw 'Something went wrong. Please try again later.';
     }
   }
+
+
+  ///Create a brand in the database
+  Future<String> createBrand(BrandModel newBrand) async {
+    try {
+      final data = await _db.collection('Brands').add(newBrand.toJson());
+      return data.id;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } on FormatException catch (_) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Something went wrong. Please try again later.';
+    }
+  }
+
+  ///Create a brand in the database
+  Future<String> createBrandCategory(BrandCategoryModel newBrandCategory) async {
+    try {
+      final data = await _db.collection('BrandCategory').add(newBrandCategory.toJson());
+      return data.id;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } on FormatException catch (_) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Something went wrong. Please try again later.';
+    }
+  }
+
 }

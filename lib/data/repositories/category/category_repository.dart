@@ -24,7 +24,7 @@ class CategoryRepository extends GetxController {
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      throw 'Failed to fetch categories';
+      throw 'Something went wrong. Please try again later.';
     }
   }
 
@@ -36,10 +36,10 @@ class CategoryRepository extends GetxController {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw TFormatException();
     } catch (e) {
-      throw 'Failed to delete categories';
+      throw 'Something went wrong. Please try again later.';
     }
   }
 
@@ -52,10 +52,10 @@ class CategoryRepository extends GetxController {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw TFormatException();
     } catch (e) {
-      throw 'Failed to delete categories';
+      throw 'Something went wrong. Please try again later.';
     }
   }
 
@@ -70,10 +70,10 @@ class CategoryRepository extends GetxController {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw TFormatException();
     } catch (e) {
-      throw 'Failed to delete categories';
+      throw 'Something went wrong. Please try again later.';
     }
   }
 }
