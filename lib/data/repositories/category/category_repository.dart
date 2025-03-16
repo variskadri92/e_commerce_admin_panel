@@ -29,7 +29,7 @@ class CategoryRepository extends GetxController {
   }
 
   ///Delete a category from the database
-  Future<void> deleteCategories(String categoryId) async {
+  Future<void> deleteCategory(String categoryId) async {
     try {
       await _db.collection('Categories').doc(categoryId).delete();
     } on FirebaseException catch (e) {

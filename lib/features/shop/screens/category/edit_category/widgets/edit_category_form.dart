@@ -20,9 +20,12 @@ class EditCategoryForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editController = Get.put(EditCategoryController());
-    editController.initData(category);
     final categoryController = Get.put(CategoryController());
-    print(category.parentId);
+    // Defer initialization until after the build process
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      editController.initData(category);
+    });
+    //editController.initData(category);
     return TRoundedContainer(
       width: 500,
       padding: EdgeInsets.all(TSizes.defaultSpace),

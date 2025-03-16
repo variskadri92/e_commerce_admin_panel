@@ -20,6 +20,8 @@ class EditCategoryController extends GetxController {
   final name = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+
+
   ///Init Data
   void initData(CategoryModel category) {
     name.text = category.name;
