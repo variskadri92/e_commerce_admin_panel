@@ -50,7 +50,7 @@ class CategoryRows extends DataTableSource {
         ),
       ),
       DataCell(Text(parentCategory !=null ? parentCategory.name : '')),
-      DataCell(category.isFeatured ? Icon(Iconsax.heart5,color: Colors.red,) : Icon(Iconsax.heart5)),
+      DataCell(category.isFeatured ? Icon(Iconsax.heart5,color: Colors.red,) : Icon(Iconsax.heart)),
       DataCell(Text(category.createdAt == null ? '' : category.formattedDate)),
       DataCell(
         TTableActionButtons(
