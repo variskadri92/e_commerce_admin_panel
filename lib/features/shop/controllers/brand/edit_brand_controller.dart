@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/data/repositories/brands/brand_repository.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/category/category_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/controllers/category/category_controller.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/models/brand_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/category_model.dart';
 
 import '../../../../utils/helpers/network_manager.dart';
@@ -9,6 +11,8 @@ import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loaders.dart';
 import '../../../media/controllers/media_controller.dart';
 import '../../../media/models/image_model.dart';
+import '../../models/brand_category_model.dart';
+import 'brand_controller.dart';
 
 class EditBrandController extends GetxController {
   static EditBrandController get instance => Get.find();
@@ -18,21 +22,26 @@ class EditBrandController extends GetxController {
   final isFeatured = false.obs;
   final name = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final brandRepository = Get.put(BrandRepository());
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
 
-
-
   ///Init Data
-  void initData(CategoryModel category) {
-    name.text = category.name;
-    imageURL.value = category.image;
-    isFeatured.value = category.isFeatured;
-    selectedParent.value = category.parentId.isNotEmpty
-        ? CategoryController.instance.allItems.firstWhere(
-          (item) => item.id == category.parentId,
-      orElse: () => CategoryModel.empty(),
-    )
-        : CategoryModel.empty(); // Initialize with empty model if no parent
+  void initData(BrandModel brand) {
+    name.text = brand.name;
+    imageURL.value = brand.image;
+    isFeatured.value = brand.isFeatured;
+    if (brand.brandCategories != null) {
+      selectedCategories.addAll(brand.brandCategories ?? []);
+    }
+  }
+
+  ///Toggle Category Selection
+  void toggleSelection(CategoryModel category) {
+    if (selectedCategories.contains(category)) {
+      selectedCategories.remove(category);
+    } else {
+      selectedCategories.add(category);
+    }
   }
 
   ///Method to reset fields
@@ -41,7 +50,7 @@ class EditBrandController extends GetxController {
     imageURL.value = '';
     loading(false);
     isFeatured(false);
-    selectedParent(CategoryModel.empty());
+    selectedCategories.clear();
   }
 
   ///Pick Thumbnail Image from Media
@@ -56,8 +65,8 @@ class EditBrandController extends GetxController {
     }
   }
 
-  ///Register updated category
-  Future<void> updateCategory(CategoryModel updatedCategory) async {
+  ///Register updated brand
+  Future<void> updateBrand(BrandModel updatedBrand) async {
     try {
       //Start Loader
       TFullScreenLoader.popUpCircular();
@@ -75,16 +84,31 @@ class EditBrandController extends GetxController {
         return;
       }
 
-      //Map Data
-      updatedCategory.name = name.text.trim();
-      updatedCategory.image = imageURL.value;
-      updatedCategory.isFeatured = isFeatured.value;
-      updatedCategory.parentId = selectedParent.value.id;
-      updatedCategory.updatedAt = DateTime.now();
+      //Is Data Updated
+      bool isBrandUpdated = false;
+      if (updatedBrand.image != imageURL.value ||
+          updatedBrand.name != name.text.trim() ||
+          updatedBrand.isFeatured != isFeatured.value) {
+        isBrandUpdated = true;
 
-     await CategoryRepository.instance.updateCategory(updatedCategory);
+        //Map Data
+        updatedBrand.name = name.text.trim();
+        updatedBrand.image = imageURL.value;
+        updatedBrand.isFeatured = isFeatured.value;
+        updatedBrand.updatedAt = DateTime.now();
 
-     CategoryController.instance.updateItemFromLists(updatedCategory);
+        await brandRepository.updateBrand(updatedBrand);
+      }
+
+      //Update brand categories if any
+      if (selectedCategories.isNotEmpty) {
+        await updateBrandCategories(updatedBrand);
+      }
+
+      //Update Brand Data in Products
+      if (isBrandUpdated) {
+        await updateBrandInProducts(updatedBrand);
+      }
 
       //Clear Form
       resetFields();
@@ -99,4 +123,46 @@ class EditBrandController extends GetxController {
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());
     }
   }
+
+  ///Update categories of this brand
+  updateBrandCategories(BrandModel updatedBrand) async {
+    //Fetch all brand categories
+    final brandCategories =
+        await brandRepository.getCategoriesOfSpecificBrand(updatedBrand.id);
+
+    //Selected categoriesIds
+    final selectedCategoriesIds = selectedCategories.map((e) => e.id);
+
+    //Identify which categories to delete
+    final categoriesToDelete = brandCategories
+        .where((existingCategory) =>
+            !selectedCategoriesIds.contains(existingCategory.categoryId))
+        .toList();
+
+    //Delete unselected categories
+    for (var categoryToDelete in categoriesToDelete) {
+      await BrandRepository.instance
+          .deleteBrandCategory(categoryToDelete.id ?? '');
+    }
+
+    //Identify new categories to add
+    final newCategoriesToAdd = selectedCategories
+        .where((newCategory) => !brandCategories.any((existingCategory) =>
+            existingCategory.categoryId == newCategory.id))
+        .toList();
+
+    //Add new categories
+    for (var newCategory in newCategoriesToAdd) {
+      final brandCategory = BrandCategoryModel(
+          brandId: updatedBrand.id, categoryId: newCategory.id);
+      brandCategory.id =
+          await BrandRepository.instance.createBrandCategory(brandCategory);
+    }
+
+    updatedBrand.brandCategories!.assignAll(selectedCategories);
+    BrandController.instance.updateItemFromLists(updatedBrand);
+  }
+
+  ///Update products of this brands
+  updateBrandInProducts(BrandModel updatedBrand) {}
 }

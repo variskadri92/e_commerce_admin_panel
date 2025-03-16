@@ -17,8 +17,8 @@ class BrandController extends BaseDataTableController<BrandModel> {
   }
 
   @override
-  Future<void> deleteItems(BrandModel item) {
-    throw UnimplementedError();
+  Future<void> deleteItems(BrandModel item) async{
+    await _brandRepository.deleteBrand(item);
   }
 
   void sortByName(int sortColumnIndex, bool ascending) {

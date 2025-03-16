@@ -25,7 +25,7 @@ class EditBrandsMobile extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections,),
 
               //Form
-              EditBrandForm(),
+              EditBrandForm(brand: brand,),
 
 
             ],
