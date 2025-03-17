@@ -3,6 +3,8 @@ import 'package:yt_ecommerce_admin_panel/features/shop/models/brand_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/product_attribute_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/product_variation_model.dart';
 
+import '../../../utils/formatters/formatter.dart';
+
 class ProductModel {
   String id;
   int stock;
@@ -19,6 +21,14 @@ class ProductModel {
   String productType;
   List<String>? images;
   int soldQuantity;
+
+  List<ProductAttributeModel>? productAttributes;
+
+  List<ProductVariationModel>? productVariations;
+
+
+  String get formattedDate => TFormatter.formatDate(date);
+
 
   ProductModel({
     required this.id,
@@ -40,9 +50,6 @@ class ProductModel {
     this.productVariations,
   });
 
-  List<ProductAttributeModel>? productAttributes;
-
-  List<ProductVariationModel>? productVariations;
 
   static ProductModel empty() => ProductModel(
         id: '',
