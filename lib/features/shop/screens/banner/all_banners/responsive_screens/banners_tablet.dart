@@ -6,6 +6,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/all_banner
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
+import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/banner/banner_controller.dart';

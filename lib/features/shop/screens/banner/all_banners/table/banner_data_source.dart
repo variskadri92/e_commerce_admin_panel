@@ -2,14 +2,12 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/models/banner_model.dart';
 
 import '../../../../../../common/widgets/icons/table_action_icon_buttons.dart';
 import '../../../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/banner/banner_controller.dart';
 
