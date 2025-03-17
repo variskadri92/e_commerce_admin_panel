@@ -6,14 +6,17 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/banner/all_banner
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
+import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/banner/banner_controller.dart';
 
 class BannersMobile extends StatelessWidget {
   const BannersMobile({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(BannerController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace),
@@ -25,17 +28,26 @@ class BannersMobile extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections,),
 
               //Table Body
-              TRoundedContainer(
-                child: Column(
-                  children: [
-                    TableHeader(buttonText: 'Create New Banner',onPressed: ()=> Get.toNamed(Routes.createBanners),),
-                    SizedBox(height: TSizes.spaceBtwItems,),
-
-                    BannerDataTable(),
-
-
-                  ],
-                ),
+              Obx(
+                    () {
+                  if (controller.isLoading.value) {
+                    return const TLoaderAnimation();
+                  }
+                  return TRoundedContainer(
+                    child: Column(
+                      children: [
+                        TableHeader(
+                          buttonText: 'Create New Banner',
+                          onPressed: () => Get.toNamed(Routes.createBanners),
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwItems,
+                        ),
+                        BannerDataTable(),
+                      ],
+                    ),
+                  );
+                },
               )
             ],
           ),),

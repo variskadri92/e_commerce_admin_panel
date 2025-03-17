@@ -8,11 +8,14 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/banner/banner_controller.dart';
 class BannersTablet extends StatelessWidget {
   const BannersTablet({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(BannerController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace),
@@ -24,18 +27,27 @@ class BannersTablet extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections,),
 
               //Table Body
-              TRoundedContainer(
-                child: Column(
-                  children: [
-                    TableHeader(buttonText: 'Create New Banner',onPressed: ()=> Get.toNamed(Routes.createBanners),),
-                    SizedBox(height: TSizes.spaceBtwItems,),
-
-                    BannerDataTable(),
-
-
-                  ],
-                ),
-              )
+              Obx(
+                    () {
+                  if (controller.isLoading.value) {
+                    return const TLoaderAnimation();
+                  }
+                  return TRoundedContainer(
+                    child: Column(
+                      children: [
+                        TableHeader(
+                          buttonText: 'Create New Banner',
+                          onPressed: () => Get.toNamed(Routes.createBanners),
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwItems,
+                        ),
+                        BannerDataTable(),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ],
           ),),
       ),

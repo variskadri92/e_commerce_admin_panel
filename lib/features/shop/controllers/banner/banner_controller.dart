@@ -5,7 +5,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/models/banner_model.dart'
 import '../../../../data/repositories/banners/banners_repository.dart';
 
 class BannerController extends BaseDataTableController<BannerModel>{
-
+  static BannerController get instance => Get.find();
   final _bannerRepository = Get.put(BannersRepository());
 
   @override

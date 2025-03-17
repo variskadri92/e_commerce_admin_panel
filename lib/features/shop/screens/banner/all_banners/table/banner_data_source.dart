@@ -11,31 +11,38 @@ import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/banner/banner_controller.dart';
 
 class BannersRow extends DataTableSource{
+  final controller = BannerController.instance;
 
   @override
   DataRow? getRow(int index) {
-    return DataRow2(cells: [
+    final banner = controller.filteredItems[index];
+    return DataRow2(
+        selected: controller.selectedRows[index],
+        onTap: ()=> Get.toNamed(Routes.editBanners,arguments: banner),
+        onSelectChanged: (value)=> controller.selectedRows[index] = value ?? false,
+        cells: [
       DataCell(
         TRoundedImage(
           width: 180,
           height: 100,
           padding: TSizes.sm,
-          image: TImages.banner1,
-          imageType: ImageType.asset,
+          image: banner.imageUrl,
+          imageType: ImageType.network,
           borderRadius: TSizes.borderRadiusMd,
           backgroundColor: TColors.primaryBackground,
         ),
       ),
       DataCell(
-        Text('Shop')
+        Text(controller.formatRoute(banner.targetScreen))
       ),
-      DataCell(Icon(Iconsax.eye, color: TColors.primary,)),
+      DataCell(banner.active ? Icon(Iconsax.eye, color: TColors.primary,) : Icon(Iconsax.eye_slash)),
       DataCell(
           TTableActionButtons(
-            onEditPressed: ()=> Get.toNamed(Routes.editBanners,arguments: BannerModel(active: false, imageUrl: '', targetScreen: '')),
-            onDeletePressed: (){},
+            onEditPressed: ()=> Get.toNamed(Routes.editBanners,arguments: banner),
+            onDeletePressed: ()=> controller.confirmAndDeleteItem(banner),
           )
       ),
 
@@ -46,8 +53,8 @@ class BannersRow extends DataTableSource{
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => 10;
+  int get rowCount => controller.filteredItems.length;
 
   @override
-  int get selectedRowCount => 0;
+  int get selectedRowCount => controller.selectedRows.where((selected)=> selected).length;
 }
