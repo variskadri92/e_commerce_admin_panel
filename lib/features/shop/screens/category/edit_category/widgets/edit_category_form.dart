@@ -30,7 +30,7 @@ class EditCategoryForm extends StatelessWidget {
       width: 500,
       padding: EdgeInsets.all(TSizes.defaultSpace),
       child: Form(
-          key: editController.formKey,
+          key: editController.editFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

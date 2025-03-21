@@ -1,70 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart%20%20';
-import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/image_uploader.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/create_product_controller.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_images_controller.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_variations_controller.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/models/product_variation_model.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
+import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 
+import '../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../common/widgets/images/image_uploader.dart';
+import '../../../../../../common/widgets/images/t_rounded_image.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/product/product_images_controller.dart';
+import '../../../../controllers/product/product_variations_controller.dart';
+import '../../../../models/product_variation_model.dart';
 
-class ProductVariations extends StatelessWidget {
-  const ProductVariations({super.key});
+class EditProductVariations extends StatelessWidget {
+  const EditProductVariations({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     final variationsController = ProductVariationsController.instance;
     return Obx(
-      () => CreateProductController.instance.productType.value ==
-              ProductType.variable
+          () => EditProductController.instance.productType.value ==
+          ProductType.variable
           ? TRoundedContainer(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //Product variation header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Product Variations',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      TextButton(
-                          onPressed: () => variationsController
-                              .removeVariationsConfirmation(context),
-                          child: Text('Remove Variations')),
-                    ],
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Product variation header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Product Variations',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                TextButton(
+                    onPressed: () => variationsController
+                        .removeVariationsConfirmation(context),
+                    child: Text('Remove Variations')),
+              ],
+            ),
 
-                  SizedBox(
-                    height: TSizes.spaceBtwItems,
-                  ),
+            SizedBox(
+              height: TSizes.spaceBtwItems,
+            ),
 
-                  //Variations List
-                  if (variationsController.productVariations.isNotEmpty)
-                    ListView.separated(
-                      itemCount: variationsController.productVariations.length,
-                      shrinkWrap: true,
-                      separatorBuilder: (_, __) => SizedBox(
-                        height: TSizes.spaceBtwItems,
-                      ),
-                      itemBuilder: (_, index) {
-                        final variation = variationsController.productVariations[index];
-                        return _buildVariationTile(context, index, variation, variationsController);
-                      },
-                    )
-                  else
-                    //No Variations message
-                    _buildNoVariationsMessage(),
-                ],
-              ),
-            )
+            //Variations List
+            if (variationsController.productVariations.isNotEmpty)
+              ListView.separated(
+                itemCount: variationsController.productVariations.length,
+                shrinkWrap: true,
+                separatorBuilder: (_, __) => SizedBox(
+                  height: TSizes.spaceBtwItems,
+                ),
+                itemBuilder: (_, index) {
+                  final variation = variationsController.productVariations[index];
+                  return _buildVariationTile(context, index, variation, variationsController);
+                },
+              )
+            else
+            //No Variations message
+              _buildNoVariationsMessage(),
+          ],
+        ),
+      )
           : SizedBox.shrink(),
     );
   }
@@ -103,7 +104,7 @@ class ProductVariations extends StatelessWidget {
       children: [
         //Upload Variation Image
         Obx(
-          ()=> TImageUploader(
+              ()=> TImageUploader(
             right: 0,
             left: null,
             image: variation.image.value.isNotEmpty ? variation.image.value : TImages.defaultImage,

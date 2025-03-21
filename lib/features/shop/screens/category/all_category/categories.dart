@@ -9,6 +9,10 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SiteLayout(desktop: const CategoryDesktop(), tablet: const CategoryTablet(), mobile: const CategoryMobile(),);
+    return SiteLayout(
+      desktop: const CategoryDesktop(),
+      tablet: const CategoryTablet(),
+      mobile: const CategoryMobile(),
+    );
   }
 }

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart%20%20';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
+import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
-import '../../../../controllers/product/create_product_controller.dart';
 
-class ProductStockAndPricing extends StatelessWidget {
-  const ProductStockAndPricing({super.key});
+class EditProductStockAndPricing extends StatelessWidget {
+  const EditProductStockAndPricing({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = CreateProductController.instance;
+  Widget build(BuildContext context)  {
+    final controller = EditProductController.instance;
 
     return Obx(
           () =>

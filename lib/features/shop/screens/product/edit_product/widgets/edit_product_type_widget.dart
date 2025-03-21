@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/create_product_controller.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
+import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 
-class ProductTypeWidget extends StatelessWidget {
-  const ProductTypeWidget({super.key});
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/sizes.dart';
+
+class EditProductTypeWidget extends StatelessWidget {
+  const EditProductTypeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = CreateProductController.instance;
-
+    final controller = EditProductController.instance;
     return Obx(
-      ()=> Row(
+          ()=> Row(
         children: [
           Text(
             'Product Type',

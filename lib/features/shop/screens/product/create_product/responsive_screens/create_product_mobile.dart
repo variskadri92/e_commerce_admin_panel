@@ -6,6 +6,7 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/device/device_utility.dart';
+import '../../../../controllers/product/product_images_controller.dart';
 import '../widgets/additional_images.dart';
 import '../widgets/attributes_widget.dart';
 import '../widgets/bottom_navigation_widget.dart';
@@ -23,6 +24,8 @@ class CreateProductMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductImagesController());
+
     return Scaffold(
       bottomNavigationBar: ProductBottomNavigationWidget(),
       body: SingleChildScrollView(
@@ -114,11 +117,7 @@ class CreateProductMobile extends StatelessWidget {
                     SizedBox(
                       height: TSizes.spaceBtwItems,
                     ),
-                    ProductAdditionalImages(
-                      additionalProductImagesURLs: RxList.empty(),
-                      onTapToAddImages: () {},
-                      onTapToRemoveImages: (index) {},
-                    ),
+                    ProductAdditionalImages(),
                   ],
                 ),
               ),

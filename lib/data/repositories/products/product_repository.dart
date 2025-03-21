@@ -100,7 +100,7 @@ class ProductRepository extends GetxController {
       String productId) async {
     try {
       final snapshot = await _db
-          .collection('Products')
+          .collection('ProductCategory')
           .where('productId', isEqualTo: productId)
           .get();
       final result = snapshot.docs

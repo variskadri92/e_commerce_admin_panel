@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/image_uploader.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 
+import '../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../common/widgets/images/image_uploader.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/product/product_images_controller.dart';
 
-class ProductAdditionalImages extends StatelessWidget {
-  const ProductAdditionalImages({super.key});
+class EditProductAdditionallllImages extends StatelessWidget {
+  const EditProductAdditionallllImages({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProductImagesController());
+    final controller = ProductImagesController.instance;
 
     return SizedBox(
       height: 300,
@@ -23,20 +23,13 @@ class ProductAdditionalImages extends StatelessWidget {
         children: [
           // Main Box for First Image
           Expanded(
-            child: Obx(() => GestureDetector(
+            child: GestureDetector(
               onTap: () => controller.selectMultipleProductImages(),
               child: TRoundedContainer(
                 showBorder: true,
                 borderColor: TColors.grey,
                 child: Center(
-                  child: controller.additionalProductImagesUrls.isNotEmpty
-                      ? Image.network(
-                    controller.additionalProductImagesUrls.first, // First image as main
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  )
-                      : Column(
+                  child:  Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
@@ -50,7 +43,7 @@ class ProductAdditionalImages extends StatelessWidget {
                 ),
               ),
             )),
-          ),
+
 
           // Section to Display Remaining Uploaded Images
           Expanded(
@@ -86,7 +79,7 @@ class ProductAdditionalImages extends StatelessWidget {
 
   Widget _uploadedImagesOrEmptyList(ProductImagesController controller) {
     // Show only remaining images (excluding the first one)
-    return controller.additionalProductImagesUrls.length > 1
+    return controller.additionalProductImagesUrls.isNotEmpty
         ? _uploadedImages(controller)
         : emptyList();
   }
@@ -107,10 +100,10 @@ class ProductAdditionalImages extends StatelessWidget {
   ListView _uploadedImages(ProductImagesController controller) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
-      itemCount: controller.additionalProductImagesUrls.length - 1, // Excluding the first image
+      itemCount: controller.additionalProductImagesUrls.value.length , // Excluding the first image
       separatorBuilder: (context, index) => SizedBox(width: TSizes.spaceBtwItems / 2),
       itemBuilder: (context, index) {
-        final image = controller.additionalProductImagesUrls[index + 1]; // Skip first image
+        final image = controller.additionalProductImagesUrls[index]; // Skip first image
         return TImageUploader(
           top: 0,
           right: 0,
@@ -121,7 +114,7 @@ class ProductAdditionalImages extends StatelessWidget {
           image: image,
           imageType: ImageType.network,
           icon: Iconsax.trash,
-          onIconButtonPressed: () => controller.removeImage(index + 1), // Skip first image
+          onIconButtonPressed: () => controller.removeImage(index), // Skip first image
         );
       },
     );

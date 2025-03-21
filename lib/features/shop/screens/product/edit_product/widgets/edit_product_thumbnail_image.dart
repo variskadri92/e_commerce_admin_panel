@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
+import 'package:get/get.dart';
 
+import '../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../common/widgets/images/t_rounded_image.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/product/product_images_controller.dart';
 
-class ProductThumbnailImage extends StatelessWidget {
-  const ProductThumbnailImage({super.key});
+class EditProductThumbnailImage extends StatelessWidget {
+  const EditProductThumbnailImage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductImagesController());
     return TRoundedContainer(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         //Product Thumbnail Text
@@ -36,11 +39,13 @@ class ProductThumbnailImage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: TRoundedImage(
-                        width: 200,
-                        height: 220,
-                        image: TImages.defaultSingleImageIcon,
-                        imageType: ImageType.asset,
+                      child: Obx(
+                            ()=> TRoundedImage(
+                          width: 200,
+                          height: 220,
+                          image: controller.selectedThumbnailImageUrl.value ?? TImages.defaultSingleImageIcon,
+                          imageType: controller.selectedThumbnailImageUrl.value == null ? ImageType.asset : ImageType.network,
+                        ),
                       ),
                     ),
                   ],
@@ -50,7 +55,7 @@ class ProductThumbnailImage extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: ()=> controller.selectThumbnailImage(),
                     child: Text('Thumbnail'),
                   ),
                 ),

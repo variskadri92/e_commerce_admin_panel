@@ -1,6 +1,8 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart%20%20';
 import 'package:yt_ecommerce_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/models/image_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/models/product_variation_model.dart';
 
 class ProductImagesController extends GetxController {
   static ProductImagesController get instance => Get.find();
@@ -34,11 +36,27 @@ class ProductImagesController extends GetxController {
     //Handle the selected image
     if (selectedImages != null && selectedImages.isNotEmpty) {
     additionalProductImagesUrls.assignAll(selectedImages.map((e)=> e.url));
+
     }
   }
 
   ///Function to remove Product image
   Future<void> removeImage(int index) async {
     additionalProductImagesUrls.removeAt(index);
+  }
+
+  void selectVariationImage(ProductVariationModel variation) async{
+    final controller = Get.put(MediaController());
+    List<ImageModel>? selectedImages = await controller.selectImagesFromMedia();
+
+    //Handle the selected image
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      //Set the selected image to main image or perform any other action
+      ImageModel selectedImage = selectedImages.first;
+
+      //Update the main image URL
+      variation.image.value = selectedImage.url;
+    }
+
   }
 }

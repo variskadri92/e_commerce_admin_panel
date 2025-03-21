@@ -24,6 +24,9 @@ class MediaController extends GetxController {
   static MediaController get instance => Get.find();
 
   final RxBool loading = false.obs;
+  var loadedPreviousSelection = false.obs; // Use an observable variable
+  RxList<ImageModel> selectedImages = <ImageModel>[].obs;
+
 
   final int initialLoadCount = 20;
   final int loadMoreCount = 25;
@@ -115,15 +118,11 @@ class MediaController extends GetxController {
   }
 
   Future<void> selectLocalImages() async {
-    print('Enter');
     final files = await dropzoneController
         .pickFiles(multiple: true, mime: ['image/jpeg', 'image/png']);
-    print('Files selected ${files.length}');
 
     if (files.isNotEmpty) {
-      print('Files selected ${files.length}');
       for (var file in files) {
-        print('Files selected ${files.length}');
 
         final bytes = await dropzoneController.getFileData(file);
 

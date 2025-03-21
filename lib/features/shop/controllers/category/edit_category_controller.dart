@@ -18,7 +18,7 @@ class EditCategoryController extends GetxController {
   RxString imageURL = ''.obs;
   final isFeatured = false.obs;
   final name = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final editFormKey = GlobalKey<FormState>();
 
 
 
@@ -70,7 +70,7 @@ class EditCategoryController extends GetxController {
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!editFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }

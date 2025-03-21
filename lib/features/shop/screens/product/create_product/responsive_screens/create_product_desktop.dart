@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_images_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/additional_images.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/brand_widget.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/create_product/widgets/categories_widget.dart';
@@ -23,6 +24,8 @@ class CreateProductDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductImagesController());
+
     return Scaffold(
       bottomNavigationBar: ProductBottomNavigationWidget(),
       body: SingleChildScrollView(
@@ -123,11 +126,7 @@ class CreateProductDesktop extends StatelessWidget {
                             SizedBox(
                               height: TSizes.spaceBtwItems,
                             ),
-                            ProductAdditionalImages(
-                              additionalProductImagesURLs: RxList.empty(),
-                              onTapToAddImages: () {},
-                              onTapToRemoveImages: (index) {},
-                            ),
+                            ProductAdditionalImages(),
                           ],
                         ),
                       ),

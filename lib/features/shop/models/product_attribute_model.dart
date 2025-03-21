@@ -15,6 +15,7 @@ class ProductAttributeModel {
     final data = document;
 
     if (data.isEmpty) return ProductAttributeModel();
+
     return ProductAttributeModel(
       name: data.containsKey('name') ? data['name'] : '',
       values: List<String>.from(data['values']),

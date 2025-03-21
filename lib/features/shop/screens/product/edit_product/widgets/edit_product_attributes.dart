@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/create_product_controller.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_attributes_controller.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/models/product_attribute_model.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
-import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 
+import '../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../common/widgets/images/t_rounded_image.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../utils/device/device_utility.dart';
 import '../../../../../../utils/validators/validation.dart';
+import '../../../../controllers/product/product_attributes_controller.dart';
 import '../../../../controllers/product/product_variations_controller.dart';
 
-class ProductAttributes extends StatelessWidget {
-  const ProductAttributes({super.key});
+class EditProductAttributes extends StatelessWidget {
+  const EditProductAttributes({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final productController = CreateProductController.instance;
+    final productController = EditProductController.instance;
     final attributeController = Get.put(ProductAttributesController());
     final variationController = Get.put(ProductVariationsController());
     return Column(
@@ -30,15 +29,15 @@ class ProductAttributes extends StatelessWidget {
         Obx(() {
           return productController.productType.value == ProductType.single
               ? Column(
-                  children: [
-                    Divider(
-                      color: TColors.primaryBackground,
-                    ),
-                    SizedBox(
-                      height: TSizes.spaceBtwSections,
-                    ),
-                  ],
-                )
+            children: [
+              Divider(
+                color: TColors.primaryBackground,
+              ),
+              SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+            ],
+          )
               : SizedBox.shrink();
         }),
 
@@ -56,35 +55,35 @@ class ProductAttributes extends StatelessWidget {
           key: attributeController.attributesFormKey,
           child: TDeviceUtils.isDesktopScreen(context)
               ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: _buildAttributeName(attributeController)),
-                    SizedBox(
-                      width: TSizes.spaceBtwItems,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: _buildAttributeTextField(attributeController),
-                    ),
-                    SizedBox(
-                      width: TSizes.spaceBtwItems,
-                    ),
-                    _buildAddAttributeButton(attributeController),
-                  ],
-                )
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: _buildAttributeName(attributeController)),
+              SizedBox(
+                width: TSizes.spaceBtwItems,
+              ),
+              Expanded(
+                flex: 2,
+                child: _buildAttributeTextField(attributeController),
+              ),
+              SizedBox(
+                width: TSizes.spaceBtwItems,
+              ),
+              _buildAddAttributeButton(attributeController),
+            ],
+          )
               : Column(
-                  children: [
-                    _buildAttributeName(attributeController),
-                    SizedBox(
-                      height: TSizes.spaceBtwItems,
-                    ),
-                    _buildAttributeTextField(attributeController),
-                    SizedBox(
-                      height: TSizes.spaceBtwItems,
-                    ),
-                    _buildAddAttributeButton(attributeController),
-                  ],
-                ),
+            children: [
+              _buildAttributeName(attributeController),
+              SizedBox(
+                height: TSizes.spaceBtwItems,
+              ),
+              _buildAttributeTextField(attributeController),
+              SizedBox(
+                height: TSizes.spaceBtwItems,
+              ),
+              _buildAddAttributeButton(attributeController),
+            ],
+          ),
         ),
         SizedBox(
           height: TSizes.spaceBtwSections,
@@ -112,7 +111,7 @@ class ProductAttributes extends StatelessWidget {
 
         //Generate Variations Button
         Obx(
-          ()=> productController.productType.value == ProductType.variable && variationController.productVariations.isEmpty? Center(
+              ()=> productController.productType.value == ProductType.variable && variationController.productVariations.isEmpty? Center(
             child: SizedBox(
               width: 200,
               child: ElevatedButton.icon(

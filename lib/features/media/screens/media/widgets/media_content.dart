@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/loaders/animation_loader.dart';
@@ -16,149 +16,77 @@ import '../../../controllers/media_controller.dart';
 import 'media_folder_dropdown.dart';
 
 class MediaContent extends StatelessWidget {
-  MediaContent(
-      {super.key,
-      required this.allowSelection,
-      required this.allowMultipleSelection,
-      this.alreadySelectedUrls,
-      this.onImagesSelected});
+  MediaContent({
+    super.key,
+    required this.allowSelection,
+    required this.allowMultipleSelection,
+    this.alreadySelectedUrls,
+    this.onImagesSelected,
+  });
 
   final bool allowSelection;
   final bool allowMultipleSelection;
   final List<String>? alreadySelectedUrls;
-  final List<ImageModel> selectedImages = [];
   final Function(List<ImageModel> selectedImages)? onImagesSelected;
 
   @override
   Widget build(BuildContext context) {
-    bool loadedPreviousSelection = false;
-    final controller = MediaController.instance;
+    final MediaController controller = MediaController.instance;
     return TRoundedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ///Media Images Header
+          /// Media Images Header
           Row(
             children: [
               Row(
                 children: [
-                  //Folders Dropdown
+                  // Folders Dropdown
                   Text(
                     'Select Folder',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  SizedBox(
-                    width: TSizes.spaceBtwItems,
-                  ),
+                  const SizedBox(width: TSizes.spaceBtwItems),
                   MediaFolderDropdown(
                     onChanged: (MediaCategory? newValue) {
                       if (newValue != null) {
                         controller.selectedPath.value = newValue;
                         controller.getMediaImages();
+                        // Clear selections when folder changes
+                        controller.selectedImages.clear();
+                        controller.loadedPreviousSelection.value = false;
                       }
                     },
                   ),
                 ],
               ),
-              if (allowSelection) buildAddSelectedImagesButton(),
+              if (allowSelection) _buildSelectionButtons(controller),
             ],
           ),
-          SizedBox(
-            height: TSizes.spaceBtwSections,
-          ),
+          const SizedBox(height: TSizes.spaceBtwSections),
 
-          ///Show Media
+          /// Show Media
           Obx(() {
-            //Get the selected category
-            List<ImageModel> images = _getImagesForSelectedCategory(controller);
+            final images = _getImagesForSelectedCategory(controller);
 
-            //Load Selected Images from the already selected images only once otherwise
-            //on Obx rebuild UI first images will be selected then will auto uncheck
-            if (!loadedPreviousSelection) {
-              if(alreadySelectedUrls != null && alreadySelectedUrls!.isNotEmpty){
-                //Convert already selected urls to A Set for faster lookup
-                final selectedUrlsSet = Set<String>.from(alreadySelectedUrls!);
-
-                for(var image in images){
-                  image.isSelected.value = selectedUrlsSet.contains(image.url);
-                  if(image.isSelected.value){
-                    selectedImages.add(image);
-                  }
-                }
-              }else{
-                //If already selected urls is null or empty, set all images unslected
-                for(var image in images){
-                  image.isSelected.value = false;
-                }
-              }
-              loadedPreviousSelection = true;
+            /// Initialize selections WHEN IMAGES ARE AVAILABLE
+            if (images.isNotEmpty && !controller.loadedPreviousSelection.value) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _initializeSelections(controller, images);
+                controller.loadedPreviousSelection.value = true;
+              });
             }
 
-            //Loader
             if (controller.loading.value && images.isEmpty) {
               return const TLoaderAnimation();
             }
 
-            //Empty Widget
             if (images.isEmpty) return _buildEmptyAnimationWidget(context);
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: TSizes.spaceBtwItems / 2,
-                  runSpacing: TSizes.spaceBtwItems / 2,
-                  children: images
-                      .map(
-                        (image) => GestureDetector(
-                          onTap: () => Get.dialog(ViewImagePopup(
-                            image: image,
-                          )),
-                          child: SizedBox(
-                            height: 180,
-                            width: 140,
-                            child: Column(
-                              children: [
-                                allowSelection ?_buildListWithCheckbox(image): _buildSimpleList(image),
-                                Expanded(
-                                    child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: TSizes.sm),
-                                  child: Text(
-                                    image.filename,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-
-                ///Load more Media Button
-                if (!controller.loading.value)
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: TSizes.buttonWidth,
-                          child: ElevatedButton.icon(
-                            onPressed: () => controller.loadMoreMediaImages(),
-                            label: Text('Load More'),
-                            icon: Icon(Iconsax.arrow_down),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                _buildImageGrid(images),
+                _buildLoadMoreButton(controller),
               ],
             );
           }),
@@ -167,37 +95,158 @@ class MediaContent extends StatelessWidget {
     );
   }
 
-  List<ImageModel> _getImagesForSelectedCategory(MediaController controller) {
-    List<ImageModel> images = [];
-    if (controller.selectedPath.value == MediaCategory.banners) {
-      //print(controller.allBannerImages);
-      images = controller.allBannerImages
-          .where((image) => image.url.isNotEmpty)
-          .toList();
-    } else if (controller.selectedPath.value == MediaCategory.brands) {
-      images = controller.allBrandImages
-          .where((image) => image.url.isNotEmpty)
-          .toList();
-    } else if (controller.selectedPath.value == MediaCategory.categories &&
-        controller.allCategoryImages.isNotEmpty) {
-      images = controller.allCategoryImages
-          .where((image) => image.url.isNotEmpty)
-          .toList();
-    } else if (controller.selectedPath.value == MediaCategory.products) {
-      images = controller.allProductImages
-          .where((image) => image.url.isNotEmpty)
-          .toList();
-    } else if (controller.selectedPath.value == MediaCategory.users) {
-      images = controller.allUserImages
-          .where((image) => image.url.isNotEmpty)
-          .toList();
+  void _initializeSelections(MediaController controller, List<ImageModel> images) {
+    controller.selectedImages.clear();
+    if (alreadySelectedUrls != null && alreadySelectedUrls!.isNotEmpty) {
+      final selectedUrlsSet = alreadySelectedUrls!.toSet();
+      for (var image in images) {
+        image.isSelected.value = selectedUrlsSet.contains(image.url);
+        if (image.isSelected.value) {
+          controller.selectedImages.add(image);
+        }
+      }
     }
-    return images;
+    controller.update();
+  }
+
+  Widget _buildImageGrid(List<ImageModel> images) {
+    return Wrap(
+      alignment: WrapAlignment.start,
+      spacing: TSizes.spaceBtwItems / 2,
+      runSpacing: TSizes.spaceBtwItems / 2,
+      children: images.map((image) => _buildImageItem(image)).toList(),
+    );
+  }
+
+  Widget _buildImageItem(ImageModel image) {
+    return GestureDetector(
+      onTap: () => Get.dialog(ViewImagePopup(image: image)),
+      child: SizedBox(
+        height: 180,
+        width: 140,
+        child: Column(
+          children: [
+            allowSelection ? _buildListWithCheckbox(image) : _buildSimpleList(image),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: TSizes.sm),
+                child: Text(
+                  image.filename,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListWithCheckbox(ImageModel image) {
+    return Stack(
+      children: [
+        TRoundedImage(
+          height: 140,
+          width: 140,
+          padding: TSizes.sm,
+          image: image.url,
+          imageType: ImageType.network,
+          margin: TSizes.spaceBtwItems / 2,
+          backgroundColor: TColors.primaryBackground,
+        ),
+        Positioned(
+          top: TSizes.md,
+          right: TSizes.md,
+          child: Obx(() => Checkbox(
+            value: image.isSelected.value,
+            onChanged: allowSelection ? (selected) {
+              if (selected != null) {
+                image.isSelected.value = selected;
+                if (selected) {
+                  if (!allowMultipleSelection) {
+                    // Clear previous selections
+                    for (var img in MediaController.instance.selectedImages) {
+                      img.isSelected.value = false;
+                    }
+                    MediaController.instance.selectedImages.clear();
+                  }
+                  MediaController.instance.selectedImages.add(image);
+                } else {
+                  MediaController.instance.selectedImages.remove(image);
+                }
+              }
+            } : null,
+          )),
+        )
+      ],
+    );
+  }
+
+  Widget _buildSelectionButtons(MediaController controller) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 120,
+          child: OutlinedButton.icon(
+            onPressed: () => Get.back(),
+            label: const Text('Close'),
+            icon: const Icon(Iconsax.close_circle),
+          ),
+        ),
+        const SizedBox(width: TSizes.spaceBtwItems),
+        SizedBox(
+          width: 120,
+          child: ElevatedButton.icon(
+            icon: const Icon(Iconsax.image),
+            onPressed: () => Get.back(result: controller.selectedImages),
+            label: const Text('Add'),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildLoadMoreButton(MediaController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: TSizes.buttonWidth,
+            child: ElevatedButton.icon(
+              onPressed: () => controller.loadMoreMediaImages(),
+              label: const Text('Load More'),
+              icon: const Icon(Iconsax.arrow_down),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  List<ImageModel> _getImagesForSelectedCategory(MediaController controller) {
+    switch (controller.selectedPath.value) {
+      case MediaCategory.banners:
+        return controller.allBannerImages.where((image) => image.url.isNotEmpty).toList();
+      case MediaCategory.brands:
+        return controller.allBrandImages.where((image) => image.url.isNotEmpty).toList();
+      case MediaCategory.categories:
+        return controller.allCategoryImages.where((image) => image.url.isNotEmpty).toList();
+      case MediaCategory.products:
+        return controller.allProductImages.where((image) => image.url.isNotEmpty).toList();
+      case MediaCategory.users:
+        return controller.allUserImages.where((image) => image.url.isNotEmpty).toList();
+      default:
+        return [];
+    }
   }
 
   Widget _buildEmptyAnimationWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: TSizes.lg * 3),
+      padding: const EdgeInsets.symmetric(vertical: TSizes.lg * 3),
       child: TAnimationLoaderWidget(
         width: 300,
         height: 300,
@@ -217,74 +266,6 @@ class MediaContent extends StatelessWidget {
       imageType: ImageType.network,
       margin: TSizes.spaceBtwItems / 2,
       backgroundColor: TColors.primaryBackground,
-    );
-  }
-
-  Widget _buildListWithCheckbox(ImageModel image) {
-    return Stack(children: [
-      TRoundedImage(
-        height: 140,
-        width: 140,
-        padding: TSizes.sm,
-        image: image.url,
-        imageType: ImageType.network,
-        margin: TSizes.spaceBtwItems / 2,
-        backgroundColor: TColors.primaryBackground,
-      ),
-      Positioned(
-          top: TSizes.md,
-          right: TSizes.md,
-          child: Obx(() => Checkbox(
-                value: image.isSelected.value,
-                onChanged: (selected) {
-                  if (selected != null) {
-                    image.isSelected.value = selected;
-
-                    if (selected) {
-                      if (!allowMultipleSelection) {
-                        //if multiple selection is not allowed, clear the selected images
-                        for (var otherImage in selectedImages) {
-                          if (otherImage != image) {
-                            otherImage.isSelected.value = false;
-                          }
-                        }
-                        selectedImages.clear();
-                      }
-                      selectedImages.add(image);
-                    } else {
-                      selectedImages.remove(image);
-                    }
-                  }
-                },
-              )))
-    ]);
-  }
-
-  Widget buildAddSelectedImagesButton() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        //Close Button
-        SizedBox(
-          width: 120,
-          child: OutlinedButton.icon(
-            onPressed: () => Get.back(),
-            label: Text('Close'),
-            icon: Icon(Iconsax.close_circle),
-          ),
-        ),
-        SizedBox(
-          width: TSizes.spaceBtwItems,
-        ),
-        SizedBox(
-          width: 120,
-          child: ElevatedButton.icon(
-            icon: Icon(Iconsax.image),
-            onPressed: () => Get.back(result: selectedImages),
-            label: Text('Add'),
-          ),
-        )
-      ],
     );
   }
 }

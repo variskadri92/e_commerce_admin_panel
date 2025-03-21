@@ -15,16 +15,15 @@ class ProductModel {
   double salePrice;
   String thumbnail;
   bool? isFeatured;
-  String? categoryId;
   BrandModel? brand;
-  String? description;
+  String? categoryId;
   String productType;
+  String? description;
   List<String>? images;
   int soldQuantity;
-
   List<ProductAttributeModel>? productAttributes;
-
   List<ProductVariationModel>? productVariations;
+  String? productVisibility;
 
 
   String get formattedDate => TFormatter.formatDate(date);
@@ -48,6 +47,7 @@ class ProductModel {
     this.date,
     this.productAttributes,
     this.productVariations,
+    this.productVisibility,
   });
 
 
@@ -65,35 +65,39 @@ class ProductModel {
       'sku': sku,
       'title': title,
       'stock': stock,
+      'date' : date,
       'price': price,
       'images': images ?? [],
       'thumbnail': thumbnail,
       'salePrice': salePrice,
       'isFeatured': isFeatured,
       'categoryId': categoryId,
-      'brandId': brand!.toJson(),
+      'brand': brand!.toJson(),
       'description': description,
       'productType': productType,
       'soldQuantity': soldQuantity,
-      'date': date,
       'productAttributes': productAttributes != null
           ? productAttributes!.map((e) => e.toJson()).toList()
           : [],
       'productVariations': productVariations != null
           ? productVariations!.map((e) => e.toJson()).toList()
-          : []
+          : [],
+      'productVisibility': productVisibility ?? 'published',
+
     };
   }
 
   factory ProductModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
+    print(data);
     return ProductModel(
       id: document.id,
       title: data['title'],
       price: double.parse((data['price'] ?? 0.0).toString()),
       sku: data['sku'],
       stock: data['stock'] ?? 0,
+      date: data['date'].toDate() ?? DateTime.now(),
       soldQuantity:
           data.containsKey('soldQuantity') ? data['soldQuantity'] ?? 0 : 0,
       isFeatured: data['isFeatured'] ?? false,
@@ -110,6 +114,7 @@ class ProductModel {
       productVariations: (data['productVariations'] as List<dynamic>)
           .map((e) => ProductVariationModel.fromSnapshot(e))
           .toList(),
+      productVisibility: data['productVisibility'] ?? 'published',
     );
   }
 
@@ -138,6 +143,7 @@ class ProductModel {
       productVariations: (data['productVariations'] as List<dynamic>)
           .map((e) => ProductVariationModel.fromSnapshot(e))
           .toList(),
+      productVisibility: data['productVisibility'] ?? 'published',
     );
   }
 }

@@ -61,8 +61,12 @@ class ProductsRows extends DataTableSource {
                   width: 35,
                   height: 35,
                   padding: TSizes.xs,
-                  image: product.brand != null ? product.brand!.image : TImages.defaultImage,
-                  imageType:product.brand != null ?ImageType.network : ImageType.asset,
+                  image: product.brand != null
+                      ? product.brand!.image
+                      : TImages.defaultImage,
+                  imageType: product.brand != null
+                      ? ImageType.network
+                      : ImageType.asset,
                   borderRadius: TSizes.borderRadiusMd,
                   backgroundColor: TColors.primaryBackground,
                 ),
@@ -71,7 +75,7 @@ class ProductsRows extends DataTableSource {
                 ),
                 Flexible(
                     child: Text(
-                      product.brand != null ? product.brand!.name : '',
+                  product.brand != null ? product.brand!.name : '',
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(Get.context!)
                       .textTheme
@@ -84,9 +88,11 @@ class ProductsRows extends DataTableSource {
           DataCell(Text('\$${controller.getProductPrice(product)}')),
           DataCell(Text(product.formattedDate)),
           DataCell(TTableActionButtons(
-            onEditPressed: () => Get.toNamed(Routes.editProducts,
-                arguments: product),
-            onDeletePressed: ()=> controller.confirmAndDeleteItem(product),
+            onEditPressed: () {
+              Get.toNamed(Routes.editProducts, arguments: product);
+
+            },
+            onDeletePressed: () => controller.confirmAndDeleteItem(product),
           )),
         ]);
   }

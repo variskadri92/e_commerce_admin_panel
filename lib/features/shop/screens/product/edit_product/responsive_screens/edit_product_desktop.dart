@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/models/product_model.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/additional_images.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/brand_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/categories_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/product_type_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/stock_pricing_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/thumbnail_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/title_description.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/variations_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/Edit_product/widgets/visibility_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/attributes_widget.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/bottom_navigation_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_additional_images.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_attributes.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_bottom_navigation_widget.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_brand.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_categories.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_stock_and_pricing.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_thumbnail_image.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_variations.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_product/widgets/edit_product_visibilty.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/device/device_utility.dart';
+import '../../../../models/product_model.dart';
+import '../widgets/edit_product_title_and_description.dart';
+import '../widgets/edit_product_type_widget.dart';
 
 
 class EditProductDesktop extends StatelessWidget {
@@ -28,7 +27,7 @@ class EditProductDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: ProductBottomNavigationWidget(),
+      bottomNavigationBar: EditProductBottomNavigationWidget(product: product,),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(TSizes.defaultSpace),
@@ -53,7 +52,7 @@ class EditProductDesktop extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Basic info
-                          ProductTitleAndDescription(),
+                          EditProductTitleAndDescription(),
                           SizedBox(
                             height: TSizes.spaceBtwSections,
                           ),
@@ -75,19 +74,19 @@ class EditProductDesktop extends StatelessWidget {
                                   ),
 
                                   //Product Type
-                                  ProductTypeWidget(),
+                                  EditProductTypeWidget(),
                                   SizedBox(
                                     height: TSizes.spaceBtwInputFields,
                                   ),
 
                                   //Stock
-                                  ProductStockAndPricing(),
+                                  EditProductStockAndPricing(),
                                   SizedBox(
                                     height: TSizes.spaceBtwSections,
                                   ),
 
                                   //Attributes
-                                  ProductAttributes(),
+                                  EditProductAttributes(),
                                   SizedBox(
                                     height: TSizes.spaceBtwSections,
                                   ),
@@ -98,7 +97,7 @@ class EditProductDesktop extends StatelessWidget {
                           ),
 
                           //Variations
-                          ProductVariations(),
+                          EditProductVariations(),
                         ],
                       )),
                   SizedBox(
@@ -110,7 +109,7 @@ class EditProductDesktop extends StatelessWidget {
                       child: Column(
                     children: [
                       //Product Thumbnail
-                      ProductThumbnailImage(),
+                      EditProductThumbnailImage(),
                       SizedBox(
                         height: TSizes.spaceBtwSections,
                       ),
@@ -127,11 +126,7 @@ class EditProductDesktop extends StatelessWidget {
                             SizedBox(
                               height: TSizes.spaceBtwItems,
                             ),
-                            ProductAdditionalImages(
-                              additionalProductImagesURLs: RxList.empty(),
-                              onTapToAddImages: () {},
-                              onTapToRemoveImages: (index) {},
-                            ),
+                            EditProductAdditionallllImages(),
                           ],
                         ),
                       ),
@@ -140,19 +135,19 @@ class EditProductDesktop extends StatelessWidget {
                       ),
 
                       //Product Brand
-                      ProductBrand(),
+                      EditProductBrand(),
                       SizedBox(
                         height: TSizes.spaceBtwSections,
                       ),
 
                       //Product Categories
-                      ProductCategories(),
+                      EditProductCategories(product: product),
                       SizedBox(
                         height: TSizes.spaceBtwSections,
                       ),
 
                       //Product Visibility
-                      ProductVisibilityWidget(),
+                      EditProductVisibility(),
                       SizedBox(
                         height: TSizes.spaceBtwSections,
                       ),
