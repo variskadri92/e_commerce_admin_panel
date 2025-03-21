@@ -90,7 +90,6 @@ class ProductsRows extends DataTableSource {
           DataCell(TTableActionButtons(
             onEditPressed: () {
               Get.toNamed(Routes.editProducts, arguments: product);
-
             },
             onDeletePressed: () => controller.confirmAndDeleteItem(product),
           )),

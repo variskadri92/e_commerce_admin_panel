@@ -12,7 +12,9 @@ class EditProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EditProductController());
     final product = Get.arguments;
-    controller.initProductData(product);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.initProductData(product);
+    });
 
     return SiteLayout(
       desktop: EditProductDesktop(

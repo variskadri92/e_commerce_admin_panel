@@ -186,7 +186,6 @@ class CreateProductController extends GetxController {
     brandTextField.clear();
     selectedBrand.value = null;
     selectedCategories.clear();
-    ProductImagesController.instance.additionalProductImagesUrls.clear();
     ProductImagesController.instance.selectedThumbnailImageUrl.value = '';
     // ProductVariationsController.instance.resetAllValues();
     // ProductAttributesController.instance.resetProductAttributes();

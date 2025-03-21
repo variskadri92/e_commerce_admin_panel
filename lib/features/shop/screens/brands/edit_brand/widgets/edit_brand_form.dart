@@ -21,7 +21,10 @@ class EditBrandForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(EditBrandController());
-    controller.initData(brand);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.initData(brand);
+    });
+
     return TRoundedContainer(
       width: 500,
       padding: EdgeInsets.all(TSizes.defaultSpace),

@@ -15,7 +15,7 @@ class ProductAdditionalImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProductImagesController());
+    final controller = ProductImagesController.instance;
 
     return SizedBox(
       height: 300,
@@ -23,34 +23,27 @@ class ProductAdditionalImages extends StatelessWidget {
         children: [
           // Main Box for First Image
           Expanded(
-            child: Obx(() => GestureDetector(
-              onTap: () => controller.selectMultipleProductImages(),
-              child: TRoundedContainer(
-                showBorder: true,
-                borderColor: TColors.grey,
-                child: Center(
-                  child: controller.additionalProductImagesUrls.isNotEmpty
-                      ? Image.network(
-                    controller.additionalProductImagesUrls.first, // First image as main
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  )
-                      : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        TImages.defaultMultiImageIcon,
-                        width: 50,
-                        height: 50,
-                      ),
-                      Text('Add Additional Product Images'),
-                    ],
+              child: GestureDetector(
+                onTap: () => controller.selectMultipleProductImages(),
+                child: TRoundedContainer(
+                  showBorder: true,
+                  borderColor: TColors.grey,
+                  child: Center(
+                    child:  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          TImages.defaultMultiImageIcon,
+                          width: 50,
+                          height: 50,
+                        ),
+                        Text('Add Additional Product Images'),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )),
-          ),
+              )),
+
 
           // Section to Display Remaining Uploaded Images
           Expanded(
@@ -86,7 +79,7 @@ class ProductAdditionalImages extends StatelessWidget {
 
   Widget _uploadedImagesOrEmptyList(ProductImagesController controller) {
     // Show only remaining images (excluding the first one)
-    return controller.additionalProductImagesUrls.length > 1
+    return controller.additionalProductImagesUrls.isNotEmpty
         ? _uploadedImages(controller)
         : emptyList();
   }
@@ -107,10 +100,10 @@ class ProductAdditionalImages extends StatelessWidget {
   ListView _uploadedImages(ProductImagesController controller) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
-      itemCount: controller.additionalProductImagesUrls.length - 1, // Excluding the first image
+      itemCount: controller.additionalProductImagesUrls.value.length , // Excluding the first image
       separatorBuilder: (context, index) => SizedBox(width: TSizes.spaceBtwItems / 2),
       itemBuilder: (context, index) {
-        final image = controller.additionalProductImagesUrls[index + 1]; // Skip first image
+        final image = controller.additionalProductImagesUrls[index]; // Skip first image
         return TImageUploader(
           top: 0,
           right: 0,
@@ -121,7 +114,7 @@ class ProductAdditionalImages extends StatelessWidget {
           image: image,
           imageType: ImageType.network,
           icon: Iconsax.trash,
-          onIconButtonPressed: () => controller.removeImage(index + 1), // Skip first image
+          onIconButtonPressed: () => controller.removeImage(index), // Skip first image
         );
       },
     );

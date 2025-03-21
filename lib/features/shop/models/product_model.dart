@@ -90,7 +90,6 @@ class ProductModel {
   factory ProductModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
-    print(data);
     return ProductModel(
       id: document.id,
       title: data['title'],

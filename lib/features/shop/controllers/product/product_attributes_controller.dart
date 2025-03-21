@@ -15,13 +15,11 @@ class ProductAttributesController extends GetxController {
       <ProductAttributeModel>[].obs;
 
   void addNewAttribute() {
-    print('enter');
 
     //Validate form
     if (!attributesFormKey.currentState!.validate()) {
       return;
     }
-    print('enter');
 
     //Add new attribute to list
     productAttributes.add(ProductAttributeModel(

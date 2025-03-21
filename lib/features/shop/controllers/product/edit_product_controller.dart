@@ -104,6 +104,7 @@ class EditProductController extends GetxController {
       update();
     } catch (e) {
       if (kDebugMode) {
+        print('error');
         print(e);
       }
     }
