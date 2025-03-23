@@ -7,7 +7,6 @@ class CartItemModel {
   String variationId;
   String? brandName;
   Map<String, String>? selectedVariation;
-  double totalAmount;
 
   CartItemModel({
     required this.productId,
@@ -18,7 +17,6 @@ class CartItemModel {
     this.variationId = '',
     this.brandName,
     this.selectedVariation,
-    this.totalAmount = 0.0,
 });
 
   ///Empty Cart
@@ -35,7 +33,6 @@ class CartItemModel {
       'variationId': variationId,
       'brandName': brandName,
       'selectedVariation': selectedVariation,
-      'totalAmount': totalAmount,
     };
   }
 
@@ -50,7 +47,6 @@ class CartItemModel {
       variationId: json['variationId'],
       brandName: json['brandName'],
       selectedVariation: json['selectedVariation'] != null ? Map<String, String>.from(json['selectedVariation']) : null,
-      totalAmount: json['totalAmount'],
     );
   }
 }
