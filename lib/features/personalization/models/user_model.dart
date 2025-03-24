@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yt_ecommerce_admin_panel/features/personalization/models/address_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/models/order_model.dart';
 import 'package:yt_ecommerce_admin_panel/utils/formatters/formatter.dart';
 
 import '../../../utils/constants/enums.dart';
@@ -13,6 +15,8 @@ class UserModel {
   AppRole role;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<OrderModel>? orders;
+  List<AddressModel>? addresses;
 
   UserModel({
     this.id,
