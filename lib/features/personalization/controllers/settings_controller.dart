@@ -15,7 +15,7 @@ class SettingsController extends GetxController {
   RxBool loading = false.obs;
   Rx<SettingsModel> settings = SettingsModel().obs;
 
-  final formKey = GlobalKey<FormState>();
+  final settingFormKey = GlobalKey<FormState>();
   final appNameController = TextEditingController();
   final taxController = TextEditingController();
   final shippingController = TextEditingController();
@@ -81,7 +81,7 @@ class SettingsController extends GetxController {
         return;
       }
 
-      if(!formKey.currentState!.validate()){
+      if(!settingFormKey.currentState!.validate()){
         loading.value = false;
         return;
       }

@@ -20,7 +20,7 @@ class SettingsForm extends StatelessWidget {
           padding:
               EdgeInsets.symmetric(vertical: TSizes.lg, horizontal: TSizes.md),
           child: Form(
-            key: controller.formKey,
+            key: controller.settingFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart%20%20';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/features/authentication/controllers/user_controller.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/validators/validation.dart';
 
@@ -9,6 +11,9 @@ class ProfileForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = UserController.instance;
+    controller.fullNameController.text = controller.user.value.fullName;
+    controller.phoneController.text = controller.user.value.phoneNumber;
     return Column(
       children: [
         TRoundedContainer(
@@ -27,6 +32,7 @@ class ProfileForm extends StatelessWidget {
 
               //First and Last name
               Form(
+                key: controller.userFormKey,
                 child: Column(
                   children: [
                     Row(
@@ -34,6 +40,7 @@ class ProfileForm extends StatelessWidget {
                         //First Name
                         Expanded(
                           child: TextFormField(
+                            controller: controller.fullNameController,
                             decoration: InputDecoration(
                                 hintText: 'First Name',
                                 label: Text('First Name'),
@@ -42,25 +49,11 @@ class ProfileForm extends StatelessWidget {
                                 'First Name', value),
                           ),
                         ),
-                        SizedBox(
-                          width: TSizes.spaceBtwItems,
-                        ),
-
-                        //Last Name
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                hintText: 'Last Name',
-                                label: Text('Last Name'),
-                                prefixIcon: Icon(Iconsax.user)),
-                            validator: (value) => TValidator.validateEmptyText(
-                                'Last Name', value),
-                          ),
-                        ),
                       ],
                     ),
-                    SizedBox(height: TSizes.spaceBtwInputFields,),
-
+                    SizedBox(
+                      height: TSizes.spaceBtwInputFields,
+                    ),
                     Row(
                       children: [
                         //Email
@@ -71,8 +64,8 @@ class ProfileForm extends StatelessWidget {
                                 label: Text('Email'),
                                 prefixIcon: Icon(Iconsax.forward)),
                             enabled: false,
-                            validator: (value) => TValidator.validateEmptyText(
-                                'Phone Number', value),
+                            initialValue:
+                                UserController.instance.user.value.email,
                           ),
                         ),
                         SizedBox(
@@ -82,6 +75,7 @@ class ProfileForm extends StatelessWidget {
                         //Phone Number
                         Expanded(
                           child: TextFormField(
+                            controller: controller.phoneController,
                             decoration: InputDecoration(
                                 hintText: 'Phone Number',
                                 label: Text('Phone Number'),
@@ -95,12 +89,20 @@ class ProfileForm extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: TSizes.spaceBtwSections,),
-              
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(onPressed: (){}, child: Text('Update Profile'))
-              )
+                height: TSizes.spaceBtwSections,
+              ),
+
+              SizedBox(
+                  width: double.infinity,
+                  child: Obx(() => controller.loading.value
+                      ? CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2)
+                      : ElevatedButton(
+                          onPressed: () => controller.loading.value
+                              ? () {}
+                              : controller.updateUserInformation(),
+                          child: Text('Update Profile'))))
             ],
           ),
         )
