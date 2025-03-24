@@ -85,7 +85,7 @@ class UserRepository extends GetxController {
     }
   }
 
-  ///
+  ///fetch user order
   Future<List<OrderModel>> fetchUserOrders(String userId) async {
     try {
       final documentSnapshot = await _db.collection("Orders").where('userId',isEqualTo: userId).get();
