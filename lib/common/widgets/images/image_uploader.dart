@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/containers/circular_container.dart';
 
 import '../../../../../../common/widgets/icons/t_circular_icon.dart';
 import '../../../../../../common/widgets/images/t_circular_image.dart';
@@ -26,7 +27,10 @@ class TImageUploader extends StatelessWidget {
     this.bottom = 0,
     this.right,
     this.left = 0,
+    this.loading = false,
   });
+
+  final bool loading;
 
   /// Whether to display the image in a circular shape
   final bool circular;
@@ -92,13 +96,23 @@ class TImageUploader extends StatelessWidget {
           left: left,
           right: right,
           bottom: bottom,
-          child: TCircularIcon(
-            icon: icon,
-            size: TSizes.md,
-            color: Colors.white,
-            onPressed: onIconButtonPressed,
-            backgroundColor: TColors.primary.withOpacity(0.9),
-          ),
+          child: loading
+              ? TCircularContainer(
+                  width: TSizes.xl,
+                  height: TSizes.xl,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    backgroundColor: TColors.primary,
+                    color: Colors.white,
+                  ),
+                )
+              : TCircularIcon(
+                  icon: icon,
+                  size: TSizes.md,
+                  color: Colors.white,
+                  onPressed: onIconButtonPressed,
+                  backgroundColor: TColors.primary.withOpacity(0.9),
+                ),
         )
       ],
     );

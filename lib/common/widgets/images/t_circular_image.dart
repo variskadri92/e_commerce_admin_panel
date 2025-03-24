@@ -13,6 +13,7 @@ class TCircularImage extends StatelessWidget {
     super.key,
     this.width = 56,
     this.height = 56,
+    this.margin = 0,
     this.overlayColor,
     this.memoryImage,
     this.backgroundColor,
@@ -30,13 +31,14 @@ class TCircularImage extends StatelessWidget {
   final Color? overlayColor;
   final Color? backgroundColor;
   final Uint8List? memoryImage;
-  final double width, height, padding;
+  final double width, height, padding, margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
+      margin: EdgeInsets.all(margin),
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: backgroundColor ??
