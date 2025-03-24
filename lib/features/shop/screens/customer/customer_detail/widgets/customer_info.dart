@@ -33,8 +33,12 @@ class CustomerInfo extends StatelessWidget {
               TRoundedImage(
                 padding: 0,
                 backgroundColor: TColors.primaryBackground,
-                image: TImages.user,
-                imageType: ImageType.asset,
+                image: customer.profilePicture.isNotEmpty
+                    ? customer.profilePicture
+                    : TImages.user,
+                imageType: customer.profilePicture.isNotEmpty
+                    ? ImageType.network
+                    : ImageType.asset,
               ),
               const SizedBox(
                 width: TSizes.spaceBtwItems,
@@ -45,13 +49,13 @@ class CustomerInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Yash Gotrijiya',
+                      customer.fullName,
                       style: Theme.of(context).textTheme.titleLarge,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     Text(
-                      'ygotrijiya@gmail.com',
+                      customer.email,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -76,7 +80,7 @@ class CustomerInfo extends StatelessWidget {
                 width: TSizes.spaceBtwItems / 2,
               ),
               Expanded(
-                  child: Text('Yash',
+                  child: Text(customer.username,
                       style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
@@ -114,7 +118,7 @@ class CustomerInfo extends StatelessWidget {
                 width: TSizes.spaceBtwItems / 2,
               ),
               Expanded(
-                  child: Text('9999999999',
+                  child: Text(customer.phoneNumber,
                       style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
@@ -136,18 +140,23 @@ class CustomerInfo extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Last Order',style: Theme.of(context).textTheme.titleLarge,),
+                    Text(
+                      'Last Order',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     Text('7 Days Ago, #[35d435]')
                   ],
                 ),
               ),
-
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Average Order Value',style: Theme.of(context).textTheme.titleLarge,),
+                    Text(
+                      'Average Order Value',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     Text('\$345'),
                   ],
                 ),
@@ -155,7 +164,9 @@ class CustomerInfo extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: TSizes.spaceBtwItems,),
+          SizedBox(
+            height: TSizes.spaceBtwItems,
+          ),
 
           //Additional Detail continue
           Row(
@@ -165,18 +176,23 @@ class CustomerInfo extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Registered',style: Theme.of(context).textTheme.titleLarge,),
+                    Text(
+                      'Registered',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     Text(customer.formattedDate)
                   ],
                 ),
               ),
-
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Email Marketing',style: Theme.of(context).textTheme.titleLarge,),
+                    Text(
+                      'Email Marketing',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     Text('Subscribed'),
                   ],
                 ),
