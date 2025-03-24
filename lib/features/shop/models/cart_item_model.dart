@@ -22,6 +22,9 @@ class CartItemModel {
   ///Empty Cart
   static CartItemModel empty() => CartItemModel(productId: '',quantity: 0);
 
+  ///Calculate Total Amount
+  String get totalAmount => (price * quantity).toStringAsFixed(1);
+
   ///Convert a cart item to json
   Map<String, dynamic> toJson() {
     return {

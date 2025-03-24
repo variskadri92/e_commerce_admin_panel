@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/shimmers/shimmer.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/order/order_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/order_model.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
@@ -14,6 +16,8 @@ class OrderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OrderController());
+    controller.orderStatus.value = order.status;
     return TRoundedContainer(
       padding: EdgeInsets.all(TSizes.defaultSpace),
       child: Column(
@@ -58,38 +62,50 @@ class OrderInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Status'),
-                    TRoundedContainer(
-                      radius: TSizes.cardRadiusSm,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: TSizes.sm, vertical: 0),
-                      backgroundColor: THelperFunctions.getOrderStatusColor(
-                              order.status)
-                          .withOpacity(0.1),
-                      child: FittedBox(
-                        child: DropdownButton<OrderStatus>(
-                          padding: EdgeInsets.symmetric(vertical: 0),
-                          value: order.status,
-                          onChanged: (OrderStatus? newValue) {},
-                          items: OrderStatus.values.map((OrderStatus status) {
-                            return DropdownMenuItem<OrderStatus>(
-                              value: status,
-                              child: Text(
-                                status.name.capitalize.toString(),
-                                style: TextStyle(
-                                  color: THelperFunctions.getOrderStatusColor(
-                                      order.status),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
+                    Obx(
+                      () {
+                        if(controller.statusLoader.value) return TShimmerEffect(width: double.infinity, height: 55);
+                        return TRoundedContainer(
+                          radius: TSizes.cardRadiusSm,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: TSizes.sm, vertical: 0),
+                          backgroundColor:
+                              THelperFunctions.getOrderStatusColor(order.status)
+                                  .withOpacity(0.1),
+                          child: FittedBox(
+                            child: DropdownButton<OrderStatus>(
+                              padding: EdgeInsets.symmetric(vertical: 0),
+                              value: controller.orderStatus.value,
+                              onChanged: (OrderStatus? newValue) {
+                                if (newValue != null) {
+                                  controller.updateOrderStatus(order, newValue);
+                                }
+                              },
+                              items:
+                                  OrderStatus.values.map((OrderStatus status) {
+                                return DropdownMenuItem<OrderStatus>(
+                                  value: status,
+                                  child: Text(
+                                    status.name.capitalize.toString(),
+                                    style: TextStyle(
+                                      color:
+                                          THelperFunctions.getOrderStatusColor(
+                                              order.status),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: TSizes.spaceBtwItems,),
-
+              SizedBox(
+                width: TSizes.spaceBtwItems,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +118,6 @@ class OrderInfo extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
         ],

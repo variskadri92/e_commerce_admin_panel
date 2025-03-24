@@ -11,7 +11,10 @@ import 'package:yt_ecommerce_admin_panel/utils/helpers/pricing_calculator.dart';
 import '../../../../../../utils/constants/enums.dart';
 
 class OrderItems extends StatelessWidget {
-  const OrderItems({super.key, required this.order});
+  const OrderItems({
+    super.key,
+    required this.order,
+  });
 
   final OrderModel order;
 
@@ -39,10 +42,10 @@ class OrderItems extends StatelessWidget {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: order.items.length,
-            separatorBuilder: (context, index) => SizedBox(
+            separatorBuilder: (_, __) => SizedBox(
               height: TSizes.spaceBtwItems,
             ),
-            itemBuilder: (context, index) {
+            itemBuilder: (_, index) {
               final item = order.items[index];
               return Row(
                 children: [
@@ -134,7 +137,6 @@ class OrderItems extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: TSizes.spaceBtwItems),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -149,7 +151,6 @@ class OrderItems extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: TSizes.spaceBtwItems),
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -158,13 +159,12 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$${TPricingCalculator.calculateShippingCost(subTotal, '')}',
+                      '\$${order.shippingCost.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
                 ),
                 SizedBox(height: TSizes.spaceBtwItems),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -173,7 +173,25 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$${TPricingCalculator.calculateTax(subTotal, '')}',
+                      '\$${order.taxCost.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
+                ),
+                SizedBox(height: TSizes.spaceBtwItems,),
+                Divider(),
+                SizedBox(height: TSizes.spaceBtwItems,),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Text(
+                      '\$${order.totalAmount.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],

@@ -10,7 +10,10 @@ import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class OrderTransaction extends StatelessWidget {
-  const OrderTransaction({super.key, required this.order});
+  const OrderTransaction({
+    super.key,
+    required this.order,
+  });
 
   final OrderModel order;
 
@@ -49,7 +52,7 @@ class OrderTransaction extends StatelessWidget {
                           //   style: Theme.of(context).textTheme.titleLarge,
                           // ),
                           Text(
-                            'Payment by ${order.paymentMethod.capitalize} fee \$25',
+                            '${order.paymentMethod.capitalize} fee \$25',
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
@@ -73,7 +76,6 @@ class OrderTransaction extends StatelessWidget {
                   ],
                 ),
               ),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

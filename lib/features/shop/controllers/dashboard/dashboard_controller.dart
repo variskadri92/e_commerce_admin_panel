@@ -88,28 +88,28 @@ class DashboardController extends GetxController {
       status: OrderStatus.processing,
       totalAmount: 1200.0,
       orderDate: DateTime.now().subtract(const Duration(days: 2)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],
+      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [], shippingCost: 0, taxCost: 0,
     ),
     OrderModel(
       id: '0002',
       status: OrderStatus.shipped,
       totalAmount: 1100,
       orderDate: DateTime.now().subtract(const Duration(days: 1)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],
+      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
     ),
     OrderModel(
       id: '0003',
       status: OrderStatus.delivered,
       totalAmount: 120.0,
       orderDate: DateTime.now().subtract(const Duration(days: 3)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],
+      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
     ),
     OrderModel(
       id: '0004',
       status: OrderStatus.delivered,
       totalAmount: 600.0,
       orderDate: DateTime.now(),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],
+      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
     ),
   ];
 

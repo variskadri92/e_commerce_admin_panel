@@ -11,6 +11,7 @@ class OrderDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final order = Get.arguments;
+    final orderId = Get.parameters['orderId'];
     return SiteLayout(
         desktop: OrderDetailDesktop(order: order,),
         tablet: OrderDetailTablet(order: order,),

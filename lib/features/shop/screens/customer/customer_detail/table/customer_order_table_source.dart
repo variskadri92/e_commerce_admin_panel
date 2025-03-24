@@ -17,7 +17,7 @@ class CustomerOrdersRows extends DataTableSource {
         id: 'id',
         status: OrderStatus.shipped,
         totalAmount: 239.56,
-        orderDate: DateTime.now(), items: []);
+        orderDate: DateTime.now(), items: [], shippingCost: 0, taxCost: 0);
     const totalAmount = '3443.34';
     return DataRow2(
       selected: false,
