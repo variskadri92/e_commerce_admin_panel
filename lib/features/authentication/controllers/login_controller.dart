@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/authentication/authentication_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/authentication/controllers/user_controller.dart';
+import 'package:yt_ecommerce_admin_panel/features/personalization/models/setting_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/personalization/models/user_model.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/loaders.dart';
 
+import '../../../data/repositories/settings/settings_repository.dart';
 import '../../../data/repositories/user/user_repository.dart';
 import '../../../utils/helpers/network_manager.dart';
 
@@ -24,12 +26,12 @@ class LoginController extends GetxController {
   final localStorage = GetStorage();
 
   @override
-  void onInit(){
-    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? 'yashgotrijiya@gmail.com';
+  void onInit() {
+    email.text =
+        localStorage.read('REMEMBER_ME_EMAIL') ?? 'yashgotrijiya@gmail.com';
     password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? 'admin@123';
     super.onInit();
   }
-
 
   ///Handles email and password login
   Future<void> emailAndPasswordSignIn() async {
@@ -37,7 +39,6 @@ class LoginController extends GetxController {
       //Start Loading
       TFullScreenLoader.openLoadingDialog(
           'Logging into your account', TImages.docerAnimation);
-
 
       //Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -47,39 +48,41 @@ class LoginController extends GetxController {
       }
 
       //Validate Form
-      if (!loginFormKey.currentState!.validate()){
+      if (!loginFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }
 
       ///Save data if remember me
-      if(rememberMe.value){
+      if (rememberMe.value) {
         localStorage.write('REMEMBER_ME_EMAIL', email.text.trim());
         localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
+
       /// login user
-      await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(),password.text.trim());
+      await AuthenticationRepository.instance
+          .loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       ///Fetch user details and assign to user controller
       final user = await UserController.instance.fetchUserDetails();
 
-
       TFullScreenLoader.stopLoading();
 
       //If user is not admin logout and return
-      if(user.role != AppRole.admin){
+      if (user.role != AppRole.admin) {
         await AuthenticationRepository.instance.logout();
-        TLoaders.errorSnackBar(title: 'Not Authorized', message: 'You are not an admin.');
-      }else{
+        TLoaders.errorSnackBar(
+            title: 'Not Authorized', message: 'You are not an admin.');
+      } else {
         AuthenticationRepository.instance.screenRedirect();
       }
 
       //Show success message
-      TLoaders.successSnackBar(title: 'Congratulations!',message: 'You have been Logged in successfully.');
+      TLoaders.successSnackBar(
+          title: 'Congratulations!',
+          message: 'You have been Logged in successfully.');
 
       //Move to Screen
-
-
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Bad!', message: e.toString());
@@ -88,7 +91,7 @@ class LoginController extends GetxController {
 
   ///Handles registration of admin user
   Future<void> registerAdmin() async {
-    try{
+    try {
       //Start Loading
       TFullScreenLoader.openLoadingDialog(
           'Registering Admin Account...', TImages.docerAnimation);
@@ -101,8 +104,8 @@ class LoginController extends GetxController {
       }
 
       //Register user with email and password
-      await AuthenticationRepository.instance
-          .registerWithEmailAndPassword(email.text.trim(), password.text.trim());
+      await AuthenticationRepository.instance.registerWithEmailAndPassword(
+          email.text.trim(), password.text.trim());
 
       //Create admin record in Firestore
       final userRepository = Get.put(UserRepository());
@@ -111,14 +114,22 @@ class LoginController extends GetxController {
           fullName: 'Admin',
           email: email.text.trim(),
           role: AppRole.admin,
-          createdAt: DateTime.now()
+          createdAt: DateTime.now()));
+
+      //Create Settings record in Firestore
+      final settingsRepository = Get.put(SettingsRepository());
+      await settingsRepository.registerSettings(SettingsModel(
+        appLogo: '',
+        appName: 'My App',
+        taxRate: 0,
+        shippingCost: 0,
       ));
 
       //Stop Loading
       TFullScreenLoader.stopLoading();
 
       AuthenticationRepository.instance.screenRedirect();
-    }catch(e){
+    } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Error', message: e.toString());
     }
