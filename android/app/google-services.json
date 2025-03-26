@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "879663521770-anuv5208i4nrivvtsq70vqsd1fm2ffuu.apps.googleusercontent.com",
+              "client_id": "879663521770-6ui48n6dcbhlj4f8grjouv096b8hbpdm.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ecommerceuser.eCommerceUser"
+                "bundle_id": "com.example.ytEcommerceAdminPanel"
               }
             }
           ]
@@ -75,10 +75,10 @@
               "client_type": 3
             },
             {
-              "client_id": "879663521770-anuv5208i4nrivvtsq70vqsd1fm2ffuu.apps.googleusercontent.com",
+              "client_id": "879663521770-6ui48n6dcbhlj4f8grjouv096b8hbpdm.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ecommerceuser.eCommerceUser"
+                "bundle_id": "com.example.ytEcommerceAdminPanel"
               }
             }
           ]

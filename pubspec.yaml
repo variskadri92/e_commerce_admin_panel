@@ -76,8 +76,6 @@ flutter:
           weight: 300
         - asset: assets/fonts/urbanist/Urbanist-Regular.ttf
           weight: 400
-        - asset: assets/fonts/urbanist/Urbanist-Italic.ttf
-          style: italic
         - asset: assets/fonts/urbanist/Urbanist-Medium.ttf
           weight: 500
         - asset: assets/fonts/urbanist/Urbanist-MediumItalic.ttf
