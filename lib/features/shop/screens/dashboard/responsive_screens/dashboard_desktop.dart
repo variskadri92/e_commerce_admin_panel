@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_images_controller.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/order_status_graph.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
@@ -13,7 +14,7 @@ class DashboardDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProductImagesController());
+    final controller = Get.put(DashboardController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -24,45 +25,71 @@ class DashboardDesktop extends StatelessWidget {
               ///Heading
               Text('Dashboard',
                   style: Theme.of(context).textTheme.headlineLarge),
-              ElevatedButton(onPressed: ()=>controller.selectThumbnailImage(), child: Text('Single')),
-              ElevatedButton(onPressed: ()=>controller.selectMultipleProductImages(), child: Text('Multiple')),
               SizedBox(height: TSizes.spaceBtwSections),
 
               ///Cards
               Row(
                 children: [
                   Expanded(
-                      child: DashboardCard(
-                    title: 'Sales total',
-                    subtitle: '\$120,000',
-                    stats: 25,
+                      child: Obx(
+                    () => DashboardCard(
+                      context: context,
+                      headingIcon: Iconsax.note,
+                      headingIconColor: Colors.blue,
+                      headingIconBgColor: Colors.blue.withOpacity(0.1),
+                      title: 'Sales total',
+                      subtitle:
+                          '\$${controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount).toStringAsFixed(2)}',
+                      stats: 25,
+                    ),
                   )),
                   SizedBox(
                     width: TSizes.spaceBtwItems,
                   ),
                   Expanded(
-                      child: DashboardCard(
-                    title: 'Average Order Value',
-                    subtitle: '\$120',
-                    stats: 15,
+                      child: Obx(
+                    () => DashboardCard(
+                      context: context,
+                      headingIcon: Iconsax.external_drive,
+                      headingIconColor: Colors.green,
+                      headingIconBgColor: Colors.green.withOpacity(0.1),
+                      title: 'Average Order Value',
+                      subtitle:
+                          '\$${(controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) / controller.orderController.allItems.length).toStringAsFixed(2)}',
+                      stats: 15,
+                    ),
                   )),
                   SizedBox(
                     width: TSizes.spaceBtwItems,
                   ),
                   Expanded(
-                      child: DashboardCard(
-                    title: 'Total Orders',
-                    subtitle: '26',
-                    stats: 44,
+                      child: Obx(
+                    () => DashboardCard(
+                      context: context,
+                      headingIcon: Iconsax.box,
+                      headingIconColor: Colors.deepPurple,
+                      headingIconBgColor: Colors.deepPurple.withOpacity(0.1),
+                      title: 'Total Orders',
+                      subtitle:
+                          '\$${controller.orderController.allItems.length}',
+                      stats: 44,
+                    ),
                   )),
                   SizedBox(
                     width: TSizes.spaceBtwItems,
                   ),
                   Expanded(
-                      child: DashboardCard(
-                    title: 'Visitors',
-                    subtitle: '23,456',
-                    stats: 25,
+                      child: Obx(
+                    () => DashboardCard(
+                      context: context,
+                      headingIcon: Iconsax.user,
+                      headingIconColor: Colors.deepOrange,
+                      headingIconBgColor: Colors.deepOrange.withOpacity(0.1),
+                      title: 'Visitors',
+                      subtitle: controller.customerController.allItems.length
+                          .toString(),
+                      stats: 25,
+                    ),
                   )),
                 ],
               ),
@@ -90,8 +117,14 @@ class DashboardDesktop extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Recent Orders', style: Theme.of(context).textTheme.headlineSmall,),
-                              SizedBox(height: TSizes.spaceBtwSections,),
+                              Text(
+                                'Recent Orders',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              SizedBox(
+                                height: TSizes.spaceBtwSections,
+                              ),
                               DashboardOrderTable(),
                             ],
                           ),
@@ -114,7 +147,6 @@ class DashboardDesktop extends StatelessWidget {
       ),
     );
   }
-
 }
 
 // class MyData extends DataTableSource {

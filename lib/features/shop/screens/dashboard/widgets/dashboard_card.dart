@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/icons/t_circular_icon.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/texts/section_heading.dart';
@@ -15,11 +16,16 @@ class DashboardCard extends StatelessWidget {
     this.color = TColors.success,
     required this.stats,
     this.onTap,
+    required this.context,
+    required this.headingIcon,
+    required this.headingIconColor,
+    required this.headingIconBgColor,
   });
 
+  final BuildContext context;
   final String title, subtitle;
-  final IconData icon;
-  final Color color;
+  final IconData icon, headingIcon;
+  final Color color, headingIconColor, headingIconBgColor;
   final int stats;
   final void Function()? onTap;
 
@@ -30,9 +36,20 @@ class DashboardCard extends StatelessWidget {
       padding: EdgeInsets.all(TSizes.lg),
       child: Column(
         children: [
-          TSectionHeading(
-            title: title,
-            textColor: TColors.textSecondary,
+          Row(
+            children: [
+              TCircularIcon(
+                icon: headingIcon,
+                backgroundColor: headingIconBgColor,
+                color: headingIconColor,
+                size: TSizes.md,
+              ),
+              SizedBox(width: TSizes.spaceBtwItems,),
+              TSectionHeading(
+                title: title,
+                textColor: TColors.textSecondary,
+              ),
+            ],
           ),
           SizedBox(height: TSizes.spaceBtwSections),
           Row(
@@ -59,8 +76,7 @@ class DashboardCard extends StatelessWidget {
                         Text(
                           '$stats%',
                           style: Theme.of(context).textTheme.titleLarge!.apply(
-                              color: color,
-                              overflow: TextOverflow.ellipsis),
+                              color: color, overflow: TextOverflow.ellipsis),
                         ),
                       ],
                     ),

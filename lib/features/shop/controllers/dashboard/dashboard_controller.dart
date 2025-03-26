@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/data/abstract/base_data_table_controller.dart';
 import 'package:yt_ecommerce_admin_panel/utils/helpers/helper_functions.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../models/order_model.dart';
+import '../customer/customer_controller.dart';
+import '../order/order_controller.dart';
 
 // class DashboardController extends GetxController {
 //   var filteredDataList = <Map<String, String>>[].obs;
@@ -74,58 +77,41 @@ import '../../models/order_model.dart';
 //   }
 // }
 
-class DashboardController extends GetxController {
+class DashboardController extends BaseDataTableController<OrderModel> {
   static DashboardController get instance => Get.find();
+
+  final orderController = Get.put(OrderController());
+  final customerController = Get.put(CustomerController());
 
   final RxList<double> weeklySales = <double>[].obs;
   final RxMap<OrderStatus, int> orderStatusData = <OrderStatus, int>{}.obs;
   final RxMap<OrderStatus, double> totalAmounts = <OrderStatus, double>{}.obs;
 
-  /// Orders
-  static final List<OrderModel> orders = [
-    OrderModel(
-      id: '0001',
-      status: OrderStatus.processing,
-      totalAmount: 1200.0,
-      orderDate: DateTime.now().subtract(const Duration(days: 2)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [], shippingCost: 0, taxCost: 0,
-    ),
-    OrderModel(
-      id: '0002',
-      status: OrderStatus.shipped,
-      totalAmount: 1100,
-      orderDate: DateTime.now().subtract(const Duration(days: 1)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
-    ),
-    OrderModel(
-      id: '0003',
-      status: OrderStatus.delivered,
-      totalAmount: 120.0,
-      orderDate: DateTime.now().subtract(const Duration(days: 3)),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
-    ),
-    OrderModel(
-      id: '0004',
-      status: OrderStatus.delivered,
-      totalAmount: 600.0,
-      orderDate: DateTime.now(),
-      deliveryDate: DateTime.now().add(const Duration(days: 3)), items: [],shippingCost: 0, taxCost: 0,
-    ),
-  ];
 
   @override
-  void onInit() {
+  Future<List<OrderModel>> fetchItems() async{
+    if(orderController.allItems.isEmpty){
+      await orderController.fetchItems();
+    }
+
+    if(customerController.allItems.isEmpty){
+      await customerController.fetchItems();
+    }
+
     _calculateWeeklySales();
     _calculateOrderStatusData();
-    super.onInit();
+
+    return orderController.allItems;
   }
+  /// Orders
+
 
   ///Calculate Weekly Sales
   void _calculateWeeklySales() {
     //Reset weekly sales to zero
     weeklySales.value = List<double>.filled(7, 0.0);
 
-    for (var order in orders) {
+    for (var order in orderController.allItems) {
       final DateTime orderWeekStart =
           THelperFunctions.getStartOfWeek(order.orderDate);
       //Check if the order is within the current week
@@ -152,7 +138,7 @@ class DashboardController extends GetxController {
     //Map to store the total amount for each order status
     totalAmounts.value = {for (var status in OrderStatus.values) status: 0.0};
 
-    for(var order in orders){
+    for(var order in orderController.allItems){
       //Count orders
       final status = order.status;
       orderStatusData[status] = (orderStatusData[status] ?? 0) + 1;
@@ -178,4 +164,14 @@ class DashboardController extends GetxController {
         return 'Cancelled';
       }
   }
+
+  @override
+  bool containsSearchQuery(OrderModel item, String query) => false;
+
+  @override
+  Future<void> deleteItems(OrderModel item) async{
+
+  }
+
+
 }
