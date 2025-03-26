@@ -30,7 +30,7 @@ class WeeklySalesGraph extends StatelessWidget {
           SizedBox(
             height: 415,
             child: BarChart(BarChartData(
-                titlesData: buildFlTitlesData(),
+                titlesData: buildFlTitlesData(controller.weeklySales),
                 borderData: FlBorderData(
                     show: true,
                     border:
@@ -67,7 +67,10 @@ class WeeklySalesGraph extends StatelessWidget {
   }
 }
 
-FlTitlesData buildFlTitlesData() {
+FlTitlesData buildFlTitlesData(List<double> weeklySales) {
+  //Calculate Step height for the left pricing
+  double maxOrder = weeklySales.reduce((a, b) => a > b ? a : b);
+  double stepHeight = (maxOrder/10).ceilToDouble();
   return FlTitlesData(
     show: true,
     bottomTitles: AxisTitles(
@@ -93,7 +96,7 @@ FlTitlesData buildFlTitlesData() {
     leftTitles: AxisTitles(
       sideTitles: SideTitles(
         showTitles: true,
-        interval: 200,
+        interval: stepHeight,
         reservedSize: 50,
       ),
     ),
@@ -101,4 +104,3 @@ FlTitlesData buildFlTitlesData() {
     topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
   );
 }
-
