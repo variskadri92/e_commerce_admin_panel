@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/device/device_utility.dart';
@@ -27,39 +28,47 @@ class WeeklySalesGraph extends StatelessWidget {
           ),
 
           //Graph
-          SizedBox(
-            height: 415,
-            child: BarChart(BarChartData(
-                titlesData: buildFlTitlesData(controller.weeklySales),
-                borderData: FlBorderData(
+          Obx(
+            ()=> controller.weeklySales.isNotEmpty? SizedBox(
+              height: 415,
+              child: BarChart(BarChartData(
+                  titlesData: buildFlTitlesData(controller.weeklySales),
+                  borderData: FlBorderData(
+                      show: true,
+                      border:
+                          Border(top: BorderSide.none, right: BorderSide.none)),
+                  gridData: FlGridData(
                     show: true,
-                    border:
-                        Border(top: BorderSide.none, right: BorderSide.none)),
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  drawHorizontalLine: true,
-                  horizontalInterval: 200,
-                ),
-                barGroups: controller.weeklySales
-                    .asMap()
-                    .entries
-                    .map((entry) => BarChartGroupData(x: entry.key, barRods: [
-                          BarChartRodData(
-                            width: 30,
-                            color: TColors.primary,
-                            borderRadius: BorderRadius.circular(TSizes.sm),
-                            toY: entry.value,
-                          )
-                        ]))
-                    .toList(),
-                groupsSpace: TSizes.spaceBtwItems,
-                barTouchData: BarTouchData(
-                    touchTooltipData: BarTouchTooltipData(
-                        getTooltipColor: (_) => TColors.secondary),
-                    touchCallback: TDeviceUtils.isDesktopScreen(context)
-                        ? (barTouchEvent, barTouchResponse) {}
-                        : null))),
+                    drawVerticalLine: false,
+                    drawHorizontalLine: true,
+                    horizontalInterval: 200,
+                  ),
+                  barGroups: controller.weeklySales
+                      .asMap()
+                      .entries
+                      .map((entry) => BarChartGroupData(x: entry.key, barRods: [
+                            BarChartRodData(
+                              width: 30,
+                              color: TColors.primary,
+                              borderRadius: BorderRadius.circular(TSizes.sm),
+                              toY: entry.value,
+                            )
+                          ]))
+                      .toList(),
+                  groupsSpace: TSizes.spaceBtwItems,
+                  barTouchData: BarTouchData(
+                      touchTooltipData: BarTouchTooltipData(
+                          getTooltipColor: (_) => TColors.secondary),
+                      touchCallback: TDeviceUtils.isDesktopScreen(context)
+                          ? (barTouchEvent, barTouchResponse) {}
+                          : null))),
+            ) : SizedBox(
+              height: 400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [TLoaderAnimation()],
+              ),
+            ),
           ),
         ],
       ),
@@ -96,7 +105,7 @@ FlTitlesData buildFlTitlesData(List<double> weeklySales) {
     leftTitles: AxisTitles(
       sideTitles: SideTitles(
         showTitles: true,
-        interval: stepHeight,
+        interval: stepHeight <= 0 ? 500 : stepHeight,
         reservedSize: 50,
       ),
     ),
