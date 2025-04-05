@@ -17,7 +17,7 @@ class CustomerOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = CustomerDetailController.instance;
-    controller.getCustomerAddresses();
+    controller.getCustomerOrders();
     return TRoundedContainer(
       padding: EdgeInsets.all(TSizes.defaultSpace),
       child: Obx(

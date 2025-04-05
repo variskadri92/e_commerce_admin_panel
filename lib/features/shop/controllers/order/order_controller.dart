@@ -45,7 +45,7 @@ class OrderController extends BaseDataTableController<OrderModel> {
       statusLoader.value = true;
       order.status = newStatus;
       await _orderRepository.updateOrderSpecificValue(
-          order.docId, {'status': newStatus.toString()});
+          order.docId, {'status': newStatus.toString()},order.userId);
       updateItemFromLists(order);
       orderStatus.value = newStatus;
       TLoaders.successSnackBar(

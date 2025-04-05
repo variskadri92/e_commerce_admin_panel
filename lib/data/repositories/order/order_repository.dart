@@ -63,9 +63,10 @@ class OrderRepository extends GetxController {
   }
 
   ///Update a order instance
-  Future<void> updateOrderSpecificValue(String orderId, Map<String, dynamic> data) async {
+  Future<void> updateOrderSpecificValue(String orderId, Map<String, dynamic> data,String userId) async {
     try {
       await _db.collection('Orders').doc(orderId).update(data);
+      await _db.collection('Users').doc(userId).collection('Orders').doc(orderId).update(data);
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {
