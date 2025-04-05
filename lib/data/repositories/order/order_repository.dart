@@ -32,8 +32,9 @@ class OrderRepository extends GetxController {
   }
 
   ///Delete a Order from the database
-  Future<void> deleteOrder(String orderId) async {
+  Future<void> deleteOrder(String orderId,String userId) async {
     try {
+      await _db.collection('Users').doc(userId).collection('Orders').doc(orderId).delete();
       await _db.collection('Orders').doc(orderId).delete();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;

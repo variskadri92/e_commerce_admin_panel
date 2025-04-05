@@ -25,7 +25,7 @@ class OrderController extends BaseDataTableController<OrderModel> {
 
   @override
   Future<void> deleteItems(OrderModel item) async {
-    await _orderRepository.deleteOrder(item.docId);
+    await _orderRepository.deleteOrder(item.docId,item.userId);
   }
 
   void sortById(int sortColumnIndex, bool ascending) {
