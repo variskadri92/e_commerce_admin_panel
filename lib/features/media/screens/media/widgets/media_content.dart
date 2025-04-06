@@ -228,20 +228,32 @@ class MediaContent extends StatelessWidget {
   }
 
   List<ImageModel> _getImagesForSelectedCategory(MediaController controller) {
+    List<ImageModel> images = [];
+
     switch (controller.selectedPath.value) {
       case MediaCategory.banners:
-        return controller.allBannerImages.where((image) => image.url.isNotEmpty).toList();
+        images = controller.allBannerImages.where((image) => image.url.isNotEmpty).toList();
+        break;
       case MediaCategory.brands:
-        return controller.allBrandImages.where((image) => image.url.isNotEmpty).toList();
+        images = controller.allBrandImages.where((image) => image.url.isNotEmpty).toList();
+        break;
       case MediaCategory.categories:
-        return controller.allCategoryImages.where((image) => image.url.isNotEmpty).toList();
+        images = controller.allCategoryImages.where((image) => image.url.isNotEmpty).toList();
+        break;
       case MediaCategory.products:
-        return controller.allProductImages.where((image) => image.url.isNotEmpty).toList();
+        images = controller.allProductImages.where((image) => image.url.isNotEmpty).toList();
+        break;
       case MediaCategory.users:
-        return controller.allUserImages.where((image) => image.url.isNotEmpty).toList();
+        images = controller.allUserImages.where((image) => image.url.isNotEmpty).toList();
+        break;
       default:
         return [];
     }
+
+    // Sort by createdAt in descending order (newest first)
+    images.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+    return images;
   }
 
   Widget _buildEmptyAnimationWidget(BuildContext context) {
