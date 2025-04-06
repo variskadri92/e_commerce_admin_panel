@@ -21,7 +21,7 @@ class EditBrandController extends GetxController {
   RxString imageURL = ''.obs;
   final isFeatured = false.obs;
   final name = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final editBrandFormKey = GlobalKey<FormState>();
   final brandRepository = Get.put(BrandRepository());
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
 
@@ -79,7 +79,7 @@ class EditBrandController extends GetxController {
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!editBrandFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }

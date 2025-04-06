@@ -22,7 +22,7 @@ class CreateBrandController extends GetxController {
   RxString imageURL = ''.obs;
   final isFeatured = false.obs;
   final name = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final createBrandFormKey = GlobalKey<FormState>();
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
 
   ///Toggle Category Selection
@@ -67,7 +67,7 @@ class CreateBrandController extends GetxController {
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!createBrandFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }

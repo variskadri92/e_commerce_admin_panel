@@ -22,7 +22,7 @@ class CreateBrandForm extends StatelessWidget {
       width: 500,
       padding: EdgeInsets.all(TSizes.defaultSpace),
       child: Form(
-        key: controller.formKey,
+        key: controller.createBrandFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

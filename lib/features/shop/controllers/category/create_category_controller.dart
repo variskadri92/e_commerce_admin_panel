@@ -18,7 +18,7 @@ class CreateCategoryController extends GetxController {
   RxString imageURL = ''.obs;
   final isFeatured = false.obs;
   final name = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final createCategoryFormKey = GlobalKey<FormState>();
 
   ///Init Data
   ///Method to reset fields
@@ -54,7 +54,7 @@ class CreateCategoryController extends GetxController {
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!createCategoryFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }

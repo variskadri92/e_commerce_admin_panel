@@ -16,6 +16,8 @@ class BannersRow extends DataTableSource{
 
   @override
   DataRow? getRow(int index) {
+    if (index >= controller.filteredItems.length) return null; // ✅ Prevents the crash
+
     final banner = controller.filteredItems[index];
     return DataRow2(
         selected: controller.selectedRows[index],

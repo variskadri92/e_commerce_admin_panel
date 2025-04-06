@@ -24,7 +24,7 @@ class CreateCategoryForm extends StatelessWidget {
       width: 500,
       padding: EdgeInsets.all(TSizes.defaultSpace),
       child: Form(
-          key: createController.formKey,
+          key: createController.createCategoryFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -25,14 +25,16 @@ class BannerController extends BaseDataTableController<BannerModel>{
 
 
   ///Method for formatting a route string
-  String formatRoute(String route){
-    if(route.isEmpty) return '';
-    //Remove the '/' from the beginning of the route
-    String formatted = route.substring(1);
+  String formatRoute(String route) {
+    if (route.isEmpty) return '';
 
-    //Capitalize the first letter of each word
-    formatted = formatted[0].toUpperCase() + formatted.substring(1);
+    // Remove the '/' if present
+    String formatted = route.startsWith('/') ? route.substring(1) : route;
 
-    return formatted;
+    // Handle empty string after substring
+    if (formatted.isEmpty) return '';
+
+    // Capitalize the first letter
+    return formatted[0].toUpperCase() + formatted.substring(1);
   }
 }

@@ -18,7 +18,7 @@ class CreateBannerController extends GetxController{
   final loading = false.obs;
   final isActive = false.obs;
   final RxString targetScreen = AppScreens.allAppScreenItems[0].obs;
-  final formKey = GlobalKey<FormState>();
+  final createBannerFormKey = GlobalKey<FormState>();
 
 
   ///Method to reset fields
@@ -53,7 +53,7 @@ class CreateBannerController extends GetxController{
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!createBannerFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }

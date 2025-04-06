@@ -17,7 +17,7 @@ class EditBannerController extends GetxController{
   final loading = false.obs;
   final isActive = false.obs;
   final targetScreen = ''.obs;
-  final formKey = GlobalKey<FormState>();
+  final editBannerFormKey = GlobalKey<FormState>();
   final bannerRepository = Get.put(BannersRepository());
 
 
@@ -55,7 +55,7 @@ class EditBannerController extends GetxController{
       }
 
       //Check Form Validation
-      if (!formKey.currentState!.validate()) {
+      if (!editBannerFormKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }
