@@ -24,6 +24,17 @@ class CreateBrandController extends GetxController {
   final name = TextEditingController();
   final createBrandFormKey = GlobalKey<FormState>();
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
+  final searchText = ''.obs;
+  final searchController = TextEditingController();
+
+  List<CategoryModel> get filteredCategories {
+    if (searchText.isEmpty) return CategoryController.instance.allItems;
+    return CategoryController.instance.allItems
+        .where((category) => category.name.toLowerCase().contains(searchText.value.toLowerCase()))
+        .toList();
+  }
+
+
 
   ///Toggle Category Selection
   void toggleSelection(CategoryModel category){

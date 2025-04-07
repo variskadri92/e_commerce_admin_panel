@@ -29,4 +29,9 @@ class CategoryController extends BaseDataTableController<CategoryModel> {
     sortByProperty(sortColumnIndex, ascending,
         (CategoryModel category) => category.name.toLowerCase());
   }
+
+  void sortByDate(int sortColumnIndex, bool ascending) {
+    sortByProperty(sortColumnIndex, ascending,
+        (CategoryModel category) => category.createdAt);
+  }
 }

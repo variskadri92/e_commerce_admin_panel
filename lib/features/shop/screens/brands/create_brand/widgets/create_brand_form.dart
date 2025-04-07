@@ -60,10 +60,21 @@ class CreateBrandForm extends StatelessWidget {
             SizedBox(
               height: TSizes.spaceBtwInputFields / 2,
             ),
+            // Search Field
+            TextFormField(
+              controller: controller.searchController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Search Categories',
+              ),
+              onChanged: (value) => controller.searchText.value = value,
+            ),
+            SizedBox(height: TSizes.spaceBtwInputFields),
+
             Obx(
               () => Wrap(
                 spacing: TSizes.sm,
-                children: CategoryController.instance.allItems
+                children: controller.filteredCategories
                     .map(
                       (category) => Padding(
                         padding: EdgeInsets.only(bottom: TSizes.sm),

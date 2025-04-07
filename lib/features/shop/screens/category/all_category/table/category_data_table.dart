@@ -28,7 +28,7 @@ class CategoryDataTable extends StatelessWidget {
           DataColumn2(
               label: Text('Parent Category')),
           DataColumn2(label: Text('Featured')),
-          DataColumn2(label: Text('Date')),
+          DataColumn2(label: Text('Date'),onSort: (columnIndex, ascending) => controller.sortByDate(columnIndex, ascending)),
           DataColumn2(label: Text('Action'), fixedWidth: 100),
         ],
         source: CategoryRows(),
