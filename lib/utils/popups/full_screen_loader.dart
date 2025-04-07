@@ -15,19 +15,28 @@ class TFullScreenLoader {
   ///   - animation: The Lottie animation to be shown.
   static void openLoadingDialog(String text, String animation) {
     showDialog(
-      context: Get.overlayContext!, // Use Get.overlayContext for overlay dialogs
-      barrierDismissible: false, // The dialog can't be dismissed by tapping outside it
+      context: Get.overlayContext!,
+      barrierDismissible: false,
       builder: (_) => PopScope(
-        canPop: false, // Disable popping with the back button
-        child: Container(
-          color: THelperFunctions.isDarkMode(Get.context!) ? TColors.dark : TColors.white,
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              const SizedBox(height: 250), // Adjust the spacing as needed
-              TAnimationLoaderWidget(text: text, animation: animation),
-            ],
+        canPop: false,
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: THelperFunctions.isDarkMode(Get.context!)
+                ? TColors.dark
+                : TColors.white,
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: SingleChildScrollView( // Prevent overflow on smaller screens or when keyboard is open
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TAnimationLoaderWidget(text: text, animation: animation),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

@@ -134,7 +134,7 @@ class Sidebar extends StatelessWidget {
                     ),
 
                     MenuItems(
-                      route: 'logout',
+                      route: Routes.login,
                       itemName: 'Logout',
                       icon: Iconsax.logout,
                     ),
