@@ -75,7 +75,7 @@ class CreateCategoryForm extends StatelessWidget {
                       child: Text('No Parent Category'),
                     ),
                     // Add other categories
-                    ...categoryController.allItems.map(
+                    ...categoryController.allItems.where((category)=> category.parentId=='').map(
                           (item) => DropdownMenuItem<CategoryModel?>(
                         value: item,
                         child: Row(
