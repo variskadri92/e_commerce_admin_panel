@@ -86,7 +86,7 @@ class Sidebar extends StatelessWidget {
                     ),
                     MenuItems(
                       route: Routes.categories,
-                      itemName: 'Categoriesssss',
+                      itemName: 'Categories',
                       icon: Iconsax.category_2,
                     ),
                     MenuItems(
