@@ -143,6 +143,7 @@ class CreateProductController extends GetxController {
       productDataUploader.value = true;
       newProduct.id =
           await ProductRepository.instance.createProduct(newProduct);
+      ProductRepository.instance.updateProductCountForBrand(selectedBrand.value!.id);
 
       //Register product categories if any
       if (selectedCategories.isNotEmpty) {

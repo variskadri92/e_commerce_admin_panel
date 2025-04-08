@@ -81,6 +81,24 @@ class ProductRepository extends GetxController {
     }
   }
 
+  ///Update a product count for corresponding brand
+  Future<void> updateProductCountForBrand(String brandId) async {
+    try {
+      await _db.collection('Brands').doc(brandId).update({
+        'productsCount': FieldValue.increment(1),
+        'updatedAt': DateTime.now(),
+      });
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } on FormatException catch (_) {
+      throw TFormatException();
+    } catch (e) {
+      throw 'Something went wrong. Please try again later.';
+    }
+  }
+
   Future<List<ProductModel>> getAllProducts() async {
     try {
       final snapshot = await _db.collection('Products').get();
@@ -140,6 +158,13 @@ class ProductRepository extends GetxController {
             transaction.delete(
                 _db.collection('ProductCategory').doc(productCategory.id));
           }
+        }
+        if (product.brand != null && product.brand!.id.isNotEmpty) {
+          final brandRef = _db.collection('Brands').doc(product.brand!.id);
+          transaction.update(brandRef, {
+            'productsCount': FieldValue.increment(-1),
+            'updatedAt': DateTime.now(),
+          });
         }
         transaction.delete(productRef);
       });
