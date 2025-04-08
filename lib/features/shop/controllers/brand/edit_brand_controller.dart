@@ -24,6 +24,10 @@ class EditBrandController extends GetxController {
   final editBrandFormKey = GlobalKey<FormState>();
   final brandRepository = Get.put(BrandRepository());
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
+  RxList<CategoryModel> selectedParentCategories = <CategoryModel>[].obs;
+  RxList<CategoryModel> availableSubCategories = <CategoryModel>[].obs;
+  final RxString searchTextParent = ''.obs;
+  final RxString searchTextSub = ''.obs;
 
   ///Init Data
   void initData(BrandModel brand) {
@@ -31,16 +35,63 @@ class EditBrandController extends GetxController {
     imageURL.value = brand.image;
     isFeatured.value = brand.isFeatured;
     if (brand.brandCategories != null) {
-      selectedCategories.addAll(brand.brandCategories ?? []);
+      // Separate parent categories and subcategories
+      final allCategories = brand.brandCategories!;
+      selectedCategories.addAll(allCategories.where((cat) => cat.parentId.isNotEmpty));
+      selectedParentCategories.addAll(allCategories.where((cat) => cat.parentId.isEmpty));
+
+      updateAvailableSubCategories();
     }
   }
 
-  ///Toggle Category Selection
-  void toggleSelection(CategoryModel category) {
+  // Get all parent categories (where parentId is empty)
+  List<CategoryModel> get parentCategories {
+    return CategoryController.instance.allItems
+        .where((category) => category.parentId.isEmpty)
+        .where((category) =>
+        category.name.toLowerCase().contains(searchTextParent.value.toLowerCase()))
+        .toList();
+  }
+
+  // Get subcategories of selected parents
+  void updateAvailableSubCategories() {
+    availableSubCategories.clear();
+    for (var parent in selectedParentCategories) {
+      final subs = CategoryController.instance.allItems
+          .where((category) => category.parentId == parent.id)
+          .where((category) =>
+          category.name.toLowerCase().contains(searchTextSub.value.toLowerCase()))
+          .toList();
+      availableSubCategories.addAll(subs);
+    }
+  }
+
+  // Toggle parent category selection
+  void toggleParentSelection(CategoryModel category) {
+    if (selectedParentCategories.contains(category)) {
+      selectedParentCategories.remove(category);
+      // Remove all subcategories of this parent
+      selectedCategories.removeWhere((cat) => cat.parentId == category.id);
+    } else {
+      selectedParentCategories.add(category);
+    }
+    updateAvailableSubCategories();
+  }
+
+  // Toggle subcategory selection
+  void toggleSubCategorySelection(CategoryModel category) {
     if (selectedCategories.contains(category)) {
       selectedCategories.remove(category);
     } else {
       selectedCategories.add(category);
+      // Ensure parent is selected
+      if (category.parentId.isNotEmpty &&
+          !selectedParentCategories.any((p) => p.id == category.parentId)) {
+        final parent = CategoryController.instance.allItems
+            .firstWhere((p) => p.id == category.parentId);
+        selectedParentCategories.add(parent);
+        updateAvailableSubCategories();
+      }
     }
   }
 
@@ -51,6 +102,7 @@ class EditBrandController extends GetxController {
     loading(false);
     isFeatured(false);
     selectedCategories.clear();
+    selectedParentCategories.clear();
   }
 
   ///Pick Thumbnail Image from Media
@@ -100,9 +152,13 @@ class EditBrandController extends GetxController {
         await brandRepository.updateBrand(updatedBrand);
       }
 
-      //Update brand categories if any
-      if (selectedCategories.isNotEmpty) {
-        await updateBrandCategories(updatedBrand);
+      // Combine selected categories and parent categories
+      final allSelectedCategories = [...selectedCategories, ...selectedParentCategories];
+
+      // Update brand categories if any changes
+      if (allSelectedCategories.isNotEmpty ||
+          (updatedBrand.brandCategories?.isNotEmpty ?? false)) {
+        await updateBrandCategories(updatedBrand, allSelectedCategories);
       }
 
       //Update Brand Data in Products
@@ -117,7 +173,7 @@ class EditBrandController extends GetxController {
       TFullScreenLoader.stopLoading();
       TLoaders.successSnackBar(
           title: 'Congratulations',
-          message: 'New Category Created Successfully');
+          message: 'Brand updated successfully');
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());
@@ -125,18 +181,21 @@ class EditBrandController extends GetxController {
   }
 
   ///Update categories of this brand
-  updateBrandCategories(BrandModel updatedBrand) async {
+  Future<void> updateBrandCategories(
+      BrandModel updatedBrand,
+      List<CategoryModel> allSelectedCategories,
+      ) async {
     //Fetch all brand categories
     final brandCategories =
-        await brandRepository.getCategoriesOfSpecificBrand(updatedBrand.id);
+    await brandRepository.getCategoriesOfSpecificBrand(updatedBrand.id);
 
     //Selected categoriesIds
-    final selectedCategoriesIds = selectedCategories.map((e) => e.id);
+    final selectedCategoriesIds = allSelectedCategories.map((e) => e.id).toSet();
 
     //Identify which categories to delete
     final categoriesToDelete = brandCategories
         .where((existingCategory) =>
-            !selectedCategoriesIds.contains(existingCategory.categoryId))
+    !selectedCategoriesIds.contains(existingCategory.categoryId))
         .toList();
 
     //Delete unselected categories
@@ -146,23 +205,28 @@ class EditBrandController extends GetxController {
     }
 
     //Identify new categories to add
-    final newCategoriesToAdd = selectedCategories
+    final newCategoriesToAdd = allSelectedCategories
         .where((newCategory) => !brandCategories.any((existingCategory) =>
-            existingCategory.categoryId == newCategory.id))
+    existingCategory.categoryId == newCategory.id))
         .toList();
 
     //Add new categories
     for (var newCategory in newCategoriesToAdd) {
       final brandCategory = BrandCategoryModel(
-          brandId: updatedBrand.id, categoryId: newCategory.id);
+          brandId: updatedBrand.id,
+          categoryId: newCategory.id
+      );
       brandCategory.id =
-          await BrandRepository.instance.createBrandCategory(brandCategory);
+      await BrandRepository.instance.createBrandCategory(brandCategory);
     }
 
-    updatedBrand.brandCategories!.assignAll(selectedCategories);
+    // Update the brand's category list
+    updatedBrand.brandCategories = allSelectedCategories;
     BrandController.instance.updateItemFromLists(updatedBrand);
   }
 
   ///Update products of this brands
-  updateBrandInProducts(BrandModel updatedBrand) {}
+  Future<void> updateBrandInProducts(BrandModel updatedBrand) async {
+    // Implement your product update logic here
+  }
 }

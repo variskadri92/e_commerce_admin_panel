@@ -52,44 +52,81 @@ class CreateBrandForm extends StatelessWidget {
               height: TSizes.spaceBtwInputFields,
             ),
 
-            //Categories
-            Text(
-              'Select Categories',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(
-              height: TSizes.spaceBtwInputFields / 2,
-            ),
-            // Search Field
+            // Parent Categories Section
+            Text('Select Parent Categories', style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: TSizes.spaceBtwInputFields / 2),
+
+            // Search for parent categories
             TextFormField(
-              controller: controller.searchController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: 'Search Categories',
+                hintText: 'Search Parent Categories',
               ),
-              onChanged: (value) => controller.searchText.value = value,
+              onChanged: (value) {
+                controller.searchTextParent.value = value;
+                controller.update();
+              },
             ),
             SizedBox(height: TSizes.spaceBtwInputFields),
 
+            // Parent categories list
             Obx(
-              () => Wrap(
+                  () => Wrap(
                 spacing: TSizes.sm,
-                children: controller.filteredCategories
-                    .map(
-                      (category) => Padding(
-                        padding: EdgeInsets.only(bottom: TSizes.sm),
-                        child: TChoiceChip(
-                            text: category.name,
-                            selected: controller.selectedCategories
-                                .contains(category),
-                            onSelected: (value) =>
-                                controller.toggleSelection(category)),
-                      ),
-                    )
+                children: controller.parentCategories
+                    .map((category) => Padding(
+                  padding: EdgeInsets.only(bottom: TSizes.sm),
+                  child: TChoiceChip(
+                    text: category.name,
+                    selected: controller.selectedParentCategories.contains(category),
+                    onSelected: (value) => controller.toggleParentSelection(category),
+                  ),
+                ))
                     .toList(),
               ),
             ),
 
+            // Subcategories Section (only shows if parents are selected)
+            Obx(() => controller.selectedParentCategories.isNotEmpty
+                ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: TSizes.spaceBtwInputFields),
+                Text('Select Subcategories', style: Theme.of(context).textTheme.titleMedium),
+                SizedBox(height: TSizes.spaceBtwInputFields / 2),
+
+                // Search for subcategories
+                TextFormField(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Search Subcategories',
+                  ),
+                  onChanged: (value) {
+                    controller.searchTextSub.value = value;
+                    controller.updateAvailableSubCategories();
+                  },
+                ),
+                SizedBox(height: TSizes.spaceBtwInputFields),
+
+                // Subcategories list
+                Obx(
+                      () => Wrap(
+                    spacing: TSizes.sm,
+                    children: controller.availableSubCategories
+                        .map((category) => Padding(
+                      padding: EdgeInsets.only(bottom: TSizes.sm),
+                      child: TChoiceChip(
+                        text: category.name,
+                        selected: controller.selectedCategories.contains(category),
+                        onSelected: (value) => controller.toggleSubCategorySelection(category),
+                      ),
+                    ))
+                        .toList(),
+                  ),
+                ),
+              ],
+            )
+                : SizedBox.shrink()),
             SizedBox(
               height: TSizes.spaceBtwInputFields * 2,
             ),

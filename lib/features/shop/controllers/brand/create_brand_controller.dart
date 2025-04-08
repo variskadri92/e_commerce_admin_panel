@@ -17,32 +17,65 @@ import 'brand_controller.dart';
 class CreateBrandController extends GetxController {
   static CreateBrandController get instance => Get.find();
 
-
   final loading = false.obs;
   RxString imageURL = ''.obs;
   final isFeatured = false.obs;
   final name = TextEditingController();
   final createBrandFormKey = GlobalKey<FormState>();
   final List<CategoryModel> selectedCategories = <CategoryModel>[].obs;
-  final searchText = ''.obs;
-  final searchController = TextEditingController();
+  RxList<CategoryModel> selectedParentCategories = <CategoryModel>[].obs;
+  RxList<CategoryModel> availableSubCategories = <CategoryModel>[].obs;
+  final RxString searchTextParent = ''.obs;
+  final RxString searchTextSub = ''.obs;
 
-  List<CategoryModel> get filteredCategories {
-    if (searchText.isEmpty) return CategoryController.instance.allItems;
+  // Get all parent categories (where parentId is empty)
+  List<CategoryModel> get parentCategories {
     return CategoryController.instance.allItems
-        .where((category) => category.name.toLowerCase().contains(searchText.value.toLowerCase()))
+        .where((category) => category.parentId.isEmpty)
+        .where((category) => category.name
+            .toLowerCase()
+            .contains(searchTextParent.value.toLowerCase()))
         .toList();
   }
 
+  // Get subcategories of selected parents
+  void updateAvailableSubCategories() {
+    availableSubCategories.clear();
+    for (var parent in selectedParentCategories) {
+      final subs = CategoryController.instance.allItems
+          .where((category) => category.parentId == parent.id)
+          .where((category) => category.name
+              .toLowerCase()
+              .contains(searchTextSub.value.toLowerCase()))
+          .toList();
+      availableSubCategories.addAll(subs);
+    }
+  }
 
+  // Toggle parent category selection
+  void toggleParentSelection(CategoryModel category) {
+    if (selectedParentCategories.contains(category)) {
+      selectedParentCategories.remove(category);
+    } else {
+      selectedParentCategories.add(category);
+    }
+    updateAvailableSubCategories();
+  }
 
-  ///Toggle Category Selection
-  void toggleSelection(CategoryModel category){
-    if(selectedCategories.contains(category)){
+  // Toggle subcategory selection
+  void toggleSubCategorySelection(CategoryModel category) {
+    if (selectedCategories.contains(category)) {
       selectedCategories.remove(category);
-    }else{
+    } else {
       selectedCategories.add(category);
     }
+  }
+
+  // Clear all selections
+  void clearCategorySelections() {
+    selectedParentCategories.clear();
+    selectedCategories.clear();
+    availableSubCategories.clear();
   }
 
   ///Method to reset fields
@@ -51,8 +84,9 @@ class CreateBrandController extends GetxController {
     imageURL.value = '';
     loading(false);
     isFeatured(false);
-    selectedCategories.clear();
+    clearCategorySelections();
   }
+
   ///Pick Thumbnail Image from Media
   void pickImage() async {
     final controller = Get.put(MediaController());
@@ -64,6 +98,7 @@ class CreateBrandController extends GetxController {
       imageURL.value = selectedImage.url;
     }
   }
+
   ///Register new category
   Future<void> createBrand() async {
     try {
@@ -96,18 +131,25 @@ class CreateBrandController extends GetxController {
       newBrand.id = await BrandRepository.instance.createBrand(newBrand);
 
       //Register brand categories if any
-      if(selectedCategories.isNotEmpty){
-        if(newBrand.id.isEmpty) throw 'Error storing relational data. Try again';
+      if (selectedCategories.isNotEmpty || selectedParentCategories.isNotEmpty) {
+        if (newBrand.id.isEmpty) {
+          throw 'Error storing relational data. Try again';
+        }
+
+        final allCategories = [...selectedCategories, ...selectedParentCategories];
+        final uniqueCategories = allCategories.toSet().toList();
 
         //Loop through selected brand categories
-        for(var category in selectedCategories) {
+        for (var category in uniqueCategories) {
+          print(category.name);
           //Map data
-          final brandCategory = BrandCategoryModel(brandId: newBrand.id,categoryId: category.id);
+          final brandCategory =
+              BrandCategoryModel(brandId: newBrand.id, categoryId: category.id);
           await BrandRepository.instance.createBrandCategory(brandCategory);
         }
 
-        newBrand.brandCategories ??=[];
-        newBrand.brandCategories!.addAll(selectedCategories);
+        newBrand.brandCategories ??= [];
+        newBrand.brandCategories!.addAll(uniqueCategories);
       }
 
       //Update all data list
@@ -115,20 +157,14 @@ class CreateBrandController extends GetxController {
 
       //Clear Form
       resetFields();
-      
 
       //Remove Loader
       TFullScreenLoader.stopLoading();
       TLoaders.successSnackBar(
-          title: 'Congratulations',
-          message: 'New Brand Created Successfully');
+          title: 'Congratulations', message: 'New Brand Created Successfully');
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());
     }
   }
-
-
-
-
 }
