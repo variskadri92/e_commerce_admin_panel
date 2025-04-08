@@ -31,7 +31,22 @@ class CategoryRepository extends GetxController {
   ///Delete a category from the database
   Future<void> deleteCategory(String categoryId) async {
     try {
-      await _db.collection('Categories').doc(categoryId).delete();
+        final batch = _db.batch();
+
+        final subcategoriesSnapshot = await _db
+            .collection('Categories')
+            .where('parentId', isEqualTo: categoryId)
+            .get();
+
+        for (var doc in subcategoriesSnapshot.docs) {
+          batch.delete(doc.reference);
+        }
+
+        final parentCategoryRef = _db.collection('Categories').doc(categoryId);
+        batch.delete(parentCategoryRef);
+
+        await batch.commit();
+
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {

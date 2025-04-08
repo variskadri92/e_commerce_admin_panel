@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/brands/brand_repository.dart';
@@ -37,8 +38,10 @@ class EditBrandController extends GetxController {
     if (brand.brandCategories != null) {
       // Separate parent categories and subcategories
       final allCategories = brand.brandCategories!;
-      selectedCategories.addAll(allCategories.where((cat) => cat.parentId.isNotEmpty));
-      selectedParentCategories.addAll(allCategories.where((cat) => cat.parentId.isEmpty));
+      selectedCategories
+          .addAll(allCategories.where((cat) => cat.parentId.isNotEmpty));
+      selectedParentCategories
+          .addAll(allCategories.where((cat) => cat.parentId.isEmpty));
 
       updateAvailableSubCategories();
     }
@@ -48,8 +51,9 @@ class EditBrandController extends GetxController {
   List<CategoryModel> get parentCategories {
     return CategoryController.instance.allItems
         .where((category) => category.parentId.isEmpty)
-        .where((category) =>
-        category.name.toLowerCase().contains(searchTextParent.value.toLowerCase()))
+        .where((category) => category.name
+            .toLowerCase()
+            .contains(searchTextParent.value.toLowerCase()))
         .toList();
   }
 
@@ -59,8 +63,9 @@ class EditBrandController extends GetxController {
     for (var parent in selectedParentCategories) {
       final subs = CategoryController.instance.allItems
           .where((category) => category.parentId == parent.id)
-          .where((category) =>
-          category.name.toLowerCase().contains(searchTextSub.value.toLowerCase()))
+          .where((category) => category.name
+              .toLowerCase()
+              .contains(searchTextSub.value.toLowerCase()))
           .toList();
       availableSubCategories.addAll(subs);
     }
@@ -153,7 +158,10 @@ class EditBrandController extends GetxController {
       }
 
       // Combine selected categories and parent categories
-      final allSelectedCategories = [...selectedCategories, ...selectedParentCategories];
+      final allSelectedCategories = [
+        ...selectedCategories,
+        ...selectedParentCategories
+      ];
 
       // Update brand categories if any changes
       if (allSelectedCategories.isNotEmpty ||
@@ -172,8 +180,7 @@ class EditBrandController extends GetxController {
       //Remove Loader
       TFullScreenLoader.stopLoading();
       TLoaders.successSnackBar(
-          title: 'Congratulations',
-          message: 'Brand updated successfully');
+          title: 'Congratulations', message: 'Brand updated successfully');
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());
@@ -182,20 +189,21 @@ class EditBrandController extends GetxController {
 
   ///Update categories of this brand
   Future<void> updateBrandCategories(
-      BrandModel updatedBrand,
-      List<CategoryModel> allSelectedCategories,
-      ) async {
+    BrandModel updatedBrand,
+    List<CategoryModel> allSelectedCategories,
+  ) async {
     //Fetch all brand categories
     final brandCategories =
-    await brandRepository.getCategoriesOfSpecificBrand(updatedBrand.id);
+        await brandRepository.getCategoriesOfSpecificBrand(updatedBrand.id);
 
     //Selected categoriesIds
-    final selectedCategoriesIds = allSelectedCategories.map((e) => e.id).toSet();
+    final selectedCategoriesIds =
+        allSelectedCategories.map((e) => e.id).toSet();
 
     //Identify which categories to delete
     final categoriesToDelete = brandCategories
         .where((existingCategory) =>
-    !selectedCategoriesIds.contains(existingCategory.categoryId))
+            !selectedCategoriesIds.contains(existingCategory.categoryId))
         .toList();
 
     //Delete unselected categories
@@ -207,17 +215,15 @@ class EditBrandController extends GetxController {
     //Identify new categories to add
     final newCategoriesToAdd = allSelectedCategories
         .where((newCategory) => !brandCategories.any((existingCategory) =>
-    existingCategory.categoryId == newCategory.id))
+            existingCategory.categoryId == newCategory.id))
         .toList();
 
     //Add new categories
     for (var newCategory in newCategoriesToAdd) {
       final brandCategory = BrandCategoryModel(
-          brandId: updatedBrand.id,
-          categoryId: newCategory.id
-      );
+          brandId: updatedBrand.id, categoryId: newCategory.id);
       brandCategory.id =
-      await BrandRepository.instance.createBrandCategory(brandCategory);
+          await BrandRepository.instance.createBrandCategory(brandCategory);
     }
 
     // Update the brand's category list
