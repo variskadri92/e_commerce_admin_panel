@@ -53,7 +53,7 @@ class ProductBrand extends StatelessWidget {
                       );
                     },
                     onSelected: (suggestion) {
-                      createProductController.selectedBrand.value = suggestion;
+                      createProductController.updateSelectedBrand(suggestion);
                       createProductController.brandTextField.text =
                           suggestion.name;
                     },

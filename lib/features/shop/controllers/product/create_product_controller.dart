@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/data/repositories/brands/brand_repository.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/products/product_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_attributes_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_controller.dart';
@@ -17,6 +18,8 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loaders.dart';
+import '../../models/brand_category_model.dart';
+import '../category/category_controller.dart';
 
 class CreateProductController extends GetxController {
   static CreateProductController get instance => Get.find();
@@ -30,7 +33,6 @@ class CreateProductController extends GetxController {
   GlobalKey<FormState> titleDescriptionFormKey = GlobalKey<FormState>();
   final imagesController = ProductImagesController.instance;
 
-
   TextEditingController title = TextEditingController();
   TextEditingController stock = TextEditingController();
   TextEditingController price = TextEditingController();
@@ -40,13 +42,67 @@ class CreateProductController extends GetxController {
 
   // Observable for selected brand and categories
   final Rx<BrandModel?> selectedBrand = Rx<BrandModel?>(null);
+  final RxList<CategoryModel> selectedParentCategories = <CategoryModel>[].obs;
   final RxList<CategoryModel> selectedCategories = <CategoryModel>[].obs;
+  List<BrandCategoryModel> fetchedBrandCategories = [];
+
+  // Get all selected categories (parents + subs)
+  List<CategoryModel> get allSelectedCategories => [
+        ...selectedParentCategories,
+        ...selectedCategories,
+      ];
 
   //Flags for tracking different tasks
   RxBool thumbnailUploader = false.obs;
   RxBool additionalImagesUploader = false.obs;
   RxBool productDataUploader = false.obs;
   RxBool categoriesRelationshipUploader = false.obs;
+
+  Future<List<BrandCategoryModel>> brandCategories() async {
+    fetchedBrandCategories =
+        await BrandRepository.instance.getAllBrandCategories();
+    return fetchedBrandCategories;
+  }
+
+  void updateSelectedBrand(BrandModel? brand) {
+    selectedBrand.value = brand;
+    selectedParentCategories.clear();
+    selectedCategories.clear();
+  }
+
+  void toggleParentCategory(CategoryModel category) {
+    if (selectedParentCategories.contains(category)) {
+      selectedParentCategories.remove(category);
+      // Remove any subcategories of this parent
+      selectedCategories.removeWhere((sub) => sub.parentId == category.id);
+    } else {
+      selectedParentCategories.add(category);
+    }
+  }
+
+  void toggleSubCategory(CategoryModel category) {
+    if (selectedCategories.contains(category)) {
+      selectedCategories.remove(category);
+    } else {
+      // Ensure parent is selected
+      if (!selectedParentCategories.any((p) => p.id == category.parentId)) {
+        final parent = CategoryController.instance.allItems
+            .firstWhere((p) => p.id == category.parentId);
+        selectedParentCategories.add(parent);
+      }
+      selectedCategories.add(category);
+    }
+  }
+
+  void removeParentCategory(CategoryModel category) {
+    selectedParentCategories.remove(category);
+    // Remove any subcategories of this parent
+    selectedCategories.removeWhere((sub) => sub.parentId == category.id);
+  }
+
+  void removeSubCategory(CategoryModel category) {
+    selectedCategories.remove(category);
+  }
 
   ///Create new product
   Future<void> createProduct() async {
@@ -137,28 +193,35 @@ class CreateProductController extends GetxController {
             ProductAttributesController.instance.productAttributes,
         date: DateTime.now(),
         productVisibility: productVisibility.value.toString(),
-
       );
 
       productDataUploader.value = true;
       newProduct.id =
           await ProductRepository.instance.createProduct(newProduct);
-      ProductRepository.instance.updateProductCountForBrand(selectedBrand.value!.id);
+      ProductRepository.instance
+          .updateProductCountForBrand(selectedBrand.value!.id);
 
       //Register product categories if any
-      if (selectedCategories.isNotEmpty) {
+      if (selectedCategories.isNotEmpty ||
+          selectedParentCategories.isNotEmpty) {
         if (newProduct.id.isEmpty) {
           throw 'Error Storing Data. Try Again';
         }
+        final allCategories = [
+          ...selectedCategories,
+          ...selectedParentCategories
+        ];
+        final uniqueCategories = allCategories.toSet().toList();
 
         categoriesRelationshipUploader.value = true;
-        for (var category in selectedCategories) {
+
+        for (var category in uniqueCategories) {
           final productCategory = ProductCategoryModel(
               productId: newProduct.id, categoryId: category.id);
           await ProductRepository.instance
               .createProductCategory(productCategory);
         }
-      }else{
+      } else {
         throw 'Select at least one category';
       }
 
@@ -173,7 +236,7 @@ class CreateProductController extends GetxController {
     }
   }
 
-  void resetValues(){
+  void resetValues() {
     isLoading.value = false;
     productType.value = ProductType.single;
     productVisibility.value = ProductVisibility.hidden;
@@ -187,6 +250,7 @@ class CreateProductController extends GetxController {
     brandTextField.clear();
     selectedBrand.value = null;
     selectedCategories.clear();
+    selectedParentCategories.clear();
     ProductImagesController.instance.selectedThumbnailImageUrl.value = '';
     // ProductVariationsController.instance.resetAllValues();
     // ProductAttributesController.instance.resetProductAttributes();
@@ -264,8 +328,6 @@ class CreateProductController extends GetxController {
               Get.back();
               Get.back();
               resetValues();
-
-
             },
             child: Text('Go to Products'))
       ],
