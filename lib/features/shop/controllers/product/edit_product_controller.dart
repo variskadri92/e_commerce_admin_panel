@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yt_ecommerce_admin_panel/data/repositories/brands/brand_repository.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositories/products/product_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_attributes_controller.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/controllers/product/product_controller.dart';
@@ -18,6 +19,7 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loaders.dart';
+import '../../models/brand_category_model.dart';
 import '../category/category_controller.dart';
 
 class EditProductController extends GetxController {
@@ -45,7 +47,18 @@ class EditProductController extends GetxController {
   // Observable for selected brand and categories
   final Rx<BrandModel?> selectedBrand = Rx<BrandModel?>(null);
   final RxList<CategoryModel> selectedCategories = <CategoryModel>[].obs;
-  final List<CategoryModel> alreadyAddedCategories = <CategoryModel>[].obs;
+  final List<CategoryModel> alreadyAddedCategories = <CategoryModel>[];
+
+  // New properties for parent/subcategory structure
+  final RxList<CategoryModel> selectedParentCategories = <CategoryModel>[].obs;
+  final RxList<CategoryModel> selectedSubCategories = <CategoryModel>[].obs;
+  List<BrandCategoryModel> fetchedBrandCategories = [];
+
+  // Get all selected categories (parents + subs)
+  List<CategoryModel> get allSelectedCategories => [
+    ...selectedParentCategories,
+    ...selectedSubCategories,
+  ];
 
   //Flags for tracking different tasks
   RxBool thumbnailUploader = false.obs;
@@ -85,11 +98,9 @@ class EditProductController extends GetxController {
 
       if (product.productVisibility == ProductVisibility.published.toString()) {
         productVisibility.value = ProductVisibility.published;
-      }else{
+      } else {
         productVisibility.value = ProductVisibility.hidden;
       }
-
-
 
       //Product Attributes and Variations
       productAttributesController.productAttributes
@@ -98,7 +109,6 @@ class EditProductController extends GetxController {
           .assignAll(product.productVariations ?? []);
       productVariationsController
           .initializeVariationControllers(product.productVariations ?? []);
-
 
       isLoading.value = false;
       update();
@@ -110,24 +120,98 @@ class EditProductController extends GetxController {
     }
   }
 
+  Future<List<BrandCategoryModel>> brandCategories() async {
+    fetchedBrandCategories =
+    await BrandRepository.instance.getAllBrandCategories();
+    return fetchedBrandCategories;
+  }
+
   Future<List<CategoryModel>> loadSelectedCategories(String productId) async {
     selectedCategoriesLoader.value = true;
 
     final productCategories =
-        await productRepository.getProductCategories(productId);
+    await productRepository.getProductCategories(productId);
     final categoriesController = Get.put(CategoryController());
     if (categoriesController.allItems.isEmpty) {
       await categoriesController.fetchItems();
     }
 
+    if (fetchedBrandCategories.isEmpty) {
+      await brandCategories();
+    }
+
     final categoriesIds = productCategories.map((e) => e.categoryId).toList();
-    final categories = categoriesController.allItems
+    final allCategories = categoriesController.allItems
         .where((element) => categoriesIds.contains(element.id))
         .toList();
-    selectedCategories.assignAll(categories);
-    alreadyAddedCategories.assignAll(categories);
+
+    // Separate parents and subcategories
+    final parents = allCategories.where((cat) => cat.parentId.isEmpty).toList();
+    final subs = allCategories.where((cat) => cat.parentId.isNotEmpty).toList();
+
+    selectedParentCategories.assignAll(parents);
+    selectedSubCategories.assignAll(subs);
+    selectedCategories.assignAll(allCategories);  // Keep this for backward compatibility
+    alreadyAddedCategories.assignAll(allCategories);
+
     selectedCategoriesLoader.value = false;
-    return categories;
+    return allCategories;
+  }
+
+  void updateSelectedBrand(BrandModel? brand) {
+    selectedBrand.value = brand;
+    selectedParentCategories.clear();
+    selectedSubCategories.clear();
+  }
+
+  void toggleParentCategory(CategoryModel category) {
+    if (selectedParentCategories.contains(category)) {
+      selectedParentCategories.remove(category);
+      // Remove any subcategories of this parent
+      selectedSubCategories.removeWhere((sub) => sub.parentId == category.id);
+    } else {
+      selectedParentCategories.add(category);
+    }
+
+    // Update the main selectedCategories list for backward compatibility
+    selectedCategories.clear();
+    selectedCategories.addAll(allSelectedCategories);
+  }
+
+  void toggleSubCategory(CategoryModel category) {
+    if (selectedSubCategories.contains(category)) {
+      selectedSubCategories.remove(category);
+    } else {
+      // Ensure parent is selected
+      if (!selectedParentCategories.any((p) => p.id == category.parentId)) {
+        final parent = CategoryController.instance.allItems
+            .firstWhere((p) => p.id == category.parentId);
+        selectedParentCategories.add(parent);
+      }
+      selectedSubCategories.add(category);
+    }
+
+    // Update the main selectedCategories list for backward compatibility
+    selectedCategories.clear();
+    selectedCategories.addAll(allSelectedCategories);
+  }
+
+  void removeParentCategory(CategoryModel category) {
+    selectedParentCategories.remove(category);
+    // Remove any subcategories of this parent
+    selectedSubCategories.removeWhere((sub) => sub.parentId == category.id);
+
+    // Update the main selectedCategories list for backward compatibility
+    selectedCategories.clear();
+    selectedCategories.addAll(allSelectedCategories);
+  }
+
+  void removeSubCategory(CategoryModel category) {
+    selectedSubCategories.remove(category);
+
+    // Update the main selectedCategories list for backward compatibility
+    selectedCategories.clear();
+    selectedCategories.addAll(allSelectedCategories);
   }
 
   ///Update product
@@ -171,13 +255,13 @@ class EditProductController extends GetxController {
         final variationCheckFailed = ProductVariationsController
             .instance.productVariations
             .any((element) =>
-                element.price.isNaN ||
-                element.stock.isNaN ||
-                element.price < 0 ||
-                element.salePrice.isNaN ||
-                element.salePrice < 0 ||
-                element.stock < 0 ||
-                element.image.value.isEmpty);
+        element.price.isNaN ||
+            element.stock.isNaN ||
+            element.price < 0 ||
+            element.salePrice.isNaN ||
+            element.salePrice < 0 ||
+            element.stock < 0 ||
+            element.image.value.isEmpty);
         if (variationCheckFailed) {
           throw 'Variation data is invalid. Check variation data';
         }
@@ -219,14 +303,14 @@ class EditProductController extends GetxController {
       updatedProduct.productVisibility = productVisibility.value.toString();
 
       productDataUploader.value = true;
-          await ProductRepository.instance.updateProduct(updatedProduct);
+      await ProductRepository.instance.updateProduct(updatedProduct);
 
       //Register product categories if any
-      if (selectedCategories.isNotEmpty) {
+      if (allSelectedCategories.isNotEmpty) {
         categoriesRelationshipUploader.value = true;
 
         List<String> existingCategoryIds = alreadyAddedCategories.map((category) => category.id).toList();
-        for (var category in selectedCategories) {
+        for (var category in allSelectedCategories) {
           if(!existingCategoryIds.contains(category.id)){
             final productCategory = ProductCategoryModel(
                 productId: updatedProduct.id, categoryId: category.id);
@@ -236,10 +320,12 @@ class EditProductController extends GetxController {
         }
 
         for(var existingCategoryId in existingCategoryIds){
-          if(!selectedCategories.any((category) => category.id == existingCategoryId)){
+          if(!allSelectedCategories.any((category) => category.id == existingCategoryId)){
             await ProductRepository.instance.deleteProductCategory(updatedProduct.id, existingCategoryId);
           }
         }
+      } else {
+        throw 'Select at least one category';
       }
 
       ProductController.instance.updateItemFromLists(updatedProduct);
@@ -267,6 +353,9 @@ class EditProductController extends GetxController {
     brandTextField.clear();
     selectedBrand.value = null;
     selectedCategories.clear();
+    selectedParentCategories.clear();
+    selectedSubCategories.clear();
+    alreadyAddedCategories.clear();
     ProductVariationsController.instance.resetAllValues();
     ProductAttributesController.instance.resetProductAttributes();
 
@@ -285,7 +374,7 @@ class EditProductController extends GetxController {
         child: AlertDialog(
           title: Text('Creating Product'),
           content: Obx(
-            () => Column(
+                () => Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
@@ -321,9 +410,9 @@ class EditProductController extends GetxController {
           duration: Duration(seconds: 2),
           child: value.value
               ? Icon(
-                  CupertinoIcons.checkmark_alt_circle_fill,
-                  color: Colors.blue,
-                )
+            CupertinoIcons.checkmark_alt_circle_fill,
+            color: Colors.blue,
+          )
               : Icon(CupertinoIcons.checkmark_alt_circle),
         ),
         SizedBox(
