@@ -291,7 +291,8 @@ class EditProductController extends GetxController {
       updatedProduct.brand = selectedBrand.value;
       updatedProduct.description = description.text.trim();
       updatedProduct.productType = productType.value.toString();
-      updatedProduct.stock = int.tryParse(stock.text.trim()) ?? 0;
+      updatedProduct.stock = int.tryParse(stock.text.trim()) ?? ProductVariationsController.instance.productVariations
+          .fold(0, (sum, variation) => sum + variation.stock);
       updatedProduct.price = double.tryParse(price.text.trim()) ?? 0.0;
       updatedProduct.salePrice = double.tryParse(salePrice.text.trim()) ?? 0.0;
       updatedProduct.images = imagesController.additionalProductImagesUrls;

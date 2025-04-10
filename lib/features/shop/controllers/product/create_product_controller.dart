@@ -184,7 +184,8 @@ class CreateProductController extends GetxController {
         productVariations: variations,
         description: description.text.trim(),
         productType: productType.value.toString(),
-        stock: int.tryParse(stock.text.trim()) ?? 0,
+        stock: int.tryParse(stock.text.trim()) ?? ProductVariationsController.instance.productVariations
+            .fold(0, (sum, variation) => sum + variation.stock),
         price: double.tryParse(price.text.trim()) ?? 0.0,
         images: imagesController.additionalProductImagesUrls,
         salePrice: double.tryParse(salePrice.text.trim()) ?? 0.0,
