@@ -7,8 +7,8 @@ class ProductVariationModel {
   String? description;
   double price;
   double salePrice;
-  int stock;
   int soldQuantity;
+  int stock;
   Map<String, String> attributeValues;
 
   ProductVariationModel({
