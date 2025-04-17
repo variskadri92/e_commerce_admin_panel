@@ -112,7 +112,7 @@ class OrderInfo extends StatelessWidget {
                   children: [
                     Text('Total'),
                     Text(
-                      '\$${order.totalAmount}',
+                      '₹${order.totalAmount}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],

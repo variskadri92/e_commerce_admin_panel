@@ -88,7 +88,7 @@ class OrderItems extends StatelessWidget {
                   SizedBox(
                     width: TSizes.xl * 2,
                     child: Text(
-                      '\$${item.price.toStringAsFixed(1)}',
+                      '₹${item.price.toStringAsFixed(1)}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -106,7 +106,7 @@ class OrderItems extends StatelessWidget {
                         ? TSizes.xl * 1.4
                         : TSizes.xl * 2,
                     child: Text(
-                      '\$${item.totalAmount}',
+                      '₹${item.totalAmount}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -131,7 +131,7 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$$subTotal',
+                      '₹$subTotal',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -159,7 +159,7 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$${order.shippingCost.toStringAsFixed(2)}',
+                      '₹${order.shippingCost.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -173,7 +173,7 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$${order.taxCost.toStringAsFixed(2)}',
+                      '₹${order.taxCost.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -191,7 +191,7 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$${order.totalAmount.toStringAsFixed(2)}',
+                      '₹${order.totalAmount.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
