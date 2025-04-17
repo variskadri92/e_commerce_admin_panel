@@ -20,6 +20,10 @@ class OrderItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final total = order.items.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + (element.salePrice * element.quantity));
     final subTotal = order.items.fold(
         0.0,
         (previousValue, element) =>
@@ -90,8 +94,10 @@ class OrderItems extends StatelessWidget {
                     child: Text(
                       '₹${item.price.toStringAsFixed(1)}',
                       style: Theme.of(context).textTheme.bodyLarge,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  SizedBox(width: TSizes.spaceBtwItems),
                   SizedBox(
                     width: TDeviceUtils.isMobileScreen(context)
                         ? TSizes.xl * 1.4
@@ -108,6 +114,7 @@ class OrderItems extends StatelessWidget {
                     child: Text(
                       '₹${item.totalAmount}',
                       style: Theme.of(context).textTheme.bodyLarge,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -145,7 +152,7 @@ class OrderItems extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '\$0.0',
+                      '-₹${TPricingCalculator.calculateDiscountAmount(subTotal, total)}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -165,20 +172,6 @@ class OrderItems extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: TSizes.spaceBtwItems),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Taxes',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Text(
-                      '₹${order.taxCost.toStringAsFixed(2)}',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
-                ),
-                SizedBox(height: TSizes.spaceBtwItems,),
                 Divider(),
                 SizedBox(height: TSizes.spaceBtwItems,),
 

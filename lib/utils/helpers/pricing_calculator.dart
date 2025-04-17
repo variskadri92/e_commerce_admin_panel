@@ -12,6 +12,13 @@ class TPricingCalculator {
   return totalPrice;
   }
 
+  /// Calculate absolute discount value
+  static double? calculateDiscountAmount(double originalPrice, double salePrice) {
+    if (originalPrice <= 0 || salePrice <= 0 || salePrice >= originalPrice) return null;
+
+    return double.parse((originalPrice - salePrice).toStringAsFixed(2));
+  }
+
   /// -- Calculate shipping cost
   static String calculateShippingCost(double productPrice, String location) {
   double shippingCost = getShippingCost(location);
