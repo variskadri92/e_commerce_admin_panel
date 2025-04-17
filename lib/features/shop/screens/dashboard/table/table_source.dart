@@ -30,7 +30,7 @@ class OrderRows extends DataTableSource {
         ),
       ),
       DataCell(Text(order.formattedOrderDate)),
-      DataCell(Text('5 Items')),
+      DataCell(Text('${order.items.length} items')),
       DataCell(
         TRoundedContainer(
           radius: TSizes.cardRadiusSm,
@@ -42,7 +42,7 @@ class OrderRows extends DataTableSource {
           ),
         )
       ),
-      DataCell(Text('\$${order.totalAmount}')),
+      DataCell(Text('₹${order.totalAmount}')),
     ]);
   }
 
