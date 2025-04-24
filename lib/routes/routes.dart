@@ -32,6 +32,8 @@ class Routes {
 
   static const profile = '/profile';
   static const coupons = '/coupons';
+  static const createCoupons = '/createCoupons';
+  static const editCoupons = '/editCoupons';
   static const settings = '/settings';
 
   static List sideBarMenuItems = [

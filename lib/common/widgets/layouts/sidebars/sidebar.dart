@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:lottie/lottie.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_circular_image.dart';
 import 'package:yt_ecommerce_admin_panel/features/personalization/controllers/settings_controller.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/enums.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
@@ -113,6 +111,11 @@ class Sidebar extends StatelessWidget {
                       route: Routes.orders,
                       itemName: 'Orders',
                       icon: Iconsax.box,
+                    ),
+                    MenuItems(
+                      route: Routes.coupons,
+                      itemName: 'Coupons',
+                      icon: Iconsax.card,
                     ),
 
                     Text(

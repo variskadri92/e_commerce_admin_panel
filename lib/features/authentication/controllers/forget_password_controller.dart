@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/popups/loaders.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';

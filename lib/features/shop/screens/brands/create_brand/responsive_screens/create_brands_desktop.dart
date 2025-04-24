@@ -12,20 +12,25 @@ class CreateBrandsDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Breadcrumbs
-            BreadcrumbWithHeading(returnToPreviousScreen: true,heading: 'Create Brands', breadcrumbItems: [Routes.brands,'Create Brands']),
-            const SizedBox(height: TSizes.spaceBtwSections,),
+        child: Padding(
+          padding: EdgeInsets.all(TSizes.defaultSpace),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //Breadcrumbs
+              BreadcrumbWithHeading(
+                  returnToPreviousScreen: true,
+                  heading: 'Create Brands',
+                  breadcrumbItems: [Routes.brands, 'Create Brands']),
+              const SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
 
-            //Form
-            CreateBrandForm(),
-
-
-          ],
-        ),),
+              //Form
+              CreateBrandForm(),
+            ],
+          ),
+        ),
       ),
     );
   }

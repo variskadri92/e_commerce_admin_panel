@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/utils/popups/full_screen_loader.dart';
 
 import '../../utils/constants/sizes.dart';

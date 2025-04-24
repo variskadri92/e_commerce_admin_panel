@@ -88,8 +88,4 @@ class CreateCategoryController extends GetxController {
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());
     }
   }
-
-
-
-
 }

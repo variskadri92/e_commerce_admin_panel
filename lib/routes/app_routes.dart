@@ -13,6 +13,9 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/brands/edit_brand
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/all_category/categories.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/create_category/create_category.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/coupon/create_coupon/create_coupon.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/coupon/create_coupon/responsive_screens/create_coupon_desktop.dart';
+import 'package:yt_ecommerce_admin_panel/features/shop/screens/coupon/edit_coupon/edit_coupon.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/customer/customer_detail/customer_detail.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/screens/order/all_orders/orders.dart';
@@ -22,6 +25,7 @@ import 'package:yt_ecommerce_admin_panel/features/shop/screens/product/edit_prod
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/login/login.dart';
+import '../features/shop/screens/coupon/all_coupons/coupons.dart';
 import '../features/shop/screens/customer/all_customer/customers.dart';
 import '../features/shop/screens/order/orders_detail/order_detail.dart';
 
@@ -32,7 +36,8 @@ class AppRoutes {
       page: () => const LoginScreen(),
       transition: Transition.fadeIn,
       //middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.forgetPassword,
       page: () => const ForgetPasswordScreen(),
       transition: Transition.fadeIn,
@@ -43,7 +48,8 @@ class AppRoutes {
       page: () => const ResetPasswordScreen(),
       transition: Transition.fadeIn,
       //middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.dashboard,
       page: () => const DashboardScreen(),
       transition: Transition.fadeIn,
@@ -62,18 +68,19 @@ class AppRoutes {
       page: () => const CategoriesScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.createCategories,
       page: () => const CreateCategoryScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.editCategories,
       page: () => const EditCategoryScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
-
 
     //Brands
     GetPage(
@@ -81,12 +88,14 @@ class AppRoutes {
       page: () => const BrandsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.createBrands,
       page: () => const CreateBrandsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.editBrands,
       page: () => const EditBrandsScreen(),
       transition: Transition.fadeIn,
@@ -99,18 +108,19 @@ class AppRoutes {
       page: () => const BannersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.createBanners,
       page: () => const CreateBannersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.editBanners,
       page: () => const EditBannersScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
-
 
     //Products
     GetPage(
@@ -118,20 +128,22 @@ class AppRoutes {
       page: () => const ProductsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.createProducts,
       page: () => const CreateProductScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
-    ),GetPage(
+    ),
+    GetPage(
       name: Routes.editProducts,
       page: () => const EditProductScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
     ),
 
-  //Customer
-  GetPage(
+    //Customer
+    GetPage(
       name: Routes.customers,
       page: () => const CustomersScreen(),
       transition: Transition.fadeIn,
@@ -145,9 +157,8 @@ class AppRoutes {
       middlewares: [RoutesMiddleware()],
     ),
 
-
     //Customer
-  GetPage(
+    GetPage(
       name: Routes.orders,
       page: () => const OrdersScreen(),
       transition: Transition.fadeIn,
@@ -174,6 +185,23 @@ class AppRoutes {
       page: () => const SettingsScreen(),
       transition: Transition.fadeIn,
       middlewares: [RoutesMiddleware()],
+    ),
+
+    //Coupons
+    GetPage(
+      name: Routes.coupons,
+      page: () => const CouponsScreen(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.createCoupons,
+      page: () => const CreateCouponScreen(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.editCoupons,
+      page: () => const EditCouponScreen(),
+      transition: Transition.fadeIn,
     ),
   ];
 }

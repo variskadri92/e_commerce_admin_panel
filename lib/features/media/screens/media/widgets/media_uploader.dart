@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
 import 'package:yt_ecommerce_admin_panel/features/media/controllers/media_controller.dart';
@@ -13,7 +13,6 @@ import 'package:yt_ecommerce_admin_panel/utils/constants/image_strings.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
-import 'package:universal_html/html.dart' as html;
 
 class MediaUploader extends StatelessWidget {
   const MediaUploader({super.key});

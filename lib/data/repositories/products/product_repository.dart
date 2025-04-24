@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/product_category_model.dart';
 import 'package:yt_ecommerce_admin_panel/features/shop/models/product_model.dart';
 
