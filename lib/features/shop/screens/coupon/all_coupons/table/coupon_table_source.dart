@@ -14,6 +14,7 @@ class CouponTableSource extends DataTableSource{
     final coupon = controller.filteredItems[index];
     return DataRow2(
         selected: controller.selectedRows[index],
+        onTap: ()=> Get.toNamed(Routes.editCoupons, arguments: coupon),
         onSelectChanged: (value)=>controller.selectedRows[index] = value ?? false,
         cells: [
       DataCell(Text(coupon.code)),
