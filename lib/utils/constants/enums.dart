@@ -21,3 +21,6 @@ enum MediaCategory { folders, banners, brands, categories, products, users }
 enum OrderStatus { pending, processing, shipped, delivered, cancelled }
 
 enum PaymentMethods { paypal, googlePay, applePay, visa, masterCard, creditCard, paystack, razorPay, paytm }
+
+enum DiscountType { percentage, amount }
+

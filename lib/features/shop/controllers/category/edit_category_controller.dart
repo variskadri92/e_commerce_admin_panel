@@ -93,7 +93,7 @@ class EditCategoryController extends GetxController {
       TFullScreenLoader.stopLoading();
       TLoaders.successSnackBar(
           title: 'Congratulations',
-          message: 'New Category Created Successfully');
+          message: 'Category Updated Successfully');
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh bad', message: e.toString());

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yt_ecommerce_admin_panel/utils/device/device_utility.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/sizes.dart';
-import '../../../../../utils/validators/validation.dart';
 import '../../../controllers/settings_controller.dart';
 
 class SettingsForm extends StatelessWidget {

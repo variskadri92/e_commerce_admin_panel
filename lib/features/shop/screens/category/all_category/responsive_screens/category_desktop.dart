@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart%20%20';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/data_table/table_header.dart';
@@ -39,8 +39,7 @@ class CategoryDesktop extends StatelessWidget {
                     buttonText: 'Create New Category',
                     onPressed: () => Get.toNamed(Routes.createCategories),
                     searchController: controller.searchTextController,
-                    searchOnChanged: (query)=> controller.searchQuery(query),
-
+                    searchOnChanged: (query) => controller.searchQuery(query),
                   ),
 
                   //Table
