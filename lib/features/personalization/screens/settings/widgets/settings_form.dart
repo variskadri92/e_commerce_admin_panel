@@ -96,7 +96,7 @@ class SettingsForm extends StatelessWidget {
             controller: controller.shippingController,
             decoration: InputDecoration(
                 hintText: 'Shipping Charge',
-                label: Text('Shipping Charge (\$)'),
+                label: Text('Shipping Charge (₹)'),
                 prefixIcon: Icon(Iconsax.ship)),
           ),
         ),
@@ -110,8 +110,8 @@ class SettingsForm extends StatelessWidget {
           child: TextFormField(
             controller: controller.freeShippingLimitController,
             decoration: InputDecoration(
-                hintText: 'Free Shipping After (\$)',
-                label: Text('Free Shipping Threshold (\$)'),
+                hintText: 'Free Shipping After (₹)',
+                label: Text('Free Shipping Threshold (₹)'),
                 prefixIcon: Icon(Iconsax.ship)),
           ),
         ),

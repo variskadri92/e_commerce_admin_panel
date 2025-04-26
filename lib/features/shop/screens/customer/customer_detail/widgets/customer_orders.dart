@@ -46,7 +46,7 @@ class CustomerOrders extends StatelessWidget {
                       children: [
                         TextSpan(text: 'Total Spent '),
                         TextSpan(
-                            text: '\$${totalAmount.toString()}',
+                            text: '₹${totalAmount.toString()}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!

@@ -47,7 +47,7 @@ class OrderRows extends DataTableSource {
                     color: THelperFunctions.getOrderStatusColor(order.status))),
           ),
         ),
-        DataCell(Text('\$${order.totalAmount}')),
+        DataCell(Text('₹${order.totalAmount}')),
         DataCell(TTableActionButtons(
           view: true,
           edit: false,

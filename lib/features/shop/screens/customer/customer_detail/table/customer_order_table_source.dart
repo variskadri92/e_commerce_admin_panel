@@ -46,7 +46,7 @@ class CustomerOrdersRows extends DataTableSource {
                     color: THelperFunctions.getOrderStatusColor(order.status))),
           ),
         ),
-        DataCell(Text('\$$totalAmount')),
+        DataCell(Text('₹$totalAmount')),
       ],
     );
   }
